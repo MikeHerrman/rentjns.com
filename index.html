@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Stay by the coast — the ocean awaits."
+    />
+    <link rel="icon" href="/assets/favicon.ico" />
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>FleiShore Homes</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="nav">
+        <a class="brand" href="/">FleiShore Homes</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="nav-items">
+            <li><a class="nav-item" href="views/rentals.html">Rentals</a></li>
+            <li><a class="nav-item" href="views/events.html">Events</a></li>
+            <li><a class="nav-item" href="views/contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-body">
+          <h1 id="hero-title" class="hero-headline">Stay by the Coast</h1>
+          <p class="hero-subheadline">The Ocean Awaits</p>
+        </div>
+      </section>
+
+      <!-- future: teaser sections go here -->
+    </main>
+
+    <footer class="footer">
+      <small>&copy; <span id="year"></span> FleiShore Homes</small>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: #fff;
+  color: #000;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  z-index: 1000;
+}
+
+/* Header / Nav */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, #f9fec4, #dffce3, #b9efc0, #8acd92);
+  color: #262626;
+}
+
+.brand {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-items {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-item {
+  text-decoration: none;
+
+  outline: none;
+}
+
+.nav-item:hover,
+.nav-item:active {
+  text-decoration: underline;
+  color: white;
+}
+
+.nav-item:active {
+  opacity: 0.8;
+}
+
+/* Hero */
+.hero {
+  min-height: 100dvh; /* better on mobile than 100vh */
+  background: url('../assets/images/istockphoto-1302442639-1024x1024.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4rem;
+  color: #fff;
+}
+
+.hero-body {
+  padding: 2rem 2.25rem;
+  border-radius: 12px;
+  background-color: rgba(0, 46, 73, 0.38); /* darker tint for readability */
+  backdrop-filter: blur(2px); /* subtle glass effect (safe to drop if you prefer) */
+  max-width: 50%;
+  text-align: left;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.hero-headline {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* hero subheadline */
+.hero-subheadline {
+  margin-top: 0.5rem;
+  font-size: clamp(1.125rem, 2.6vw, 1.75rem);
+  line-height: 1.3;
+  opacity: 0.95;
+}
+
+/* Footer */
+.footer {
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(to right, #f9fec4, #afd7fa, #72b2e9, #1f6fb5);
+}
+
+/* Accessibility helpers */
+:focus-visible {
+  outline: 2px solid #0b67a3;
+  outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .nav {
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-items {
+    gap: 1rem;
+  }
+
+  .hero {
+    padding: 2rem 1.25rem;
+  }
+
+  .hero-body {
+    max-width: 100%;
+    padding: 1.25rem 1.5rem;
+  }
+}
