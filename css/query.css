@@ -267,3 +267,21 @@
   bottom: 19px;
   transform: rotate(-45deg);
 }
+/* JS-driven fallback (works without :has()) */
+.nav.is-open .nav-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav.is-open .nav-drawer {
+  transform: translateX(0);
+}
+
+.nav-inner.is-open .nav-toggle::before {
+  top: 19px;
+  transform: rotate(45deg);
+  box-shadow: none;
+}
+.nav-inner.is-open .nav-toggle::after {
+  bottom: 19px;
+  transform: rotate(-45deg);
+}
