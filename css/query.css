@@ -85,6 +85,13 @@
   padding: 1rem;
 }
 
+/* Active link in the mobile drawer */
+.nav-drawer .nav-item.is-active {
+  color: var(--g-end, #9dd8a6); /* light green from your gradient */
+  background: transparent;
+  font-weight: 600;
+}
+
 /* Optional header area inside drawer */
 .nav-drawer .brand {
   margin-bottom: 0.5rem;

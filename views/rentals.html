@@ -8,27 +8,73 @@
       content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Stay by the coast — the ocean awaits."
     />
     <link rel="icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="/css/global.css" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <title>Rentals</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/query.css" />
+
+    <title>JNS Vacation Rentals</title>
   </head>
+
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header">
       <div class="nav">
-        <a class="brand" href="/">FleiShore Homes</a>
-        <nav class="site-nav" aria-label="Primary">
-          <ul class="nav-items">
-            <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
-            <li><a class="nav-item" href="/views/events.html">Events</a></li>
-            <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
-          </ul>
-        </nav>
+        <div class="nav-inner container">
+          <a class="brand" href="../index.html">JNS Vacation Rentals</a>
+
+          <!-- Desktop inline nav -->
+          <nav class="site-nav" aria-label="Primary">
+            <ul class="nav-items">
+              <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
+              <li><a class="nav-item" href="/views/events.html">Events</a></li>
+              <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
+            </ul>
+          </nav>
+
+          <!-- Hamburger controls (moved INSIDE .nav-inner so it sits on the right) -->
+          <input type="checkbox" id="navcheck" class="navcheck" />
+          <label
+            for="navcheck"
+            class="nav-toggle"
+            aria-label="Open menu"
+            aria-controls="nav-drawer"
+            aria-expanded="false"
+          ></label>
+        </div>
+
+        <!-- Overlay + Drawer (can stay outside) -->
+        <div class="nav-overlay"></div>
+        <aside
+          class="nav-drawer"
+          id="nav-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation"
+        >
+          <a class="brand" href="../index.html">JNS Vacation Rentals</a>
+          <nav aria-label="Mobile">
+            <ul class="nav-items">
+              <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
+              <li><a class="nav-item" href="/views/events.html">Events</a></li>
+              <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
+            </ul>
+          </nav>
+        </aside>
       </div>
     </header>
-    <main>
-      <h1>Rentals Page</h1>
+
+    <main id="main" class="fill-viewport">
+      <div class="container">
+        <h1>Rentals</h1>
+        <!-- your content -->
+      </div>
     </main>
+
+    <footer class="footer">
+      <small>&copy; <span id="year"></span> JNS Vacation Rentals</small>
+    </footer>
+
+    <script type="module" src="../js/main.js"></script>
   </body>
 </html>

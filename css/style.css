@@ -57,6 +57,17 @@
   margin-left: auto;
 }
 
+/* Active link (desktop inline nav) */
+.site-nav .nav-item.is-active {
+  background: #fff; /* same white tile as your hover intent */
+  color: #111; /* dark grey text */
+}
+.site-nav .nav-item.is-active:hover,
+.site-nav .nav-item.is-active:focus-visible {
+  background: #fff;
+  color: #111;
+}
+
 .nav-items {
   list-style: none;
   display: flex;
@@ -156,4 +167,13 @@
     padding: 1rem 1.25rem;
     background-color: rgba(0, 46, 73, 0.5); /* slightly stronger on small screens */
   }
+}
+
+/* Fill viewport on pages without a hero */
+.fill-viewport {
+  min-block-size: 100dvh; /* dynamic viewport height */
+  display: grid; /* keeps content aligned at the top */
+  align-content: start;
+  padding: 2rem 0; /* breathing room */
+  background: #fff; /* ensure white body panel */
 }
