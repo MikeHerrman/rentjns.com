@@ -8,20 +8,19 @@
       content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Stay by the coast — the ocean awaits."
     />
     <link rel="icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="../css/global.css" />
-    <link rel="stylesheet" href="../css/style.css" />
-    <link rel="stylesheet" href="../css/query.css" />
-
-    <title>JNS Vacation Rentals</title>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/query.css" />
+    <title>JNS Vacation Rentals — Events</title>
   </head>
 
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="site-header">
+    <header class="site-header" role="banner">
       <div class="nav">
         <div class="nav-inner container">
-          <a class="brand" href="../index.html">JNS Vacation Rentals</a>
+          <a class="brand" href="/index.html">JNS Vacation Rentals</a>
 
           <!-- Desktop inline nav -->
           <nav class="site-nav" aria-label="Primary">
@@ -32,7 +31,7 @@
             </ul>
           </nav>
 
-          <!-- Hamburger controls (moved INSIDE .nav-inner so it sits on the right) -->
+          <!-- Hamburger controls -->
           <input type="checkbox" id="navcheck" class="navcheck" />
           <label
             for="navcheck"
@@ -43,16 +42,17 @@
           ></label>
         </div>
 
-        <!-- Overlay + Drawer (can stay outside) -->
+        <!-- Overlay + Drawer -->
         <div class="nav-overlay"></div>
         <aside
           class="nav-drawer"
           id="nav-drawer"
           role="dialog"
           aria-modal="true"
+          aria-hidden="true"
           aria-label="Navigation"
         >
-          <a class="brand" href="../index.html">JNS Vacation Rentals</a>
+          <a class="brand" href="/index.html">JNS Vacation Rentals</a>
           <nav aria-label="Mobile">
             <ul class="nav-items">
               <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
@@ -66,15 +66,15 @@
 
     <main id="main" class="fill-viewport">
       <div class="container">
-        <h1>Events and Attractions</h1>
+        <h1>Events & Attractions</h1>
         <!-- your content -->
       </div>
     </main>
 
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
       <small>&copy; <span id="year"></span> JNS Vacation Rentals</small>
     </footer>
 
-    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="/js/main.js"></script>
   </body>
 </html>

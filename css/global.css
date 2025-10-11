@@ -67,12 +67,21 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* Text selection */
+::selection {
+  background: rgba(12, 90, 58, 0.18);
+}
+
 /* ---------- Typography scale (fluid) ---------- */
 :root {
+  /* container + tokens */
+  --container-max: 1100px;
+
   /* ~16px → ~18px body; headings scale up */
   --step-0: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
   --step-1: clamp(1.25rem, 1.1rem + 1.5vw, 1.75rem);
   --step-2: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+
   /* Calming green gradient */
   --g-start: #0c5a3a; /* deep forest */
   --g-mid: #2d7e55; /* mid green */
@@ -90,9 +99,21 @@ h2 {
   line-height: 1.2;
 }
 
+/* Light rhythm so content pages breathe */
+:where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, figure) {
+  margin-block: 0.75rem;
+}
+:where(h1, h2) {
+  margin-block: 1rem 0.75rem;
+}
+ul,
+ol {
+  padding-left: 1.25rem;
+}
+
 /* ---------- Layout helpers ---------- */
 .container {
-  width: min(100% - 2rem, 1100px);
+  width: min(100% - 2rem, var(--container-max));
   margin-inline: auto;
 }
 

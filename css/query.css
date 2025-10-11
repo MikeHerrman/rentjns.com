@@ -1,14 +1,8 @@
 /* =======================================================
    query.css — responsive & accessibility helpers + hamburger
-   Assumes these HTML hooks (you'll add them next):
-   - <input type="checkbox" id="navcheck" class="navcheck" />
-   - <label for="navcheck" class="nav-toggle" aria-label="Open menu"></label>
-   - <div class="nav-overlay"></div>
-   - <aside class="nav-drawer" id="nav-drawer"> ... your <ul class="nav-items"> ... </ul> ... </aside>
-   Place the four elements as siblings inside <header class="site-header"> (or inside the .nav container).
    ======================================================= */
 
-/* ---------- Breakpoint tokens ---------- */
+/* ---------- Breakpoint tokens (optional) ---------- */
 @media (min-width: 801px) {
   :root {
     --bp: desktop;
@@ -39,7 +33,7 @@
 
 /* Hamburger button */
 .nav-toggle {
-  display: none;
+  display: none; /* shown on mobile via media query */
   inline-size: 40px;
   block-size: 40px;
   border-radius: 8px;
@@ -47,6 +41,9 @@
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+
+  /* subtle border so it doesn't vanish on light parts of the gradient */
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 /* Icon (3 lines) */
@@ -57,13 +54,14 @@
   left: 9px;
   right: 9px;
   height: 2px;
-  background: #111;
+  background: var(--on-green, #fff);
   transition: transform 0.2s ease, top 0.2s ease, bottom 0.2s ease, opacity 0.2s ease;
 }
 .nav-toggle::before {
   top: 13px;
-  box-shadow: 0 8px 0 0 #111;
-} /* top + middle via shadow */
+  /* middle bar via shadow */
+  box-shadow: 0 8px 0 0 var(--on-green, #fff);
+}
 .nav-toggle::after {
   bottom: 13px;
 }
@@ -128,16 +126,7 @@
   z-index: 900;
 }
 
-/* Toggle interactions (when checked) */
-.navcheck:checked ~ .nav-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-.navcheck:checked ~ .nav-drawer {
-  transform: translateX(0);
-}
-
-/* Animate hamburger into "X" */
+/* Toggle interactions (icon only — input is adjacent to label) */
 .navcheck:checked + .nav-toggle::before {
   top: 19px;
   transform: rotate(45deg);
@@ -154,12 +143,11 @@
 
 /* Mobile ≤ 800px: show hamburger, hide inline nav list */
 @media (max-width: 800px) {
-  /* Show the button */
   .nav-toggle {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
-
-  /* Hide the desktop inline nav (keeps your original .nav-items accessible inside drawer) */
   .site-header .nav .site-nav {
     display: none;
   }
@@ -173,10 +161,51 @@
   .navcheck {
     display: none !important;
   }
-
   .site-header .nav .site-nav {
     display: block;
   }
+}
+
+/* ======================================
+   :has() bridge (pure CSS) + JS fallback
+   ====================================== */
+
+/* If the checkbox is checked anywhere inside .nav, open overlay/drawer */
+.nav:has(#navcheck:checked) .nav-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav:has(#navcheck:checked) .nav-drawer {
+  transform: translateX(0);
+}
+
+/* Also animate the icon via :has() so placement changes don’t break it */
+.nav-inner:has(#navcheck:checked) .nav-toggle::before {
+  top: 19px;
+  transform: rotate(45deg);
+  box-shadow: none;
+}
+.nav-inner:has(#navcheck:checked) .nav-toggle::after {
+  bottom: 19px;
+  transform: rotate(-45deg);
+}
+
+/* JS-driven fallback (works without :has()) */
+.nav.is-open .nav-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav.is-open .nav-drawer {
+  transform: translateX(0);
+}
+.nav-inner.is-open .nav-toggle::before {
+  top: 19px;
+  transform: rotate(45deg);
+  box-shadow: none;
+}
+.nav-inner.is-open .nav-toggle::after {
+  bottom: 19px;
+  transform: rotate(-45deg);
 }
 
 /* ======================================
@@ -193,7 +222,7 @@
   }
 }
 
-/* Dark mode (optional): soften backgrounds for comfort */
+/* Dark mode: soften backgrounds for comfort */
 @media (prefers-color-scheme: dark) {
   .nav-drawer {
     background: #0f172a;
@@ -207,6 +236,8 @@
   .nav-overlay {
     background: rgba(0, 0, 0, 0.5);
   }
+
+  /* keep icon visible */
   .nav-toggle::before,
   .nav-toggle::after {
     background: #f8fafc;
@@ -241,54 +272,4 @@
   .nav-drawer .nav-item {
     padding: 0.65rem 0.5rem;
   }
-}
-/* Make the hamburger sit nicely in the flex row */
-.nav-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-}
-@media (max-width: 800px) {
-  .nav-toggle {
-    display: inline-flex;
-  }
-}
-/* Bridge the different parents using :has() on .nav */
-.nav:has(#navcheck:checked) .nav-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-.nav:has(#navcheck:checked) .nav-drawer {
-  transform: translateX(0);
-}
-
-/* Optional: also drive the icon via :has() so placement doesn't matter */
-.nav-inner:has(#navcheck:checked) .nav-toggle::before {
-  top: 19px;
-  transform: rotate(45deg);
-  box-shadow: none;
-}
-.nav-inner:has(#navcheck:checked) .nav-toggle::after {
-  bottom: 19px;
-  transform: rotate(-45deg);
-}
-/* JS-driven fallback (works without :has()) */
-.nav.is-open .nav-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-.nav.is-open .nav-drawer {
-  transform: translateX(0);
-}
-
-.nav-inner.is-open .nav-toggle::before {
-  top: 19px;
-  transform: rotate(45deg);
-  box-shadow: none;
-}
-.nav-inner.is-open .nav-toggle::after {
-  bottom: 19px;
-  transform: rotate(-45deg);
 }
