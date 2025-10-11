@@ -1,0 +1,269 @@
+/* =======================================================
+   query.css — responsive & accessibility helpers + hamburger
+   Assumes these HTML hooks (you'll add them next):
+   - <input type="checkbox" id="navcheck" class="navcheck" />
+   - <label for="navcheck" class="nav-toggle" aria-label="Open menu"></label>
+   - <div class="nav-overlay"></div>
+   - <aside class="nav-drawer" id="nav-drawer"> ... your <ul class="nav-items"> ... </ul> ... </aside>
+   Place the four elements as siblings inside <header class="site-header"> (or inside the .nav container).
+   ======================================================= */
+
+/* ---------- Breakpoint tokens ---------- */
+@media (min-width: 801px) {
+  :root {
+    --bp: desktop;
+  }
+}
+@media (max-width: 800px) {
+  :root {
+    --bp: mobile;
+  }
+}
+
+/* ======================================
+   Hamburger menu (CSS-only, checkbox hack)
+   ====================================== */
+
+/* Visually hide the control but keep it accessible */
+.navcheck {
+  position: absolute !important;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Hamburger button */
+.nav-toggle {
+  display: none;
+  inline-size: 40px;
+  block-size: 40px;
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Icon (3 lines) */
+.nav-toggle::before,
+.nav-toggle::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  height: 2px;
+  background: #111;
+  transition: transform 0.2s ease, top 0.2s ease, bottom 0.2s ease, opacity 0.2s ease;
+}
+.nav-toggle::before {
+  top: 13px;
+  box-shadow: 0 8px 0 0 #111;
+} /* top + middle via shadow */
+.nav-toggle::after {
+  bottom: 13px;
+}
+
+/* Drawer container */
+.nav-drawer {
+  position: fixed;
+  inset: 0 auto 0 0; /* top 0, left 0, right auto, bottom 0 */
+  width: min(78%, 320px);
+  max-width: 100%;
+  background: #ffffff;
+  color: #111;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 24px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+/* Optional header area inside drawer */
+.nav-drawer .brand {
+  margin-bottom: 0.5rem;
+}
+
+/* Drawer nav list */
+.nav-drawer .nav-items {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+  display: grid;
+  gap: 0.25rem;
+}
+.nav-drawer .nav-item {
+  display: block;
+  padding: 0.75rem 0.5rem;
+  border-radius: 8px;
+}
+.nav-drawer .nav-item:hover,
+.nav-drawer .nav-item:focus-visible {
+  background: #f3f4f6;
+  color: #111;
+  text-decoration: none;
+}
+
+/* Screen overlay */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 900;
+}
+
+/* Toggle interactions (when checked) */
+.navcheck:checked ~ .nav-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.navcheck:checked ~ .nav-drawer {
+  transform: translateX(0);
+}
+
+/* Animate hamburger into "X" */
+.navcheck:checked + .nav-toggle::before {
+  top: 19px;
+  transform: rotate(45deg);
+  box-shadow: none; /* hide middle bar */
+}
+.navcheck:checked + .nav-toggle::after {
+  bottom: 19px;
+  transform: rotate(-45deg);
+}
+
+/* ======================================
+   Visibility rules by breakpoint
+   ====================================== */
+
+/* Mobile ≤ 800px: show hamburger, hide inline nav list */
+@media (max-width: 800px) {
+  /* Show the button */
+  .nav-toggle {
+    display: inline-block;
+  }
+
+  /* Hide the desktop inline nav (keeps your original .nav-items accessible inside drawer) */
+  .site-header .nav .site-nav {
+    display: none;
+  }
+}
+
+/* Desktop ≥ 801px: hide drawer system, show inline nav */
+@media (min-width: 801px) {
+  .nav-toggle,
+  .nav-overlay,
+  .nav-drawer,
+  .navcheck {
+    display: none !important;
+  }
+
+  .site-header .nav .site-nav {
+    display: block;
+  }
+}
+
+/* ======================================
+   Accessibility & user preference helpers
+   ====================================== */
+
+/* Reduced motion: cut transitions */
+@media (prefers-reduced-motion: reduce) {
+  .nav-drawer,
+  .nav-overlay,
+  .nav-toggle::before,
+  .nav-toggle::after {
+    transition: none !important;
+  }
+}
+
+/* Dark mode (optional): soften backgrounds for comfort */
+@media (prefers-color-scheme: dark) {
+  .nav-drawer {
+    background: #0f172a;
+    color: #f8fafc;
+  }
+  .nav-drawer .nav-item:hover,
+  .nav-drawer .nav-item:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+  }
+  .nav-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .nav-toggle::before,
+  .nav-toggle::after {
+    background: #f8fafc;
+    box-shadow: 0 8px 0 0 #f8fafc;
+  }
+}
+
+/* Forced colors / high contrast (Windows) */
+@media (forced-colors: active) {
+  .nav-overlay {
+    background: CanvasText;
+    opacity: 0.3;
+  }
+  .nav-drawer {
+    border: 1px solid CanvasText;
+  }
+  .nav-toggle::before,
+  .nav-toggle::after {
+    background: CanvasText;
+    box-shadow: 0 8px 0 0 CanvasText;
+  }
+}
+
+/* ======================================
+   Extra small screens (≤600px) niceties
+   ====================================== */
+@media (max-width: 600px) {
+  .nav-drawer {
+    width: min(90%, 320px);
+    padding: 0.75rem;
+  }
+  .nav-drawer .nav-item {
+    padding: 0.65rem 0.5rem;
+  }
+}
+/* Make the hamburger sit nicely in the flex row */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+@media (max-width: 800px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+}
+/* Bridge the different parents using :has() on .nav */
+.nav:has(#navcheck:checked) .nav-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav:has(#navcheck:checked) .nav-drawer {
+  transform: translateX(0);
+}
+
+/* Optional: also drive the icon via :has() so placement doesn't matter */
+.nav-inner:has(#navcheck:checked) .nav-toggle::before {
+  top: 19px;
+  transform: rotate(45deg);
+  box-shadow: none;
+}
+.nav-inner:has(#navcheck:checked) .nav-toggle::after {
+  bottom: 19px;
+  transform: rotate(-45deg);
+}

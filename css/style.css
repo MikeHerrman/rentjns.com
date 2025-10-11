@@ -1,4 +1,9 @@
-/* Skip Link */
+/* =======================================================
+   Site Styles — header/nav, hero, footer, responsive
+   Target HTML: index.html (+ views/* if reused)
+   ======================================================= */
+
+/* ---------- Skip Link ---------- */
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -12,16 +17,35 @@
   padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
   z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* Header / Nav */
+/* ---------- Header / Nav ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff; /* under the gradient band */
+}
+
+/* Gradient band spans full width */
 .nav {
+  background: linear-gradient(to right, var(--g-start), var(--g-mid), var(--g-end));
+  color: var(--on-green);
+}
+
+/* Inner container creates left/right gutters */
+.nav-inner {
+  width: min(100% - 2rem, 1100px);
+  margin-inline: auto;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background: linear-gradient(to right, #f9fec4, #dffce3, #b9efc0, #8acd92);
-  color: #262626;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+
+  padding: 1rem 0; /* vertical padding; side gutters come from width clamp */
 }
 
 .brand {
@@ -29,92 +53,107 @@
   text-decoration: none;
 }
 
+.site-nav {
+  margin-left: auto;
+}
+
 .nav-items {
   list-style: none;
   display: flex;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
 }
 
 .nav-item {
-  text-decoration: none;
-
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
   outline: none;
 }
+.brand,
+.nav-item {
+  color: var(--on-green);
+}
 
+/* hover/keyboard focus stays readable over light gradient */
 .nav-item:hover,
-.nav-item:active {
-  text-decoration: underline;
-  color: white;
+.nav-item:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--on-green);
+  text-decoration: none;
 }
 
 .nav-item:active {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
-/* Hero */
+/* ---------- Hero ---------- */
 .hero {
-  min-height: 100dvh; /* better on mobile than 100vh */
+  min-height: 100dvh; /* more reliable than 100vh on mobile */
   background: url('../assets/images/istockphoto-1302442639-1024x1024.jpg') center/cover no-repeat;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 4rem;
+  display: grid;
+  place-items: start;
+  padding: 4rem 0;
   color: #fff;
 }
 
+.hero > .hero-body {
+  width: 100%;
+}
+
 .hero-body {
-  padding: 2rem 2.25rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  padding: 1.5rem 1.75rem;
   border-radius: 12px;
-  background-color: rgba(0, 46, 73, 0.38); /* darker tint for readability */
-  backdrop-filter: blur(2px); /* subtle glass effect (safe to drop if you prefer) */
-  max-width: 50%;
+  background-color: rgba(0, 46, 73, 0.44); /* overlay for legibility */
+  backdrop-filter: blur(2px);
+  max-width: 48ch; /* readable line length */
   text-align: left;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
 }
 
 .hero-headline {
-  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-size: clamp(2rem, 6vw, 3.25rem);
   line-height: 1.15;
   margin: 0;
 }
 
-/* hero subheadline */
 .hero-subheadline {
   margin-top: 0.5rem;
-  font-size: clamp(1.125rem, 2.6vw, 1.75rem);
+  font-size: clamp(1.125rem, 2.6vw, 1.5rem);
   line-height: 1.3;
-  opacity: 0.95;
+  opacity: 0.98;
 }
 
-/* Footer */
+/* ---------- Footer ---------- */
 .footer {
   padding: 2rem;
   text-align: center;
-  background: linear-gradient(to right, #f9fec4, #afd7fa, #72b2e9, #1f6fb5);
+  color: var(--on-green);
+  background: linear-gradient(to right, var(--g-start), var(--g-mid), var(--g-end));
 }
 
-/* Accessibility helpers */
-:focus-visible {
-  outline: 2px solid #0b67a3;
-  outline-offset: 2px;
-}
-
-/* Responsive */
+/* =======================================================
+   Responsive
+   ======================================================= */
 @media (max-width: 800px) {
-  .nav {
-    padding: 0.75rem 1rem;
+  .nav-inner {
+    padding: 0.75rem 0;
   }
 
   .nav-items {
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .hero {
-    padding: 2rem 1.25rem;
+    padding: 2rem 0;
   }
-
   .hero-body {
+    margin-inline: 1rem;
     max-width: 100%;
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
+    background-color: rgba(0, 46, 73, 0.5); /* slightly stronger on small screens */
   }
 }
