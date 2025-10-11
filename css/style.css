@@ -102,7 +102,7 @@
 /* ---------- Hero ---------- */
 .hero {
   min-height: 100dvh; /* more reliable than 100vh on mobile */
-  background: url('../assets/images/istockphoto-1302442639-1024x1024.jpg') center/cover no-repeat;
+  background: url('../assets/images/hero.jpg') center/cover no-repeat;
   display: grid;
   place-items: start;
   padding: 4rem 0;
