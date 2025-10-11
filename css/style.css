@@ -182,9 +182,13 @@
 
 .btn-primary {
   background: var(--g-start, #0c5a3a);
-  color: #fff;
+  color: #fff !important; /* force light text */
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
+.btn-primary:visited {
+  color: #fff !important;
+}
+
 .btn-primary:hover,
 .btn-primary:focus-visible {
   opacity: 0.9;
@@ -304,16 +308,11 @@
   position: relative;
 }
 
-/* gradient accent bar on top edge */
-.cta-card::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: linear-gradient(to right, var(--g-start), var(--g-mid), var(--g-end));
+/* media block */
+.cta-media {
+  margin: 0;
 }
 
-/* media block */
 .cta-media img {
   display: block;
   inline-size: 100%;
@@ -330,4 +329,18 @@
 }
 .cta-body p {
   margin-bottom: 0.9rem;
+}
+
+/* section spacing so the title isn’t pinned to the edge */
+.section-cta {
+  padding: 1.25rem 0 2rem;
+}
+
+/* container-aligned heading */
+.section-heading {
+  width: min(100% - 2rem, 1100px);
+  margin: 0 auto 1rem; /* centers and adds a bit of space below */
+  color: var(--g-start); /* on-brand deep green */
+  font-size: var(--step-1);
+  font-weight: 700;
 }
