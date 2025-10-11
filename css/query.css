@@ -310,3 +310,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Stabilize hero on mobile to avoid address bar jitter */
+@supports (height: 100svh) {
+  @media (max-width: 800px) {
+    .hero {
+      min-block-size: 100svh;
+    }
+  }
+}

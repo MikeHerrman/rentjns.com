@@ -100,7 +100,7 @@
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  min-height: 100dvh; /* mobile-safe 100vh */
+  min-height: 100vh; /* mobile-safe 100vh */
   background: url('../assets/images/hero.jpg') center/cover no-repeat;
   display: grid;
   place-items: start;
