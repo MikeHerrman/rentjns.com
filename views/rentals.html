@@ -75,32 +75,31 @@
         <!-- Top: main image + sliding info -->
         <div class="primary" data-open="false">
           <figure class="image-frame round shadow">
+            <img
+              id="rental-image"
+              src="/assets/images/rentals/coastal.jpg"
+              alt="Coastal Cottage dining area and living room"
+            />
+            <!-- Button rides with the image (same transform layer) -->
             <button
               class="info-toggle"
               aria-controls="rental-info"
               aria-expanded="false"
               title="Open details"
             >
-              <span class="icon" aria-hidden="true">＋</span><span class="sr-only">Details</span>
+              <span class="icon" aria-hidden="true">＋</span>
+              <span class="sr-only">Details</span>
             </button>
-
-            <img
-              id="rental-image"
-              src="/assets/images/rentals/coastal.jpg"
-              alt="Coastal Cottage dining area and living room"
-            />
           </figure>
 
           <aside class="info-panel" id="rental-info" aria-hidden="true" tabindex="-1">
-            <h1 class="h3" id="rental-title">
-              Coastal Cottage — 2BR / 1.5BA — Sleeps 6 — Pet-friendly — 1,020 sq ft
-            </h1>
+            <h1 class="h3" id="rental-title">Coastal Cottage</h1>
             <ul class="stats" aria-label="Property details">
-              <li><strong>Sleeps:</strong> <span id="stat-sleeps">6</span></li>
-              <li><strong>Beds:</strong> <span id="stat-beds">2</span></li>
-              <li><strong>Baths:</strong> <span id="stat-baths">1.5</span></li>
-              <li><strong>Sq Ft:</strong> <span id="stat-sqft">1020</span></li>
-              <li><strong>Pets:</strong> <span id="stat-pets">Allowed</span></li>
+              <li><strong>Sleeps:</strong> <span id="stat-sleeps">4</span></li>
+              <li><strong>Beds:</strong> <span id="stat-beds">3</span></li>
+              <li><strong>Baths:</strong> <span id="stat-baths">1</span></li>
+              <li><strong>Sq Ft:</strong> <span id="stat-sqft">1300</span></li>
+              <li><strong>Pets:</strong> <span id="stat-pets">No</span></li>
             </ul>
             <p id="rental-blurb">
               Steps from the dunes, this bright, easygoing cottage is set up for simple beach days
@@ -112,9 +111,6 @@
             </p>
             <div class="panel-actions">
               <a href="/views/contact.html" class="btn btn-primary">Ask about dates</a>
-            </div>
-            <div class="panel-actions">
-              <a href="/views/contact.html" class="btn btn-primary">Gallery</a>
             </div>
           </aside>
         </div>
