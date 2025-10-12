@@ -319,3 +319,40 @@
     }
   }
 }
+
+/* ===== Rentals page responsiveness ===== */
+@media (max-width: 1000px) {
+  .rentals .rentals-shell {
+    grid-template-rows: 5fr 2fr;
+  }
+  .rentals .thumbs-list {
+    grid-auto-columns: calc((100% - 1rem) / 2);
+  } /* 2 visible */
+  .rentals .primary.is-open .image-frame {
+    transform: translateX(-55%);
+  }
+  .rentals .info-panel {
+    inline-size: min(65%, 420px);
+  }
+}
+
+@media (max-width: 600px) {
+  .rentals .thumbs-list {
+    grid-auto-columns: 100%;
+  } /* 1 visible */
+  /* On phones, make the panel full-width overlay (image doesn't shift) */
+  .rentals .info-panel {
+    inline-size: 100%;
+    box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.12);
+  }
+  .rentals .primary.is-open .image-frame {
+    transform: none;
+  }
+}
+
+/* Fallback if 100svh isn’t supported */
+@supports not (height: 100svh) {
+  .rentals .rentals-shell {
+    block-size: 100vh;
+  }
+}

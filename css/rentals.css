@@ -1,0 +1,205 @@
+/* =======================================================
+   rentals.css — page-specific base styles (no media queries)
+   ======================================================= */
+
+.rentals .rentals-shell {
+  block-size: 100svh; /* definite height so 3fr/1fr works */
+  display: grid;
+  grid-template-rows: 3fr 1fr; /* 3/4 + 1/4 split */
+  gap: 1rem;
+}
+
+/* Top area */
+.rentals .primary {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: none; /* neutral fallback behind image */
+}
+
+/* Image frame slides left to reveal the info panel */
+.rentals .image-frame {
+  position: absolute;
+  inset: 0;
+  margin: 0; /* kill UA margin on <figure> */
+  box-shadow: none; /* avoids a rim reading as a pad */
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+.rentals .image-frame img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: translateZ(0) scale(1.01); /* 1% overscan kills thin gaps */
+}
+
+/* Toggle button lives INSIDE the sliding image so it rides with it */
+.rentals .info-toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 3; /* above photo */
+  inline-size: 42px;
+  block-size: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--g-start);
+  color: #fff;
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: background 160ms ease, transform 120ms ease;
+}
+.rentals .info-toggle:hover,
+.rentals .info-toggle:focus-visible {
+  background: color-mix(in srgb, var(--g-start) 92%, #fff);
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.rentals .info-toggle:active {
+  transform: translateY(1px);
+}
+
+/* Use CSS content so we can flip +/− without JS changes */
+.rentals .info-toggle .icon {
+  display: none;
+}
+.rentals .info-toggle::before {
+  content: '＋';
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.rentals .primary.is-open .info-toggle::before {
+  content: '−';
+}
+
+/* Sliding info panel (right side) */
+.rentals .info-panel {
+  position: absolute;
+  inset: 0 0 0 auto; /* right side */
+  inline-size: clamp(320px, 38%, 520px);
+  background: #fff;
+  color: #111;
+  padding: 1rem 1.25rem 1.25rem;
+  transform: translateX(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: -12px 0 24px rgba(0, 0, 0, 0.12);
+  overflow: auto;
+}
+.rentals .panel-actions {
+  margin-top: 0.75rem;
+}
+
+/* stats list */
+.rentals .stats {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 1rem;
+}
+
+/* Open state — image slides left, panel slides in */
+.rentals .primary.is-open .image-frame {
+  transform: translateX(-38%);
+}
+.rentals .primary.is-open .info-panel {
+  transform: translateX(0);
+}
+
+/* Bottom carousel */
+.rentals .thumbs {
+  position: relative;
+}
+.rentals .thumbs-track {
+  overflow: hidden;
+}
+
+.rentals .thumbs-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2rem) / 3); /* 3 visible by default */
+  gap: 1rem;
+}
+
+.rentals .thumb {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+}
+.rentals .thumb img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+}
+.rentals .thumb .thumb-title {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.rentals .thumb.is-active {
+  outline: 6px solid var(--g-end);
+  outline-offset: 5px;
+}
+
+/* Carousel arrows — green background, white glyphs, above cards */
+.rentals .thumbs-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  inline-size: 40px;
+  block-size: 40px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--g-start);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  z-index: 10; /* ensure above first/last card edges */
+  display: grid;
+  place-items: center;
+  transition: background 120ms ease, transform 120ms ease;
+}
+.rentals .thumbs-nav:hover,
+.rentals .thumbs-nav:focus-visible {
+  background: color-mix(in srgb, var(--g-start) 92%, #fff);
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.rentals .thumbs-nav:active {
+  transform: translateY(calc(-50% + 1px));
+}
+.rentals .thumbs-nav.prev {
+  left: -8px;
+}
+.rentals .thumbs-nav.next {
+  right: -8px;
+}
+
+/* Small helper */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

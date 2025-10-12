@@ -12,8 +12,10 @@
     <link rel="icon" href="/assets/favicon.ico" />
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/rentals.css" />
     <link rel="stylesheet" href="/css/query.css" />
-    <title>JNS Vacation Rentals\Rentals</title>
+
+    <title>JNS Vacation Rentals - Rentals</title>
   </head>
 
   <body>
@@ -60,19 +62,74 @@
             <ul class="nav-items">
               <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
               <li><a class="nav-item" href="/views/events.html">Events</a></li>
-              <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
               <li><a class="nav-item" href="/views/local.html">Local</a></li>
+              <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
           </nav>
         </aside>
       </div>
     </header>
 
-    <main id="main" class="fill-viewport">
-      <div class="container">
-        <h1>Rentals</h1>
-        <!-- your content -->
-      </div>
+    <main id="main" class="fill-viewport rentals">
+      <section class="container rentals-shell" aria-label="Rental gallery">
+        <!-- Top: main image + sliding info -->
+        <div class="primary" data-open="false">
+          <figure class="image-frame round shadow">
+            <button
+              class="info-toggle"
+              aria-controls="rental-info"
+              aria-expanded="false"
+              title="Open details"
+            >
+              <span class="icon" aria-hidden="true">＋</span><span class="sr-only">Details</span>
+            </button>
+
+            <img
+              id="rental-image"
+              src="/assets/images/rentals/coastal.jpg"
+              alt="Coastal Cottage dining area and living room"
+            />
+          </figure>
+
+          <aside class="info-panel" id="rental-info" aria-hidden="true" tabindex="-1">
+            <h1 class="h3" id="rental-title">
+              Coastal Cottage — 2BR / 1.5BA — Sleeps 6 — Pet-friendly — 1,020 sq ft
+            </h1>
+            <ul class="stats" aria-label="Property details">
+              <li><strong>Sleeps:</strong> <span id="stat-sleeps">6</span></li>
+              <li><strong>Beds:</strong> <span id="stat-beds">2</span></li>
+              <li><strong>Baths:</strong> <span id="stat-baths">1.5</span></li>
+              <li><strong>Sq Ft:</strong> <span id="stat-sqft">1020</span></li>
+              <li><strong>Pets:</strong> <span id="stat-pets">Allowed</span></li>
+            </ul>
+            <p id="rental-blurb">
+              Steps from the dunes, this bright, easygoing cottage is set up for simple beach days
+              and low-stress nights. Sleeps six across a king bedroom, queen bedroom, and a comfy
+              queen sleeper. Full kitchen, fast Wi-Fi, smart TV, and a fenced yard for pups (up to
+              2; small pet fee). Park once and walk to coffee, games at Quinault Casino, and the
+              shoreline for sunset. Great for families or two couples who want quiet mornings and
+              sand-in-your-toes afternoons. No parties; local quiet hours after 10pm.
+            </p>
+            <div class="panel-actions">
+              <a href="/views/contact.html" class="btn btn-primary">Ask about dates</a>
+            </div>
+            <div class="panel-actions">
+              <a href="/views/contact.html" class="btn btn-primary">Gallery</a>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Bottom: thumbnail carousel -->
+        <div class="thumbs">
+          <button class="thumbs-nav prev" aria-label="Previous rentals">‹</button>
+          <div class="thumbs-track" aria-label="More rentals">
+            <div class="thumbs-list" id="thumbs-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+          <button class="thumbs-nav next" aria-label="Next rentals">›</button>
+        </div>
+      </section>
     </main>
 
     <footer class="footer" role="contentinfo">
@@ -80,5 +137,6 @@
     </footer>
 
     <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/rentals.js"></script>
   </body>
 </html>
