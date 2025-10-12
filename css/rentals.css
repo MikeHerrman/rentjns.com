@@ -14,17 +14,16 @@
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  background: none; /* neutral fallback behind image */
+  background: #000; /* neutral fallback behind image edges */
 }
 
-/* Image frame slides left to reveal the info panel */
 .rentals .image-frame {
   position: absolute;
   inset: 0;
-  margin: 0; /* kill UA margin on <figure> */
-  box-shadow: none; /* avoids a rim reading as a pad */
-  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.35s ease; /* smooth slide with panel */
   will-change: transform;
+  margin: 0; /* avoid UA margin on <figure> */
+  box-shadow: none; /* avoid rim that reads like padding */
 }
 .rentals .image-frame img {
   display: block;
@@ -32,51 +31,10 @@
   block-size: 100%;
   object-fit: cover;
   object-position: center;
-  transform: translateZ(0) scale(1.01); /* 1% overscan kills thin gaps */
+  transform: translateZ(0) scale(1.01); /* slight overscan to kill subpixel gaps */
 }
 
-/* Toggle button lives INSIDE the sliding image so it rides with it */
-.rentals .info-toggle {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 3; /* above photo */
-  inline-size: 42px;
-  block-size: 42px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--g-start);
-  color: #fff;
-  cursor: pointer;
-  display: inline-grid;
-  place-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  transition: background 160ms ease, transform 120ms ease;
-}
-.rentals .info-toggle:hover,
-.rentals .info-toggle:focus-visible {
-  background: color-mix(in srgb, var(--g-start) 92%, #fff);
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-.rentals .info-toggle:active {
-  transform: translateY(1px);
-}
-
-/* Use CSS content so we can flip +/− without JS changes */
-.rentals .info-toggle .icon {
-  display: none;
-}
-.rentals .info-toggle::before {
-  content: '＋';
-  font-size: 1.2rem;
-  line-height: 1;
-}
-.rentals .primary.is-open .info-toggle::before {
-  content: '−';
-}
-
-/* Sliding info panel (right side) */
+/* Info panel */
 .rentals .info-panel {
   position: absolute;
   inset: 0 0 0 auto; /* right side */
@@ -85,7 +43,7 @@
   color: #111;
   padding: 1rem 1.25rem 1.25rem;
   transform: translateX(100%);
-  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.35s ease;
   box-shadow: -12px 0 24px rgba(0, 0, 0, 0.12);
   overflow: auto;
 }
@@ -93,7 +51,7 @@
   margin-top: 0.75rem;
 }
 
-/* stats list */
+/* Stats list */
 .rentals .stats {
   list-style: none;
   padding: 0;
@@ -103,7 +61,32 @@
   gap: 0.5rem 1rem;
 }
 
-/* Open state — image slides left, panel slides in */
+/* Toggle button (rides with the image if placed inside .image-frame) */
+.rentals .info-toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem;
+  background: var(--g-start);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.rentals .info-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.rentals .info-toggle .icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* Open state */
 .rentals .primary.is-open .image-frame {
   transform: translateX(-38%);
 }
@@ -119,30 +102,38 @@
   overflow: hidden;
 }
 
+/* Flex-based strip: 5 items rendered, 3 visible in viewport. */
 .rentals .thumbs-list {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 2rem) / 3); /* 3 visible by default */
-  gap: 1rem;
+  display: flex;
+  gap: 1rem; /* keep a tasteful gutter */
+  will-change: transform;
+  transition: transform 320ms ease;
+  transform: translateX(0); /* JS will set correct offset */
 }
 
-.rentals .thumb {
+/* Each thumb is 1/3 of the viewport width minus two gaps total:
+   3 * thumb + 2 * gap = 100% => thumb = (100% - 2*gap)/3.
+   With gap: 1rem, total gaps across 3 items = 2rem. */
+.rentals .thumbs-list .thumb {
+  flex: 0 0 calc((100% - 2rem) / 3);
   position: relative;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   cursor: pointer;
   user-select: none;
 }
-.rentals .thumb img {
+
+.rentals .thumbs-list .thumb img {
   display: block;
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
   aspect-ratio: 16 / 9;
 }
-.rentals .thumb .thumb-title {
+
+.rentals .thumbs-list .thumb .thumb-title {
   position: absolute;
   left: 0.5rem;
   bottom: 0.5rem;
@@ -152,12 +143,14 @@
   border-radius: 6px;
   font-size: 0.9rem;
 }
-.rentals .thumb.is-active {
+
+/* Active (center) */
+.rentals .thumbs-list .thumb.is-active {
   outline: 6px solid var(--g-end);
-  outline-offset: 5px;
+  outline-offset: 3px;
 }
 
-/* Carousel arrows — green background, white glyphs, above cards */
+/* Carousel arrows */
 .rentals .thumbs-nav {
   position: absolute;
   top: 50%;
@@ -170,19 +163,7 @@
   color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
   cursor: pointer;
-  z-index: 10; /* ensure above first/last card edges */
-  display: grid;
-  place-items: center;
-  transition: background 120ms ease, transform 120ms ease;
-}
-.rentals .thumbs-nav:hover,
-.rentals .thumbs-nav:focus-visible {
-  background: color-mix(in srgb, var(--g-start) 92%, #fff);
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-.rentals .thumbs-nav:active {
-  transform: translateY(calc(-50% + 1px));
+  z-index: 10; /* above cards */
 }
 .rentals .thumbs-nav.prev {
   left: -8px;
@@ -190,8 +171,12 @@
 .rentals .thumbs-nav.next {
   right: -8px;
 }
+.rentals .thumbs-nav:hover,
+.rentals .thumbs-nav:focus-visible {
+  background: color-mix(in srgb, var(--g-start) 92%, #fff);
+}
 
-/* Small helper */
+/* Screen-reader helper */
 .sr-only {
   position: absolute !important;
   width: 1px;

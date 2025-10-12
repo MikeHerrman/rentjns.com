@@ -55,22 +55,43 @@ const rentals = [
 ];
 
 const $ = (sel, root = document) => root.querySelector(sel);
-const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+let listEl, trackEl, prevBtn, nextBtn;
 
-function renderThumbs(listEl, items) {
-  listEl.innerHTML = items
-    .map(
-      (r, i) => `
-      <button class="thumb" data-index="${i}" aria-label="${r.name}">
-        <img src="${r.img}" alt="${r.alt}">
-        <span class="thumb-title">${r.name}</span>
-      </button>`
-    )
+let currentIndex = 0; // Active rental (always the center thumb)
+let stepPx = 0; // width of one thumb + gap (computed)
+let isAnimating = false; // guard against spam clicks
+const DURATION = 320; // ms (must match CSS)
+
+/* ------------ Utilities ------------ */
+const mod = (n, m) => ((n % m) + m) % m;
+
+/** Return indices for 5-item strip around center: [i-2, i-1, i, i+1, i+2] */
+function stripIndices(center, total) {
+  return [-2, -1, 0, 1, 2].map((d) => mod(center + d, total));
+}
+
+/** Render the 5-item strip, mark center active */
+function renderStrip(center) {
+  const idxs = stripIndices(center, rentals.length);
+  listEl.innerHTML = idxs
+    .map((ri, j) => {
+      const r = rentals[ri];
+      const role =
+        j === 0 ? 'bufferL' : j === 1 ? 'prev' : j === 2 ? 'center' : j === 3 ? 'next' : 'bufferR';
+      const active = role === 'center' ? ' is-active' : '';
+      const ariaCur = role === 'center' ? ' aria-current="true"' : '';
+      return `
+        <button class="thumb${active}" data-index="${ri}" data-pos="${role}"${ariaCur}>
+          <img src="${r.img}" alt="${r.alt}">
+          <span class="thumb-title">${r.name}</span>
+        </button>`;
+    })
     .join('');
 }
 
-function loadRental(i) {
-  const r = rentals[i];
+/** Load the active rental into the large image + details panel */
+function loadActive() {
+  const r = rentals[currentIndex];
   const img = $('#rental-image');
   const title = $('#rental-title');
   const blurb = $('#rental-blurb');
@@ -87,76 +108,107 @@ function loadRental(i) {
   $('#stat-sqft').textContent = r.sqft.toLocaleString();
   $('#stat-pets').textContent = r.pets ? 'Allowed' : 'Not allowed';
   blurb.textContent = r.blurb;
-
-  // active state on thumb
-  $$('.thumb').forEach((el) => el.classList.toggle('is-active', Number(el.dataset.index) === i));
 }
 
-function initCarousel() {
-  const track = $('#thumbs-list');
-  const prev = $('.thumbs .prev');
-  const next = $('.thumbs .next');
+/** Measure one step (thumb width + gap) in pixels */
+function computeStep() {
+  const first = listEl.firstElementChild;
+  if (!first) {
+    stepPx = 0;
+    return;
+  }
+  const style = getComputedStyle(listEl);
+  const gap = parseFloat(style.gap) || 0;
+  const w = first.getBoundingClientRect().width;
+  stepPx = w + gap;
+}
 
-  const cardWidth = () => {
-    const first = track.firstElementChild;
-    return first
-      ? first.getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap || 0)
-      : 0;
+/** Position the strip so the center item is visually centered (offset -1 step) */
+function snapToCenter(noTransition = false) {
+  if (noTransition) listEl.style.transition = 'none';
+  listEl.style.transform = `translateX(${-stepPx}px)`;
+  if (noTransition) {
+    // force reflow before restoring transition
+    void listEl.offsetHeight;
+    listEl.style.transition = `transform ${DURATION}ms ease`;
+  }
+}
+
+/* ------------ Carousel motion ------------ */
+function slide(dir, steps = 1) {
+  if (isAnimating || !stepPx) return;
+  isAnimating = true;
+
+  // target transform: from -1 step (centered) to -2 (next) or 0 (prev), possibly 2 steps
+  const target = -stepPx + dir * -steps * stepPx; // dir +1 => -2*step ... ; dir -1 => 0 or +step
+  listEl.style.transform = `translateX(${target}px)`;
+
+  const onDone = () => {
+    listEl.removeEventListener('transitionend', onDone);
+    currentIndex = mod(currentIndex + dir * steps, rentals.length);
+
+    // re-render with new center, recompute step (width may change), snap back to centered without anim
+    renderStrip(currentIndex);
+    computeStep();
+    snapToCenter(true);
+    loadActive();
+    isAnimating = false;
   };
 
-  prev.addEventListener('click', () => {
-    track.parentElement.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
-  });
-  next.addEventListener('click', () => {
-    track.parentElement.scrollBy({ left: cardWidth(), behavior: 'smooth' });
-  });
+  listEl.addEventListener('transitionend', onDone, { once: true });
+}
 
-  track.addEventListener('click', (e) => {
+/* ------------ Thumbs & arrows interactions ------------ */
+function initCarousel() {
+  listEl = $('#thumbs-list');
+  trackEl = $('.thumbs-track');
+  prevBtn = $('.thumbs .prev');
+  nextBtn = $('.thumbs .next');
+
+  if (!listEl || !trackEl || !prevBtn || !nextBtn) return;
+
+  // initial render
+  renderStrip(currentIndex);
+  computeStep();
+  // prepare transition
+  listEl.style.transition = `transform ${DURATION}ms ease`;
+  snapToCenter(true);
+  loadActive();
+
+  prevBtn.addEventListener('click', () => slide(-1, 1));
+  nextBtn.addEventListener('click', () => slide(+1, 1));
+
+  // Clicking visible left/right thumbs navigates one step; center does nothing
+  trackEl.addEventListener('click', (e) => {
     const btn = e.target.closest('.thumb');
     if (!btn) return;
-    const i = Number(btn.dataset.index);
-    loadRental(i);
+    const pos = btn.getAttribute('data-pos');
+    if (pos === 'prev') slide(-1, 1);
+    else if (pos === 'next') slide(+1, 1);
+    // optional: allow buffer clicks to jump two steps
+    else if (pos === 'bufferL') slide(-1, 2);
+    else if (pos === 'bufferR') slide(+1, 2);
+  });
+
+  // Keep centered on resize (recompute step and snap)
+  window.addEventListener('resize', () => {
+    computeStep();
+    snapToCenter(true);
   });
 }
 
+/* ------------ Info panel toggle (unchanged) ------------ */
 function initPanelToggle() {
-  const primary = $('.rentals .primary');
-  const btn = $('.rentals .info-toggle');
-  const panel = $('#rental-info');
+  const primary = document.querySelector('.rentals .primary');
+  const btn = document.querySelector('.rentals .info-toggle');
+  const panel = document.getElementById('rental-info');
+  if (!primary || !btn || !panel) return;
 
-  let animating = false;
-  const DURATION = 520; // keep in sync with CSS
-
-  const setAria = (open) => {
-    btn.setAttribute('aria-expanded', String(open));
-    panel.setAttribute('aria-hidden', String(!open));
-  };
-
-  const open = (wantOpen) => {
-    if (animating) return;
-
-    animating = true;
-
-    if (wantOpen) {
-      // Ensure the browser captures the "before" state, then apply end state.
-      primary.classList.add('will-open'); // no visual effect; helps style flush
-      // Force reflow so transitions definitely apply:
-      void primary.offsetWidth;
-      primary.classList.add('is-open');
-      setAria(true);
-      // Focus the panel after it’s visible to avoid scroll jumps
-      setTimeout(() => panel.focus({ preventScroll: true }), DURATION * 0.75);
-    } else {
-      primary.classList.remove('is-open');
-      setAria(false);
-      primary.classList.remove('will-open');
-    }
-
-    // Clear flags after the transition window
-    setTimeout(() => {
-      animating = false;
-      primary.classList.remove('will-open');
-    }, DURATION + 60);
+  const open = (setOpen) => {
+    primary.classList.toggle('is-open', setOpen);
+    btn.setAttribute('aria-expanded', String(setOpen));
+    panel.setAttribute('aria-hidden', String(!setOpen));
+    if (setOpen) panel.focus();
   };
 
   btn.addEventListener('click', () => open(!primary.classList.contains('is-open')));
@@ -165,21 +217,14 @@ function initPanelToggle() {
   });
 }
 
+/* ------------ Boot ------------ */
 document.addEventListener('DOMContentLoaded', () => {
-  // Thumbs
-  const listEl = $('#thumbs-list');
-  renderThumbs(listEl, rentals);
-
-  // Initial load
-  loadRental(0); // Coastal Cottage
-
-  // Init interactions
   initCarousel();
   initPanelToggle();
 
-  // Fallback placeholder if an image 404s
-  const img = $('#rental-image');
-  img.addEventListener('error', () => {
+  // main image fallback
+  const img = document.getElementById('rental-image');
+  img?.addEventListener('error', () => {
     img.src = '/assets/images/rentals/placeholder.jpg';
   });
 });
