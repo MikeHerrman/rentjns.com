@@ -139,8 +139,8 @@
   font-size: 0.9rem;
 }
 .rentals .thumb.is-active {
-  outline: 3px solid var(--g-start);
-  outline-offset: 2px;
+  outline: 5px solid var(--g-end);
+  outline-offset: 5px;
 }
 
 /* Carousel arrows */

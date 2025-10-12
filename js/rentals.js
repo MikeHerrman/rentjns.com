@@ -54,15 +54,17 @@ const rentals = [
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
+// DOM refs
 let listEl, trackEl, prevBtn, nextBtn;
 let primaryEl, infoBtn, infoPanel;
 
-let currentIndex = 0; // center (active) rental
+let currentIndex = 0; // active (center) rental index
 let stepPx = 0; // width of one thumb + gap
-let isAnimating = false;
 const DURATION = 280; // keep in sync with CSS
 
 const mod = (n, m) => ((n % m) + m) % m;
+
+// Render a 5-card strip: [bufferL, prev, center, next, bufferR]
 const stripIndices = (center, total) => [-2, -1, 0, 1, 2].map((d) => mod(center + d, total));
 
 function renderStrip(center) {
@@ -92,11 +94,15 @@ function loadActive() {
   img.src = r.img;
   img.alt = r.alt;
 
+  // Title kept simple per your latest structure
   title.textContent = `${r.name}`;
+
+  // Safe display for sqft (can be number or string like "open lot")
+  const sqftDisplay = typeof r.sqft === 'number' ? r.sqft.toLocaleString() : String(r.sqft);
   $('#stat-sleeps').textContent = r.sleeps;
   $('#stat-beds').textContent = r.beds;
   $('#stat-baths').textContent = r.baths;
-  $('#stat-sqft').textContent = r.sqft.toLocaleString();
+  $('#stat-sqft').textContent = sqftDisplay;
   $('#stat-pets').textContent = r.pets ? 'Allowed' : 'Not allowed';
   blurb.textContent = r.blurb;
 }
@@ -112,11 +118,48 @@ function computeStep() {
   stepPx = first.getBoundingClientRect().width + gap;
 }
 
-function snapToCenter(noTransition = false) {
+// Cross-browser current translateX
+function getTranslateX(el) {
+  const t = getComputedStyle(el).transform;
+  if (!t || t === 'none') return 0;
+  // matrix(a,b,c,d,tx,ty) or matrix3d(...)
+  const m3d = t.match(/matrix3d\(([^)]+)\)/);
+  if (m3d) {
+    const vals = m3d[1].split(',');
+    return parseFloat(vals[12]) || 0;
+  }
+  const m2d = t.match(/matrix\(([^)]+)\)/);
+  if (m2d) {
+    const vals = m2d[1].split(',');
+    return parseFloat(vals[4]) || 0;
+  }
+  return 0;
+}
+
+// Center the "center" thumb visually in the track regardless of viewport (1-up on mobile, 3-up on desktop)
+function centerListOnCenterItem({ noTransition = false } = {}) {
+  const scroller = trackEl; // .thumbs-track (the viewport)
+  if (!scroller || !listEl) return;
+  const center = listEl.querySelector('[data-pos="center"]');
+  if (!center) return;
+
+  const containerW = scroller.clientWidth;
+  const itemRect = center.getBoundingClientRect();
+  const listRect = listEl.getBoundingClientRect();
+  const itemW = itemRect.width;
+
+  // offsetLeft relative to list’s left edge:
+  const leftWithinList = center.offsetLeft;
+
+  // We want the center item’s left to be (containerW - itemW)/2
+  const desiredLeft = (containerW - itemW) / 2;
+  const translate = -(leftWithinList - desiredLeft);
+
   if (noTransition) listEl.style.transition = 'none';
-  listEl.style.transform = `translateX(${-stepPx}px)`;
+  listEl.style.transform = `translateX(${translate}px)`;
   if (noTransition) {
-    void listEl.offsetHeight; // reflow
+    // force reflow then restore transition
+    void listEl.offsetHeight;
     listEl.style.transition = `transform ${DURATION}ms ease`;
   }
 }
@@ -131,7 +174,7 @@ function setPanelOpen(open) {
   const icon = infoBtn.querySelector('.icon');
   if (icon) icon.textContent = open ? '−' : '＋';
 
-  // Defer focus until transition completes to avoid jank on mobile
+  // Defer focus until panel transform finishes (prevents mobile jank)
   if (open) {
     const onEnd = (e) => {
       if (e.propertyName !== 'transform') return;
@@ -154,15 +197,19 @@ function slide(dir, steps = 1) {
   setPanelOpen(false);
 
   isAnimatingCarousel = true;
-  const target = -stepPx + dir * -steps * stepPx;
+
+  // Animate relative to current transform
+  const currentX = getTranslateX(listEl);
+  const target = currentX - dir * steps * stepPx;
   listEl.style.transform = `translateX(${target}px)`;
 
   const onDone = () => {
     listEl.removeEventListener('transitionend', onDone);
+    // advance center index and re-render
     currentIndex = mod(currentIndex + dir * steps, rentals.length);
     renderStrip(currentIndex);
     computeStep();
-    snapToCenter(true);
+    centerListOnCenterItem({ noTransition: true });
     loadActive();
     isAnimatingCarousel = false;
   };
@@ -182,12 +229,13 @@ function initCarousel() {
   renderStrip(currentIndex);
   computeStep();
   listEl.style.transition = `transform ${DURATION}ms ease`;
-  snapToCenter(true);
+  centerListOnCenterItem({ noTransition: true });
   loadActive();
 
   prevBtn.addEventListener('click', () => slide(-1, 1));
   nextBtn.addEventListener('click', () => slide(+1, 1));
 
+  // Click a thumb to move it into center
   trackEl.addEventListener('click', (e) => {
     const btn = e.target.closest('.thumb');
     if (!btn) return;
@@ -196,12 +244,17 @@ function initCarousel() {
     else if (pos === 'next') slide(+1, 1);
     else if (pos === 'bufferL') slide(-1, 2);
     else if (pos === 'bufferR') slide(+1, 2);
-    // center: no-op
+    // if center: no-op
   });
 
+  // Keep centered on resize/orientation changes
+  let t;
   window.addEventListener('resize', () => {
-    computeStep();
-    snapToCenter(true);
+    clearTimeout(t);
+    t = setTimeout(() => {
+      computeStep();
+      centerListOnCenterItem({ noTransition: true });
+    }, 100);
   });
 }
 
