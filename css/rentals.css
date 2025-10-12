@@ -364,3 +364,34 @@
 .gallery {
   z-index: 1200;
 }
+/* ---- Carousel hit-testing fix (mobile) ---- */
+.rentals .thumbs {
+  position: relative;
+  z-index: 0;
+} /* create a base context */
+.rentals .thumbs-track {
+  position: relative;
+  z-index: 0;
+}
+
+.rentals .thumbs-list {
+  /* JS applies transform -> new stacking context */
+  position: relative;
+  z-index: 1; /* below the arrows */
+}
+
+.rentals .thumbs-nav {
+  /* the left/right buttons */
+  position: absolute;
+  z-index: 10; /* above the list/images */
+  pointer-events: auto;
+}
+
+/* Let clicks pass through the thumbnail image itself */
+.rentals .thumb img {
+  pointer-events: none;
+}
+
+.rentals .thumb img {
+  pointer-events: none;
+}

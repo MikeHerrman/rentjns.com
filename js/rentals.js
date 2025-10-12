@@ -3,7 +3,7 @@
 const rentals = [
   {
     id: 'p1',
-    slug: 'property-1',
+    slug: 'rental-1',
     name: 'Coastal Cottage',
     img: '/assets/images/rentals/property-1.jpg',
     alt: 'Coastal Cottage exterior by the dunes',
@@ -58,7 +58,7 @@ const rentals = [
     sqft: 0,
     pets: false,
     blurb: 'Under renovation currently about a block from the coastal cottage',
-    gallery: ['1.jpg', '2.jpg'],
+    gallery: ['placeholder.jpg'],
   },
   {
     id: 'p3',
@@ -72,7 +72,7 @@ const rentals = [
     sqft: 0,
     pets: false,
     blurb: 'Home is ready, final touches to open for rental',
-    gallery: ['1.jpg'],
+    gallery: ['placeholder.jpg'],
   },
   {
     id: 'p4',
@@ -87,7 +87,7 @@ const rentals = [
     pets: true,
     blurb:
       'Open lot for RV or tent campers. Small fire pit. Quick drive to the coast and about mile from Quinault Casino. Puppies must remain on a leash.',
-    gallery: ['1.jpg', '2.jpg'],
+    gallery: ['placeholder.jpg'],
   },
 ];
 
@@ -112,14 +112,26 @@ function getVisibleCount() {
   if (!track || !first) return 3;
   const trackW = track.getBoundingClientRect().width;
   const cardW = first.getBoundingClientRect().width;
-  return Math.max(1, Math.round(trackW / cardW));
+  return Math.max(1, Math.round(trackW / cardW)); // 1, 2, or 3
 }
 
+// turn a rental’s gallery filenames into URLs; fallback to cover image
 function galleryUrlsFor(rental) {
   if (Array.isArray(rental.gallery) && rental.gallery.length) {
-    return rental.gallery.map((file) => `/assets/images/rentals/${rental.slug}/${file}`);
+    return rental.gallery.map((f) => `/assets/images/rentals/${rental.slug}/${f}`);
   }
   return [rental.img];
+}
+
+// current translateX (px) from style/computed matrix
+function getTranslateX(el) {
+  const st = getComputedStyle(el).transform || 'none';
+  if (st === 'none') return 0;
+  const m = st.match(/matrix\(([^)]+)\)/);
+  if (!m) return 0;
+  const parts = m[1].split(',').map(Number);
+  // matrix(a,b,c,d,tx,ty) → tx = parts[4]
+  return parts[4] || 0;
 }
 
 // ---------- Render strip ----------
@@ -148,18 +160,27 @@ function loadActive() {
   const title = $('#rental-title');
   const blurb = $('#rental-blurb');
 
-  img.src = r.img;
-  img.alt = r.alt;
+  if (img) {
+    img.src = r.img;
+    img.alt = r.alt;
+  }
+  if (title) title.textContent = `${r.name}`;
 
-  title.textContent = `${r.name}`;
-  $('#stat-sleeps').textContent = r.sleeps;
-  $('#stat-beds').textContent = r.beds;
-  $('#stat-baths').textContent = r.baths;
-  $('#stat-sqft').textContent = typeof r.sqft === 'number' ? r.sqft.toLocaleString() : r.sqft;
-  $('#stat-pets').textContent = r.pets ? 'Allowed' : 'Not allowed';
-  blurb.textContent = r.blurb;
+  const sSleeps = $('#stat-sleeps');
+  const sBeds = $('#stat-beds');
+  const sBaths = $('#stat-baths');
+  const sSqft = $('#stat-sqft');
+  const sPets = $('#stat-pets');
 
-  // 🔧 Prevent null crash before attributes
+  if (sSleeps) sSleeps.textContent = r.sleeps;
+  if (sBeds) sBeds.textContent = r.beds;
+  if (sBaths) sBaths.textContent = r.baths;
+  if (sSqft) sSqft.textContent = typeof r.sqft === 'number' ? r.sqft.toLocaleString() : r.sqft;
+  if (sPets) sPets.textContent = r.pets ? 'Allowed' : 'Not allowed';
+  if (blurb) blurb.textContent = r.blurb;
+
+  // ensure we have a handle even if initPanelToggle hasn’t run yet
+  if (!infoPanel) infoPanel = document.getElementById('rental-info');
   if (infoPanel) {
     infoPanel.setAttribute('aria-live', 'polite');
     infoPanel.setAttribute('aria-atomic', 'true');
@@ -192,11 +213,11 @@ function computeStep() {
 
 function snapToCenter(noTransition = false) {
   if (noTransition) listEl.style.transition = 'none';
-  const nVis = getVisibleCount();
-  const offset = 2 - Math.floor(nVis / 2);
+  const nVis = getVisibleCount(); // 1, 2, or 3
+  const offset = 2 - Math.floor(nVis / 2); // center tile index in our 5-tile strip
   listEl.style.transform = `translateX(${-stepPx * offset}px)`;
   if (noTransition) {
-    void listEl.offsetHeight;
+    void listEl.offsetHeight; // reflow
     listEl.style.transition = `transform ${DURATION}ms ease`;
   }
 }
@@ -222,16 +243,23 @@ function setPanelOpen(open) {
   }
 }
 
-// ---------- Carousel ----------
+// ---------- Carousel motion ----------
 function slide(dir, steps = 1) {
   if (isAnimatingCarousel || !stepPx) return;
+
+  // Close details when carousel moves
   setPanelOpen(false);
 
   isAnimatingCarousel = true;
   prevBtn.disabled = true;
   nextBtn.disabled = true;
-  const target = -stepPx + dir * -steps * stepPx;
-  listEl.style.transform = `translateX(${target}px)`;
+
+  // Animate RELATIVE to current translateX so it works for 1/2/3 visible tiles
+  const currentTx = getTranslateX(listEl);
+  const delta = dir * -steps * stepPx; // left = negative, right = positive
+  const targetTx = currentTx + delta;
+
+  listEl.style.transform = `translateX(${targetTx}px)`;
 
   const onDone = () => {
     listEl.removeEventListener('transitionend', onDone);
@@ -252,8 +280,8 @@ function slide(dir, steps = 1) {
 function initCarousel() {
   listEl = $('#thumbs-list');
   trackEl = $('.thumbs-track');
-  prevBtn = $('.thumbs .prev');
-  nextBtn = $('.thumbs .next');
+  prevBtn = document.querySelector('.thumbs-nav.prev');
+  nextBtn = document.querySelector('.thumbs-nav.next');
   if (!listEl || !trackEl || !prevBtn || !nextBtn) return;
 
   renderStrip(currentIndex);
@@ -265,6 +293,7 @@ function initCarousel() {
   prevBtn.addEventListener('click', () => slide(-1, 1));
   nextBtn.addEventListener('click', () => slide(+1, 1));
 
+  // Click thumbs (buffer = 2 steps, prev/next = 1 step, center = no-op)
   trackEl.addEventListener('click', (e) => {
     const btn = e.target.closest('.thumb');
     if (!btn) return;
@@ -275,9 +304,13 @@ function initCarousel() {
     else if (pos === 'bufferR') slide(+1, 2);
   });
 
+  // Responsive safety: recompute and re-enable buttons if a prior anim was interrupted
   window.addEventListener('resize', () => {
     computeStep();
     snapToCenter(true);
+    isAnimatingCarousel = false;
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
   });
 }
 
@@ -293,11 +326,13 @@ function initPanelToggle() {
     setPanelOpen(open);
   });
 
+  // Close when clicking panel body (ignore interactive controls)
   infoPanel.addEventListener('click', (e) => {
     const interactive = e.target.closest('a, button, input, select, textarea, label');
     if (!interactive) setPanelOpen(false);
   });
 
+  // Escape closes
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && primaryEl.classList.contains('is-open')) setPanelOpen(false);
   });
@@ -310,20 +345,21 @@ let galleryAt = 0;
 
 function buildGalleryOnce() {
   if (galleryRoot) return;
+
   const wrap = document.createElement('div');
   wrap.className = 'gallery';
   wrap.setAttribute('aria-hidden', 'true');
   wrap.innerHTML = `
-<div class="gallery-frame" role="dialog" aria-modal="true" aria-label="Image gallery">
-  <img id="gallery-image" alt="">
-  <div class="gallery-caption"></div>
-  <div class="gallery-controls">
-    <button class="gallery-nav prev" aria-label="Previous image">‹</button>
-    <button class="gallery-close" aria-label="Close gallery">×</button>
-    <button class="gallery-nav next" aria-label="Next image">›</button>
-  </div>
-</div>
-
+    <div class="gallery-backdrop"></div>
+    <div class="gallery-frame" role="dialog" aria-modal="true" aria-label="Image gallery">
+      <img id="gallery-image" alt="">
+      <div class="gallery-caption"></div>
+      <div class="gallery-controls">
+        <button class="gallery-nav prev" aria-label="Previous image">‹</button>
+        <button class="gallery-close" aria-label="Close gallery">×</button>
+        <button class="gallery-nav next" aria-label="Next image">›</button>
+      </div>
+    </div>
   `;
   document.body.appendChild(wrap);
 
@@ -341,8 +377,12 @@ function buildGalleryOnce() {
     showGallery(mod(galleryAt + 1, galleryImages.length))
   );
   galleryClose.addEventListener('click', closeGallery);
+
   wrap.querySelector('.gallery-backdrop')?.addEventListener('click', closeGallery);
-  galleryImg.addEventListener('click', () => galleryRoot.classList.toggle('is-zoomed'));
+
+  galleryImg.addEventListener('click', () => {
+    galleryRoot.classList.toggle('is-zoomed');
+  });
 
   window.addEventListener('keydown', (e) => {
     if (wrap.getAttribute('aria-hidden') === 'true') return;
@@ -382,10 +422,10 @@ function closeGallery() {
   } catch {}
 }
 
+// openers delegate
 function initGalleryOpeners() {
   const panelActions = document.querySelector('.panel-actions');
   if (!panelActions) return;
-
   panelActions.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-action="open-gallery"], .btn-gallery, .view-gallery');
     if (!btn) return;
@@ -395,9 +435,8 @@ function initGalleryOpeners() {
 
 // ---------- Boot ----------
 document.addEventListener('DOMContentLoaded', () => {
-  // 🔧 FIX ORDER: Panel first, then Carousel
-  initPanelToggle();
   initCarousel();
+  initPanelToggle();
   initGalleryOpeners();
 
   const img = document.getElementById('rental-image');
