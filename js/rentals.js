@@ -55,22 +55,21 @@ const rentals = [
 ];
 
 const $ = (sel, root = document) => root.querySelector(sel);
+
 let listEl, trackEl, prevBtn, nextBtn;
+let primaryEl, infoBtn, infoPanel;
 
-let currentIndex = 0; // Active rental (always the center thumb)
-let stepPx = 0; // width of one thumb + gap (computed)
-let isAnimating = false; // guard against spam clicks
-const DURATION = 320; // ms (must match CSS)
+let currentIndex = 0; // center (active) rental
+let stepPx = 0; // width of one thumb + gap
+let isAnimating = false;
+const DURATION = 320; // ms; keep in sync with CSS
 
-/* ------------ Utilities ------------ */
 const mod = (n, m) => ((n % m) + m) % m;
 
-/** Return indices for 5-item strip around center: [i-2, i-1, i, i+1, i+2] */
 function stripIndices(center, total) {
   return [-2, -1, 0, 1, 2].map((d) => mod(center + d, total));
 }
 
-/** Render the 5-item strip, mark center active */
 function renderStrip(center) {
   const idxs = stripIndices(center, rentals.length);
   listEl.innerHTML = idxs
@@ -81,15 +80,14 @@ function renderStrip(center) {
       const active = role === 'center' ? ' is-active' : '';
       const ariaCur = role === 'center' ? ' aria-current="true"' : '';
       return `
-        <button class="thumb${active}" data-index="${ri}" data-pos="${role}"${ariaCur}>
-          <img src="${r.img}" alt="${r.alt}">
-          <span class="thumb-title">${r.name}</span>
-        </button>`;
+      <button class="thumb${active}" data-index="${ri}" data-pos="${role}"${ariaCur}>
+        <img src="${r.img}" alt="${r.alt}">
+        <span class="thumb-title">${r.name}</span>
+      </button>`;
     })
     .join('');
 }
 
-/** Load the active rental into the large image + details panel */
 function loadActive() {
   const r = rentals[currentIndex];
   const img = $('#rental-image');
@@ -110,7 +108,6 @@ function loadActive() {
   blurb.textContent = r.blurb;
 }
 
-/** Measure one step (thumb width + gap) in pixels */
 function computeStep() {
   const first = listEl.firstElementChild;
   if (!first) {
@@ -123,31 +120,40 @@ function computeStep() {
   stepPx = w + gap;
 }
 
-/** Position the strip so the center item is visually centered (offset -1 step) */
 function snapToCenter(noTransition = false) {
   if (noTransition) listEl.style.transition = 'none';
   listEl.style.transform = `translateX(${-stepPx}px)`;
   if (noTransition) {
-    // force reflow before restoring transition
-    void listEl.offsetHeight;
+    void listEl.offsetHeight; // reflow
     listEl.style.transition = `transform ${DURATION}ms ease`;
   }
 }
 
-/* ------------ Carousel motion ------------ */
+/* ---------- Panel open/close helpers (exported to carousel) ---------- */
+function setPanelOpen(open) {
+  if (!primaryEl || !infoBtn || !infoPanel) return;
+  primaryEl.classList.toggle('is-open', open);
+  infoBtn.setAttribute('aria-expanded', String(open));
+  infoPanel.setAttribute('aria-hidden', String(!open));
+  const icon = infoBtn.querySelector('.icon');
+  if (icon) icon.textContent = open ? '−' : '＋';
+  if (open) infoPanel.focus();
+}
+
+/* ---------- Carousel motion ---------- */
 function slide(dir, steps = 1) {
   if (isAnimating || !stepPx) return;
-  isAnimating = true;
 
-  // target transform: from -1 step (centered) to -2 (next) or 0 (prev), possibly 2 steps
-  const target = -stepPx + dir * -steps * stepPx; // dir +1 => -2*step ... ; dir -1 => 0 or +step
+  // 1) auto-close details when moving the carousel
+  setPanelOpen(false);
+
+  isAnimating = true;
+  const target = -stepPx + dir * -steps * stepPx;
   listEl.style.transform = `translateX(${target}px)`;
 
   const onDone = () => {
     listEl.removeEventListener('transitionend', onDone);
     currentIndex = mod(currentIndex + dir * steps, rentals.length);
-
-    // re-render with new center, recompute step (width may change), snap back to centered without anim
     renderStrip(currentIndex);
     computeStep();
     snapToCenter(true);
@@ -158,7 +164,7 @@ function slide(dir, steps = 1) {
   listEl.addEventListener('transitionend', onDone, { once: true });
 }
 
-/* ------------ Thumbs & arrows interactions ------------ */
+/* ---------- Init carousel ---------- */
 function initCarousel() {
   listEl = $('#thumbs-list');
   trackEl = $('.thumbs-track');
@@ -167,10 +173,8 @@ function initCarousel() {
 
   if (!listEl || !trackEl || !prevBtn || !nextBtn) return;
 
-  // initial render
   renderStrip(currentIndex);
   computeStep();
-  // prepare transition
   listEl.style.transition = `transform ${DURATION}ms ease`;
   snapToCenter(true);
   loadActive();
@@ -178,51 +182,52 @@ function initCarousel() {
   prevBtn.addEventListener('click', () => slide(-1, 1));
   nextBtn.addEventListener('click', () => slide(+1, 1));
 
-  // Clicking visible left/right thumbs navigates one step; center does nothing
   trackEl.addEventListener('click', (e) => {
     const btn = e.target.closest('.thumb');
     if (!btn) return;
     const pos = btn.getAttribute('data-pos');
     if (pos === 'prev') slide(-1, 1);
     else if (pos === 'next') slide(+1, 1);
-    // optional: allow buffer clicks to jump two steps
     else if (pos === 'bufferL') slide(-1, 2);
     else if (pos === 'bufferR') slide(+1, 2);
+    // center does nothing
   });
 
-  // Keep centered on resize (recompute step and snap)
   window.addEventListener('resize', () => {
     computeStep();
     snapToCenter(true);
   });
 }
 
-/* ------------ Info panel toggle (unchanged) ------------ */
+/* ---------- Init panel toggle ---------- */
 function initPanelToggle() {
-  const primary = document.querySelector('.rentals .primary');
-  const btn = document.querySelector('.rentals .info-toggle');
-  const panel = document.getElementById('rental-info');
-  if (!primary || !btn || !panel) return;
+  primaryEl = document.querySelector('.rentals .primary');
+  infoBtn = document.querySelector('.rentals .info-toggle');
+  infoPanel = document.getElementById('rental-info');
+  if (!primaryEl || !infoBtn || !infoPanel) return;
 
-  const open = (setOpen) => {
-    primary.classList.toggle('is-open', setOpen);
-    btn.setAttribute('aria-expanded', String(setOpen));
-    panel.setAttribute('aria-hidden', String(!setOpen));
-    if (setOpen) panel.focus();
-  };
+  infoBtn.addEventListener('click', () => {
+    const open = !primaryEl.classList.contains('is-open');
+    setPanelOpen(open);
+  });
 
-  btn.addEventListener('click', () => open(!primary.classList.contains('is-open')));
+  // 2) Close when clicking panel body (ignore interactive controls)
+  infoPanel.addEventListener('click', (e) => {
+    const interactive = e.target.closest('a, button, input, select, textarea, label');
+    if (!interactive) setPanelOpen(false);
+  });
+
+  // Escape closes
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && primary.classList.contains('is-open')) open(false);
+    if (e.key === 'Escape' && primaryEl.classList.contains('is-open')) setPanelOpen(false);
   });
 }
 
-/* ------------ Boot ------------ */
+/* ---------- Boot ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initCarousel();
   initPanelToggle();
 
-  // main image fallback
   const img = document.getElementById('rental-image');
   img?.addEventListener('error', () => {
     img.src = '/assets/images/rentals/placeholder.jpg';
