@@ -2,17 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://yourdomain.com/" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
       content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Adventure made easy - Comfortable homes, Clear pricing, Friendly local help."
     />
-    <link rel="icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="./css/global.css" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <link rel="stylesheet" href="./css/query.css" />
+    <meta property="og:title" content="JNS Vacation Rentals | Washington Coastal Getaways" />
+    <meta
+      property="og:description"
+      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
+    />
+    <meta property="og:image" content="/assets/images/card-rentals.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourdomain.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JNS Vacation Rentals | Washington Coastal Getaways" />
+    <meta
+      name="twitter:description"
+      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
+    />
+    <meta name="twitter:image" content="/assets/images/card-rentals.jpg" />
 
-    <title>JNS Vacation Rentals</title>
+    <link rel="icon" href="/assets/favicon.ico" />
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/query.css" />
+
+    <title>Washington Coastal Getaways | JNS Vacation Rentals</title>
   </head>
 
   <body>
@@ -21,15 +40,15 @@
     <header class="site-header" role="banner">
       <div class="nav">
         <div class="nav-inner container">
-          <a class="brand" href="./index.html">JNS Vacation Rentals</a>
+          <a class="brand" href="/index.html">JNS Vacation Rentals</a>
 
           <!-- Desktop inline nav -->
           <nav class="site-nav" aria-label="Primary">
             <ul class="nav-items">
-              <li><a class="nav-item" href="views/rentals.html">Rentals</a></li>
-              <li><a class="nav-item" href="views/events.html">Events</a></li>
-              <li><a class="nav-item" href="views/local.html">Local</a></li>
-              <li><a class="nav-item" href="views/contact.html">Contact</a></li>
+              <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
+              <li><a class="nav-item" href="/views/events.html">Events</a></li>
+              <li><a class="nav-item" href="/views/local.html">Local</a></li>
+              <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
           </nav>
 
@@ -54,13 +73,13 @@
           aria-hidden="true"
           aria-label="Navigation"
         >
-          <a class="brand" href="./index.html">JNS Vacation Rentals</a>
+          <a class="brand" href="/index.html" aria-current="page">JNS Vacation Rentals</a>
           <nav aria-label="Mobile">
             <ul class="nav-items">
-              <li><a class="nav-item" href="views/rentals.html">Rentals</a></li>
-              <li><a class="nav-item" href="views/events.html">Events</a></li>
-              <li><a class="nav-item" href="views/local.html">Local</a></li>
-              <li><a class="nav-item" href="views/contact.html">Contact</a></li>
+              <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
+              <li><a class="nav-item" href="/views/events.html">Events</a></li>
+              <li><a class="nav-item" href="/views/local.html">Local</a></li>
+              <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
           </nav>
         </aside>
@@ -74,8 +93,8 @@
           <p class="hero-subheadline">Comfortable homes, clear pricing, friendly local help.</p>
 
           <div class="hero-actions">
-            <a class="btn btn-primary" href="views/rentals.html">Browse rentals</a>
-            <a class="btn btn-ghost" href="views/contact.html">Contact us</a>
+            <a class="btn btn-primary" href="/views/rentals.html">Browse rentals</a>
+            <a class="btn btn-ghost" href="/views/contact.html">Contact us</a>
           </div>
         </div>
       </section>
@@ -83,13 +102,12 @@
       <section class="section">
         <div class="container split">
           <figure class="split__media round shadow" aria-label="Coastal scene">
-            <img src="./assets/images/split-1.jpg" alt="Dune grasses with ocean backdrop" />
+            <img src="/assets/images/split-1.jpg" alt="Dune grasses with ocean backdrop" />
           </figure>
 
           <article class="split__content card">
             <h2 class="h3">Drive to the beach in minutes</h2>
             <p>Enjoy the sand and surf, with plenty of time to explore all around.</p>
-            <!-- <a href="views/rentals.html" class="btn btn-primary">Browse rentals</a> -->
           </article>
         </div>
       </section>
@@ -97,13 +115,16 @@
       <section class="section">
         <div class="container split split--reverse">
           <figure class="split__media round shadow" aria-label="Boardwalk at sunset">
-            <img src="./assets/images/split-2.jpg" alt="Boardwalk with evening light" />
+            <img
+              src="/assets/images/split-2.jpg"
+              alt="Boardwalk with evening light"
+              loading="lazy"
+            />
           </figure>
 
           <article class="split__content card">
             <h2 class="h3">Close to entertainment</h2>
             <p>Shops, Casino, and Family Fun all nearby.</p>
-            <!-- <a href="views/events.html" class="btn btn-ghost">See local events</a> -->
           </article>
         </div>
       </section>
@@ -111,13 +132,16 @@
       <section class="section">
         <div class="container split">
           <figure class="split__media round shadow" aria-label="Family by the water">
-            <img src="./assets/images/split-3.jpg" alt="Family enjoying the water’s edge" />
+            <img
+              src="/assets/images/split-3.jpg"
+              alt="Family enjoying the water’s edge"
+              loading="lazy"
+            />
           </figure>
 
           <article class="split__content card">
             <h2 class="h3">Coastal Dining and Events</h2>
             <p>Discover local restaurants and seasonal happenings.</p>
-            <!-- <a href="views/contact.html" class="btn btn-ghost">Ask a question</a> -->
           </article>
         </div>
       </section>
@@ -131,7 +155,11 @@
           <!-- Card 1 -->
           <article class="cta-card">
             <figure class="cta-media" aria-label="Coastal cottage">
-              <img src="/assets/images/card-rentals.jpg" alt="Coastal cottage near the dunes" />
+              <img
+                src="/assets/images/card-rentals.jpg"
+                alt="Coastal cottage near the dunes"
+                loading="lazy"
+              />
             </figure>
             <div class="cta-body">
               <h3 class="h4">Our Rentals</h3>
@@ -143,7 +171,11 @@
           <!-- Card 2 -->
           <article class="cta-card">
             <figure class="cta-media" aria-label="Local fair at sunset">
-              <img src="/assets/images/card-events.jpg" alt="Local events near the coast" />
+              <img
+                src="/assets/images/card-events.jpg"
+                alt="Local events near the coast"
+                loading="lazy"
+              />
             </figure>
             <div class="cta-body">
               <h3 class="h4">Local Events</h3>
@@ -155,7 +187,11 @@
           <!-- Card 3 -->
           <article class="cta-card">
             <figure class="cta-media" aria-label="Beach walk">
-              <img src="/assets/images/card-things.jpg" alt="Walking the beach at low tide" />
+              <img
+                src="/assets/images/card-things.jpg"
+                alt="Walking the beach at low tide"
+                loading="lazy"
+              />
             </figure>
             <div class="cta-body">
               <h3 class="h4">Things to Do</h3>

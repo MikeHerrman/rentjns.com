@@ -1,7 +1,9 @@
 // /js/rentals.js
+// ---------- Data ----------
 const rentals = [
   {
     id: 'p1',
+    slug: 'property-1',
     name: 'Coastal Cottage',
     img: '/assets/images/rentals/property-1.jpg',
     alt: 'Coastal Cottage exterior by the dunes',
@@ -12,9 +14,41 @@ const rentals = [
     pets: false,
     blurb:
       'Walkable to the beach, this bright, easygoing cottage is set up for simple beach days and low-stress nights. Sleeps six across a king bedroom, queen bedroom, and a comfy queen sleeper. Full kitchen, fast Wi-Fi, smart TV, and space to sit around to play some games. Park once and walk to coffee, games at Quinault Casino, and the shoreline for sunset. Great for families or two couples who want quiet mornings and sand-in-your-toes afternoons. No parties; local quiet hours after 10pm.',
+    gallery: [
+      'deck-1a.jpg',
+      'kitchen-1a.jpg',
+      'living-1a.jpg',
+      'living-1b.jpg',
+      'living-1c.jpg',
+      'kitchen-1b.jpg',
+      'kitchen-1c.jpg',
+      'kitchen-1d.jpg',
+      'kitchen-1e.jpg',
+      'kitchen-coffee.jpg',
+      'dining-1a.jpg',
+      'deco-1.jpg',
+      'deco-2.jpg',
+      'deco-3.jpg',
+      'hall-1a.jpg',
+      'hall-1b.jpg',
+      'hall-1c.jpg',
+      'bed-1a.jpg',
+      'bed-1b.jpg',
+      'bed-1c.jpg',
+      'bed-2a.jpg',
+      'bed-2b.jpg',
+      'bed-3a.jpg',
+      'bed-3b.jpg',
+      'bath-1a.jpg',
+      'bath-1b.jpg',
+      'bath-1c.jpg',
+      'home-1a.jpg',
+      'home-1b.jpg',
+    ],
   },
   {
     id: 'p2',
+    slug: 'property-2',
     name: 'Property 2',
     img: '/assets/images/rentals/property-2.jpg',
     alt: 'Property 2 exterior near the coast',
@@ -24,9 +58,11 @@ const rentals = [
     sqft: 0,
     pets: false,
     blurb: 'Under renovation currently about a block from the coastal cottage',
+    gallery: ['1.jpg', '2.jpg'],
   },
   {
     id: 'p3',
+    slug: 'property-3',
     name: 'Property 3',
     img: '/assets/images/rentals/property-3.jpg',
     alt: 'Property 3 with deck and trees',
@@ -36,9 +72,11 @@ const rentals = [
     sqft: 0,
     pets: false,
     blurb: 'Home is ready, final touches to open for rental',
+    gallery: ['1.jpg'],
   },
   {
     id: 'p4',
+    slug: 'property-4',
     name: 'Property 4',
     img: '/assets/images/rentals/property-4.jpg',
     alt: 'Property 4 RV or Tent Camping',
@@ -49,24 +87,42 @@ const rentals = [
     pets: true,
     blurb:
       'Open lot for RV or tent campers. Small fire pit. Quick drive to the coast and about mile from Quinault Casino. Puppies must remain on a leash.',
+    gallery: ['1.jpg', '2.jpg'],
   },
 ];
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
-// DOM refs
+// ---------- State ----------
 let listEl, trackEl, prevBtn, nextBtn;
 let primaryEl, infoBtn, infoPanel;
 
-let currentIndex = 0; // active (center) rental index
-let stepPx = 0; // width of one thumb + gap
-const DURATION = 280; // keep in sync with CSS
+let currentIndex = 0;
+let stepPx = 0;
+let isAnimatingCarousel = false;
+const DURATION = 280;
 
+// ---------- Helpers ----------
 const mod = (n, m) => ((n % m) + m) % m;
-
-// Render a 5-card strip: [bufferL, prev, center, next, bufferR]
 const stripIndices = (center, total) => [-2, -1, 0, 1, 2].map((d) => mod(center + d, total));
 
+function getVisibleCount() {
+  const track = document.querySelector('.thumbs-track');
+  const first = listEl?.firstElementChild;
+  if (!track || !first) return 3;
+  const trackW = track.getBoundingClientRect().width;
+  const cardW = first.getBoundingClientRect().width;
+  return Math.max(1, Math.round(trackW / cardW));
+}
+
+function galleryUrlsFor(rental) {
+  if (Array.isArray(rental.gallery) && rental.gallery.length) {
+    return rental.gallery.map((file) => `/assets/images/rentals/${rental.slug}/${file}`);
+  }
+  return [rental.img];
+}
+
+// ---------- Render strip ----------
 function renderStrip(center) {
   const idxs = stripIndices(center, rentals.length);
   listEl.innerHTML = idxs
@@ -77,14 +133,15 @@ function renderStrip(center) {
       const active = role === 'center' ? ' is-active' : '';
       const ariaCur = role === 'center' ? ' aria-current="true"' : '';
       return `
-      <button class="thumb${active}" data-index="${ri}" data-pos="${role}"${ariaCur}>
-        <img src="${r.img}" alt="${r.alt}">
-        <span class="thumb-title">${r.name}</span>
-      </button>`;
+        <button class="thumb${active}" data-index="${ri}" data-pos="${role}"${ariaCur}>
+          <img src="${r.img}" alt="${r.alt}" decoding="async" loading="lazy">
+          <span class="thumb-title">${r.name}</span>
+        </button>`;
     })
     .join('');
 }
 
+// ---------- Load active into primary panel ----------
 function loadActive() {
   const r = rentals[currentIndex];
   const img = $('#rental-image');
@@ -94,17 +151,32 @@ function loadActive() {
   img.src = r.img;
   img.alt = r.alt;
 
-  // Title kept simple per your latest structure
   title.textContent = `${r.name}`;
-
-  // Safe display for sqft (can be number or string like "open lot")
-  const sqftDisplay = typeof r.sqft === 'number' ? r.sqft.toLocaleString() : String(r.sqft);
   $('#stat-sleeps').textContent = r.sleeps;
   $('#stat-beds').textContent = r.beds;
   $('#stat-baths').textContent = r.baths;
-  $('#stat-sqft').textContent = sqftDisplay;
+  $('#stat-sqft').textContent = typeof r.sqft === 'number' ? r.sqft.toLocaleString() : r.sqft;
   $('#stat-pets').textContent = r.pets ? 'Allowed' : 'Not allowed';
   blurb.textContent = r.blurb;
+
+  // 🔧 Prevent null crash before attributes
+  if (infoPanel) {
+    infoPanel.setAttribute('aria-live', 'polite');
+    infoPanel.setAttribute('aria-atomic', 'true');
+  }
+
+  preloadNeighbors();
+}
+
+function preloadNeighbors() {
+  const prev = mod(currentIndex - 1, rentals.length);
+  const next = mod(currentIndex + 1, rentals.length);
+  [prev, next].forEach((i) => {
+    const im = new Image();
+    im.decoding = 'async';
+    im.loading = 'eager';
+    im.src = rentals[i].img;
+  });
 }
 
 function computeStep() {
@@ -118,63 +190,26 @@ function computeStep() {
   stepPx = first.getBoundingClientRect().width + gap;
 }
 
-// Cross-browser current translateX
-function getTranslateX(el) {
-  const t = getComputedStyle(el).transform;
-  if (!t || t === 'none') return 0;
-  // matrix(a,b,c,d,tx,ty) or matrix3d(...)
-  const m3d = t.match(/matrix3d\(([^)]+)\)/);
-  if (m3d) {
-    const vals = m3d[1].split(',');
-    return parseFloat(vals[12]) || 0;
-  }
-  const m2d = t.match(/matrix\(([^)]+)\)/);
-  if (m2d) {
-    const vals = m2d[1].split(',');
-    return parseFloat(vals[4]) || 0;
-  }
-  return 0;
-}
-
-// Center the "center" thumb visually in the track regardless of viewport (1-up on mobile, 3-up on desktop)
-function centerListOnCenterItem({ noTransition = false } = {}) {
-  const scroller = trackEl; // .thumbs-track (the viewport)
-  if (!scroller || !listEl) return;
-  const center = listEl.querySelector('[data-pos="center"]');
-  if (!center) return;
-
-  const containerW = scroller.clientWidth;
-  const itemRect = center.getBoundingClientRect();
-  const listRect = listEl.getBoundingClientRect();
-  const itemW = itemRect.width;
-
-  // offsetLeft relative to list’s left edge:
-  const leftWithinList = center.offsetLeft;
-
-  // We want the center item’s left to be (containerW - itemW)/2
-  const desiredLeft = (containerW - itemW) / 2;
-  const translate = -(leftWithinList - desiredLeft);
-
+function snapToCenter(noTransition = false) {
   if (noTransition) listEl.style.transition = 'none';
-  listEl.style.transform = `translateX(${translate}px)`;
+  const nVis = getVisibleCount();
+  const offset = 2 - Math.floor(nVis / 2);
+  listEl.style.transform = `translateX(${-stepPx * offset}px)`;
   if (noTransition) {
-    // force reflow then restore transition
     void listEl.offsetHeight;
     listEl.style.transition = `transform ${DURATION}ms ease`;
   }
 }
 
-/* ---------- Panel open/close helpers ---------- */
+// ---------- Panel open/close ----------
 function setPanelOpen(open) {
   if (!primaryEl || !infoBtn || !infoPanel) return;
-
   primaryEl.classList.toggle('is-open', open);
   infoBtn.setAttribute('aria-expanded', String(open));
   infoPanel.setAttribute('aria-hidden', String(!open));
   const icon = infoBtn.querySelector('.icon');
   if (icon) icon.textContent = open ? '−' : '＋';
 
-  // Defer focus until panel transform finishes (prevents mobile jank)
   if (open) {
     const onEnd = (e) => {
       if (e.propertyName !== 'transform') return;
@@ -187,55 +222,49 @@ function setPanelOpen(open) {
   }
 }
 
-/* ---------- Carousel motion ---------- */
-let isAnimatingCarousel = false;
-
+// ---------- Carousel ----------
 function slide(dir, steps = 1) {
   if (isAnimatingCarousel || !stepPx) return;
-
-  // Close details whenever carousel moves
   setPanelOpen(false);
 
   isAnimatingCarousel = true;
-
-  // Animate relative to current transform
-  const currentX = getTranslateX(listEl);
-  const target = currentX - dir * steps * stepPx;
+  prevBtn.disabled = true;
+  nextBtn.disabled = true;
+  const target = -stepPx + dir * -steps * stepPx;
   listEl.style.transform = `translateX(${target}px)`;
 
   const onDone = () => {
     listEl.removeEventListener('transitionend', onDone);
-    // advance center index and re-render
     currentIndex = mod(currentIndex + dir * steps, rentals.length);
     renderStrip(currentIndex);
     computeStep();
-    centerListOnCenterItem({ noTransition: true });
+    snapToCenter(true);
     loadActive();
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
     isAnimatingCarousel = false;
   };
 
   listEl.addEventListener('transitionend', onDone, { once: true });
 }
 
-/* ---------- Init carousel ---------- */
+// ---------- Init carousel ----------
 function initCarousel() {
   listEl = $('#thumbs-list');
   trackEl = $('.thumbs-track');
   prevBtn = $('.thumbs .prev');
   nextBtn = $('.thumbs .next');
-
   if (!listEl || !trackEl || !prevBtn || !nextBtn) return;
 
   renderStrip(currentIndex);
   computeStep();
   listEl.style.transition = `transform ${DURATION}ms ease`;
-  centerListOnCenterItem({ noTransition: true });
+  snapToCenter(true);
   loadActive();
 
   prevBtn.addEventListener('click', () => slide(-1, 1));
   nextBtn.addEventListener('click', () => slide(+1, 1));
 
-  // Click a thumb to move it into center
   trackEl.addEventListener('click', (e) => {
     const btn = e.target.closest('.thumb');
     if (!btn) return;
@@ -244,21 +273,15 @@ function initCarousel() {
     else if (pos === 'next') slide(+1, 1);
     else if (pos === 'bufferL') slide(-1, 2);
     else if (pos === 'bufferR') slide(+1, 2);
-    // if center: no-op
   });
 
-  // Keep centered on resize/orientation changes
-  let t;
   window.addEventListener('resize', () => {
-    clearTimeout(t);
-    t = setTimeout(() => {
-      computeStep();
-      centerListOnCenterItem({ noTransition: true });
-    }, 100);
+    computeStep();
+    snapToCenter(true);
   });
 }
 
-/* ---------- Init panel toggle ---------- */
+// ---------- Init panel toggle ----------
 function initPanelToggle() {
   primaryEl = document.querySelector('.rentals .primary');
   infoBtn = document.querySelector('.rentals .info-toggle');
@@ -270,22 +293,112 @@ function initPanelToggle() {
     setPanelOpen(open);
   });
 
-  // Close when clicking panel body (ignore interactive controls)
   infoPanel.addEventListener('click', (e) => {
     const interactive = e.target.closest('a, button, input, select, textarea, label');
     if (!interactive) setPanelOpen(false);
   });
 
-  // Escape closes
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && primaryEl.classList.contains('is-open')) setPanelOpen(false);
   });
 }
 
-/* ---------- Boot ---------- */
+// ---------- Gallery ----------
+let galleryRoot, galleryImg, galleryCaption, galleryPrev, galleryNext, galleryClose;
+let galleryImages = [];
+let galleryAt = 0;
+
+function buildGalleryOnce() {
+  if (galleryRoot) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'gallery';
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.innerHTML = `
+<div class="gallery-frame" role="dialog" aria-modal="true" aria-label="Image gallery">
+  <img id="gallery-image" alt="">
+  <div class="gallery-caption"></div>
+  <div class="gallery-controls">
+    <button class="gallery-nav prev" aria-label="Previous image">‹</button>
+    <button class="gallery-close" aria-label="Close gallery">×</button>
+    <button class="gallery-nav next" aria-label="Next image">›</button>
+  </div>
+</div>
+
+  `;
+  document.body.appendChild(wrap);
+
+  galleryRoot = wrap;
+  galleryImg = wrap.querySelector('#gallery-image');
+  galleryCaption = wrap.querySelector('.gallery-caption');
+  galleryPrev = wrap.querySelector('.gallery-nav.prev');
+  galleryNext = wrap.querySelector('.gallery-nav.next');
+  galleryClose = wrap.querySelector('.gallery-close');
+
+  galleryPrev.addEventListener('click', () =>
+    showGallery(mod(galleryAt - 1, galleryImages.length))
+  );
+  galleryNext.addEventListener('click', () =>
+    showGallery(mod(galleryAt + 1, galleryImages.length))
+  );
+  galleryClose.addEventListener('click', closeGallery);
+  wrap.querySelector('.gallery-backdrop')?.addEventListener('click', closeGallery);
+  galleryImg.addEventListener('click', () => galleryRoot.classList.toggle('is-zoomed'));
+
+  window.addEventListener('keydown', (e) => {
+    if (wrap.getAttribute('aria-hidden') === 'true') return;
+    if (e.key === 'Escape') closeGallery();
+    else if (e.key === 'ArrowLeft') galleryPrev.click();
+    else if (e.key === 'ArrowRight') galleryNext.click();
+  });
+}
+
+function openGalleryForActive() {
+  const r = rentals[currentIndex];
+  galleryImages = galleryUrlsFor(r);
+  galleryAt = 0;
+  buildGalleryOnce();
+  document.body.style.overflow = 'hidden';
+  galleryRoot.setAttribute('aria-hidden', 'false');
+  galleryRoot.classList.add('is-open');
+  showGallery(0);
+  galleryClose?.focus();
+}
+
+function showGallery(i) {
+  galleryAt = i;
+  const url = galleryImages[i];
+  galleryImg.src = url;
+  galleryCaption.textContent = `${rentals[currentIndex].name} — ${i + 1} / ${galleryImages.length}`;
+}
+
+function closeGallery() {
+  if (!galleryRoot) return;
+  galleryRoot.classList.remove('is-open');
+  galleryRoot.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  galleryRoot.classList.remove('is-zoomed');
+  try {
+    infoBtn?.focus();
+  } catch {}
+}
+
+function initGalleryOpeners() {
+  const panelActions = document.querySelector('.panel-actions');
+  if (!panelActions) return;
+
+  panelActions.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action="open-gallery"], .btn-gallery, .view-gallery');
+    if (!btn) return;
+    openGalleryForActive();
+  });
+}
+
+// ---------- Boot ----------
 document.addEventListener('DOMContentLoaded', () => {
-  initCarousel();
+  // 🔧 FIX ORDER: Panel first, then Carousel
   initPanelToggle();
+  initCarousel();
+  initGalleryOpeners();
 
   const img = document.getElementById('rental-image');
   img?.addEventListener('error', () => {

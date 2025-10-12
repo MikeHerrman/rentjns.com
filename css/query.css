@@ -14,11 +14,11 @@
   }
 }
 
-/* ======================================
+/* =======================================================
    HAMBURGER / DRAWER SYSTEM
-   ====================================== */
+   ======================================================= */
 
-/* Hide but keep accessible */
+/* Accessible off-screen checkbox */
 .navcheck {
   position: absolute !important;
   inline-size: 1px;
@@ -31,9 +31,9 @@
   border: 0;
 }
 
-/* Toggle button (icon) */
+/* Toggle button (hamburger icon) */
 .nav-toggle {
-  display: none; /* shown on mobile via media query */
+  display: none;
   inline-size: 40px;
   block-size: 40px;
   border-radius: 8px;
@@ -51,7 +51,7 @@
   right: 9px;
   height: 2px;
   background: var(--on-green, #fff);
-  transition: transform 0.2s ease, top 0.2s ease, bottom 0.2s ease, opacity 0.2s ease;
+  transition: transform 0.25s ease, top 0.25s ease, bottom 0.25s ease, opacity 0.25s ease;
 }
 .nav-toggle::before {
   top: 13px;
@@ -61,7 +61,7 @@
   bottom: 13px;
 }
 
-/* Drawer + overlay */
+/* Drawer panel */
 .nav-drawer {
   position: fixed;
   inset: 0 auto 0 0;
@@ -83,7 +83,7 @@
 .nav-drawer .nav-items {
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0 0;
+  margin: 0.5rem 0 0;
   display: grid;
   gap: 0.25rem;
 }
@@ -104,14 +104,24 @@
   font-weight: 600;
 }
 
+/* ---------- NAV OVERLAY (click-block fix) ---------- */
 .nav-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
   pointer-events: none;
+  display: none;
   transition: opacity 0.25s ease;
-  z-index: 900;
+  z-index: 999;
+}
+
+/* When menu is open, enable overlay */
+.nav:has(#navcheck:checked) .nav-overlay,
+.nav.is-open .nav-overlay {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Checkbox → icon animation */
@@ -125,32 +135,13 @@
   transform: rotate(-45deg);
 }
 
-/* :has() bridge to open overlay/drawer regardless of DOM nesting */
-.nav:has(#navcheck:checked) .nav-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-.nav:has(#navcheck:checked) .nav-drawer {
-  transform: translateX(0);
-}
-.nav-inner:has(#navcheck:checked) .nav-toggle::before {
-  top: 19px;
-  transform: rotate(45deg);
-  box-shadow: none;
-}
-.nav-inner:has(#navcheck:checked) .nav-toggle::after {
-  bottom: 19px;
-  transform: rotate(-45deg);
-}
-
-/* JS fallback classes (set in nav.js) */
-.nav.is-open .nav-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
+/* :has() bridge to open drawer regardless of DOM nesting */
+.nav:has(#navcheck:checked) .nav-drawer,
 .nav.is-open .nav-drawer {
   transform: translateX(0);
 }
+
+/* JS fallback toggles (nav.js applies these) */
 .nav-inner.is-open .nav-toggle::before {
   top: 19px;
   transform: rotate(45deg);
@@ -161,11 +152,11 @@
   transform: rotate(-45deg);
 }
 
-/* ======================================
-   RESPONSIVE LAYOUT (all viewport breakpoints)
-   ====================================== */
+/* =======================================================
+   RESPONSIVE LAYOUTS
+   ======================================================= */
 
-/* Header/nav spacing on small screens */
+/* ---------- Mobile (≤800px) ---------- */
 @media (max-width: 800px) {
   .nav-toggle {
     display: inline-flex;
@@ -174,17 +165,26 @@
   }
   .site-header .nav .site-nav {
     display: none;
-  } /* hide inline menu on mobile */
-
+  }
   .nav-inner {
     padding: 0.75rem 0;
   }
   .nav-items {
     gap: 0.75rem;
   }
+
+  .hero {
+    padding: 2rem 0;
+  }
+  .hero-body {
+    margin-inline: 1rem;
+    max-width: 100%;
+    padding: 1rem 1.25rem;
+    background-color: rgba(0, 46, 73, 0.5);
+  }
 }
 
-/* Desktop restores inline menu, hides drawer system */
+/* ---------- Desktop (≥801px) ---------- */
 @media (min-width: 801px) {
   .nav-toggle,
   .nav-overlay,
@@ -197,20 +197,7 @@
   }
 }
 
-/* Hero tightening on mobile */
-@media (max-width: 800px) {
-  .hero {
-    padding: 2rem 0;
-  }
-  .hero-body {
-    margin-inline: 1rem;
-    max-width: 100%;
-    padding: 1rem 1.25rem;
-    background-color: rgba(0, 46, 73, 0.5);
-  }
-}
-
-/* Alternating split rows */
+/* ---------- Alternating splits ---------- */
 @media (max-width: 1000px) {
   .split {
     gap: 1.25rem;
@@ -221,25 +208,71 @@
     flex-direction: column;
     align-items: stretch;
   }
-  .split__media,
-  .split__content {
-    flex: 0 1 auto;
-  }
   .split__media img {
     aspect-ratio: 3 / 2;
   }
 }
 
-/* Band height tweak for very small screens */
+/* ---------- Hero + Band tweaks ---------- */
 @media (max-width: 700px) {
   .band {
     min-block-size: 30vh;
   }
 }
 
-/* ======================================
-   Preference media (kept here as they alter rendering)
-   ====================================== */
+/* ---------- CTA Grid ---------- */
+@media (max-width: 1000px) {
+  .cta-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 650px) {
+  .cta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =======================================================
+   RENTALS PAGE RESPONSIVENESS
+   ======================================================= */
+@media (max-width: 1000px) {
+  .rentals .rentals-shell {
+    grid-template-rows: 5fr 2fr;
+  }
+  .rentals .thumbs-list {
+    grid-auto-columns: calc((100% - 1rem) / 2);
+  }
+  .rentals .primary.is-open .image-frame {
+    transform: translateX(-55%);
+  }
+  .rentals .info-panel {
+    inline-size: min(65%, 420px);
+  }
+}
+
+@media (max-width: 600px) {
+  .rentals .thumbs-list {
+    grid-auto-columns: 100%;
+  }
+  .rentals .info-panel {
+    inline-size: 100%;
+    box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.12);
+  }
+  .rentals .primary.is-open .image-frame {
+    transform: none;
+  }
+}
+
+/* ---------- Fallback for svh support ---------- */
+@supports not (height: 100svh) {
+  .rentals .rentals-shell {
+    block-size: 100vh;
+  }
+}
+
+/* =======================================================
+   ENVIRONMENTAL PREFERENCES
+   ======================================================= */
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -272,7 +305,7 @@
   }
 }
 
-/* Forced colors / high contrast */
+/* High contrast / forced colors */
 @media (forced-colors: active) {
   .nav-overlay {
     background: CanvasText;
@@ -299,60 +332,11 @@
   }
 }
 
-/* CTA grid responsiveness */
-@media (max-width: 1000px) {
-  .cta-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (max-width: 650px) {
-  .cta-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Stabilize hero on mobile to avoid address bar jitter */
 @supports (height: 100svh) {
   @media (max-width: 800px) {
     .hero {
       min-block-size: 100svh;
     }
-  }
-}
-
-/* ===== Rentals page responsiveness ===== */
-@media (max-width: 1000px) {
-  .rentals .rentals-shell {
-    grid-template-rows: 5fr 2fr;
-  }
-  .rentals .thumbs-list {
-    grid-auto-columns: calc((100% - 1rem) / 2);
-  } /* 2 visible */
-  .rentals .primary.is-open .image-frame {
-    transform: translateX(-55%);
-  }
-  .rentals .info-panel {
-    inline-size: min(65%, 420px);
-  }
-}
-
-@media (max-width: 600px) {
-  .rentals .thumbs-list {
-    grid-auto-columns: 100%;
-  } /* 1 visible */
-  /* On phones, make the panel full-width overlay (image doesn't shift) */
-  .rentals .info-panel {
-    inline-size: 100%;
-    box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.12);
-  }
-  .rentals .primary.is-open .image-frame {
-    transform: none;
-  }
-}
-
-/* Fallback if 100svh isn’t supported */
-@supports not (height: 100svh) {
-  .rentals .rentals-shell {
-    block-size: 100vh;
   }
 }

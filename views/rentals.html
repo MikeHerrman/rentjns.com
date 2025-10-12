@@ -3,11 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <meta
       name="description"
-      content="Browse coastal rentals near Ocean Shores—cozy cottages and family-ready homes with clear pricing, easy check-in, and walk-to-the-beach locations."
+      content="Browse Washington Coast vacation rentals—cozy cottages and family-ready homes with clear pricing and easy check-in."
     />
+
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://yourdomain.com/views/rentals.html" />
+
+    <meta property="og:title" content="JNS Vacation Rentals | Washington Coast Rentals" />
+    <meta
+      property="og:description"
+      content="Browse Washington coast vacation rentals — cozy cottages, family homes, and beachside getaways with clear pricing and easy check-in."
+    />
+    <meta property="og:image" content="/assets/images/rentals/property-1.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourdomain.com/views/rentals.html" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JNS Vacation Rentals | Washington Coast Rentals" />
+    <meta
+      name="twitter:description"
+      content="Browse Washington coast vacation rentals — cozy cottages, family homes, and beachside getaways with clear pricing and easy check-in."
+    />
+    <meta name="twitter:image" content="/assets/images/rentals/property-1.jpg" />
 
     <link rel="icon" href="/assets/favicon.ico" />
     <link rel="stylesheet" href="/css/global.css" />
@@ -15,7 +34,7 @@
     <link rel="stylesheet" href="/css/rentals.css" />
     <link rel="stylesheet" href="/css/query.css" />
 
-    <title>JNS Vacation Rentals - Rentals</title>
+    <title>Washington Coast Vacation Rentals | JNS Vacation Rentals</title>
   </head>
 
   <body>
@@ -29,13 +48,14 @@
           <!-- Desktop inline nav -->
           <nav class="site-nav" aria-label="Primary">
             <ul class="nav-items">
-              <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
+              <li>
+                <a class="nav-item" href="/views/rentals.html">Rentals</a>
+              </li>
               <li><a class="nav-item" href="/views/events.html">Events</a></li>
               <li><a class="nav-item" href="/views/local.html">Local</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
           </nav>
-
           <!-- Hamburger controls -->
           <input type="checkbox" id="navcheck" class="navcheck" />
           <label
@@ -60,7 +80,9 @@
           <a class="brand" href="/index.html">JNS Vacation Rentals</a>
           <nav aria-label="Mobile">
             <ul class="nav-items">
-              <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
+              <li>
+                <a class="nav-item" href="/views/rentals.html">Rentals</a>
+              </li>
               <li><a class="nav-item" href="/views/events.html">Events</a></li>
               <li><a class="nav-item" href="/views/local.html">Local</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
@@ -71,45 +93,49 @@
     </header>
 
     <main id="main" class="fill-viewport rentals">
+      <h1 class="page-title hidden">Browse JNS Vacation Rentals</h1>
+
       <section class="container rentals-shell" aria-label="Rental gallery">
         <!-- Top: main image + sliding info -->
         <div class="primary" data-open="false">
+          <button
+            class="info-toggle"
+            aria-controls="rental-info"
+            aria-expanded="false"
+            title="Open details"
+          >
+            <span class="icon" aria-hidden="true">＋</span><span class="sr-only">Details</span>
+          </button>
+
           <figure class="image-frame round shadow">
             <img
               id="rental-image"
               src="/assets/images/rentals/property-1.jpg"
               alt="Coastal Cottage dining area and living room"
+              width="1200"
+              height="900"
+              fetchpriority="high"
             />
-            <!-- Button rides with the image (same transform layer) -->
-            <button
-              class="info-toggle"
-              aria-controls="rental-info"
-              aria-expanded="false"
-              title="Open details"
-            >
-              <span class="icon" aria-hidden="true">＋</span>
-              <span class="sr-only">Details</span>
-            </button>
           </figure>
 
           <aside class="info-panel" id="rental-info" aria-hidden="true" tabindex="-1">
-            <h1 class="h3" id="rental-title">Coastal Cottage</h1>
+            <h2 class="h3" id="rental-title">Coastal Cottage</h2>
             <ul class="stats" aria-label="Property details">
               <li><strong>Sleeps:</strong> <span id="stat-sleeps">4</span></li>
               <li><strong>Beds:</strong> <span id="stat-beds">3</span></li>
               <li><strong>Baths:</strong> <span id="stat-baths">1</span></li>
-              <li><strong>Sq Ft:</strong> <span id="stat-sqft">1300</span></li>
-              <li><strong>Pets:</strong> <span id="stat-pets">No</span></li>
+              <li><strong>Sq Ft:</strong> <span id="stat-sqft">1,300</span></li>
+              <li><strong>Pets:</strong> <span id="stat-pets">Not allowed</span></li>
             </ul>
             <p id="rental-blurb">
-              Steps from the dunes, this bright, easygoing cottage is set up for simple beach days
-              and low-stress nights. Sleeps six across a king bedroom, queen bedroom, and a comfy
-              queen sleeper. Full kitchen, fast Wi-Fi, smart TV, and a fenced yard for pups (up to
-              2; small pet fee). Park once and walk to coffee, games at Quinault Casino, and the
-              shoreline for sunset. Great for families or two couples who want quiet mornings and
-              sand-in-your-toes afternoons. No parties; local quiet hours after 10pm.
+              Walkable to the beach, this bright, easygoing cottage is set up for simple beach days
+              and low-stress nights…
             </p>
             <div class="panel-actions">
+              <button type="button" class="btn btn-primary btn-gallery" data-action="open-gallery">
+                View gallery
+              </button>
+
               <a href="/views/contact.html" class="btn btn-primary">Ask about dates</a>
             </div>
           </aside>

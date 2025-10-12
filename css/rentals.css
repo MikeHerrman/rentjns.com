@@ -1,7 +1,8 @@
 /* =======================================================
-   rentals.css — page-specific base styles (no media queries)
+   rentals.css — Rentals page styles (organized & cleaned)
    ======================================================= */
 
+/* ---------- Shell layout ---------- */
 .rentals .rentals-shell {
   block-size: 100svh; /* definite height so 3fr/1fr works */
   display: grid;
@@ -9,22 +10,22 @@
   gap: 1rem;
 }
 
-/* Top area */
+/* ---------- Primary area (image + sliding info) ---------- */
 .rentals .primary {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  /* background: none; neutral fallback behind image */
+  background: #000; /* neutral fallback */
 }
 
+/* Main image */
 .rentals .image-frame {
   position: absolute;
   inset: 0;
+  transition: transform 280ms ease; /* keep in sync with JS DURATION */
   margin: 0;
   box-shadow: none;
   will-change: transform;
-  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  contain: paint; /* reduces paint bleeding / streaks */
 }
 .rentals .image-frame img {
   display: block;
@@ -32,34 +33,7 @@
   block-size: 100%;
   object-fit: cover;
   object-position: center;
-  transform: translateZ(0) scale(1.01); /* tiny overscan to kill hairline gaps */
-}
-
-/* Toggle button — now inside image-frame so it rides with it */
-.rentals .image-frame .info-toggle {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 2;
-  border: none;
-  border-radius: 999px;
-  padding: 0.6rem;
-  background: rgba(12, 90, 58, 0.95); /* var(--g-start) with opacity */
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  will-change: transform;
-  backface-visibility: hidden;
-}
-.rentals .image-frame .info-toggle:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-.rentals .image-frame .info-toggle .icon {
-  font-size: 1.2rem;
-  line-height: 1;
+  transform: translateZ(0) scale(1.01); /* slight overscan to kill edge gaps */
 }
 
 /* Sliding info panel */
@@ -71,16 +45,16 @@
   color: #111;
   padding: 1rem 1.25rem 1.25rem;
   transform: translateX(100%);
-  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: transform 280ms ease;
   box-shadow: -12px 0 24px rgba(0, 0, 0, 0.12);
   overflow: auto;
-  will-change: transform;
+  scrollbar-gutter: stable; /* avoid layout shift when scrollbar appears */
 }
 .rentals .panel-actions {
   margin-top: 0.75rem;
 }
 
-/* stats list */
+/* Stats list */
 .rentals .stats {
   list-style: none;
   padding: 0;
@@ -90,7 +64,33 @@
   gap: 0.5rem 1rem;
 }
 
-/* Open state — image and its button move together (button inherits via parent) */
+/* Toggle button */
+.rentals .info-toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem;
+  background: var(--g-start);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+.rentals .image-frame .info-toggle:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+.rentals .image-frame .info-toggle .icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* Open state */
 .rentals .primary.is-open .image-frame {
   transform: translateX(-38%);
 }
@@ -98,7 +98,7 @@
   transform: translateX(0);
 }
 
-/* Bottom carousel */
+/* ---------- Bottom carousel ---------- */
 .rentals .thumbs {
   position: relative;
 }
@@ -108,7 +108,7 @@
 .rentals .thumbs-list {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 2rem) / 3); /* 3 visible by default */
+  grid-auto-columns: calc((100% - 2rem) / 3); /* 3 visible by default (query.css overrides) */
   gap: 1rem;
 }
 
@@ -132,15 +132,15 @@
   position: absolute;
   left: 0.5rem;
   bottom: 0.5rem;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6); /* boosted legibility */
   color: #fff;
   padding: 0.2rem 0.5rem;
   border-radius: 6px;
   font-size: 0.9rem;
 }
 .rentals .thumb.is-active {
-  outline: 5px solid var(--g-end);
-  outline-offset: 5px;
+  outline: 3px solid var(--g-start);
+  outline-offset: 2px;
 }
 
 /* Carousel arrows */
@@ -168,16 +168,199 @@
 .rentals .thumbs-nav:focus-visible {
   background: color-mix(in srgb, var(--g-start) 92%, #fff);
 }
+.rentals .thumbs-nav[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
 
-/* a11y helper */
-.sr-only {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
+/* ---------- Gallery overlay ---------- */
+.gallery {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 1200;
+  touch-action: pan-y; /* allow vertical scroll gestures */
+}
+.gallery.is-open {
+  display: grid;
+}
+
+.gallery-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.gallery-frame {
+  position: relative;
+  margin: auto;
+  max-inline-size: min(96vw, 1100px);
+  max-block-size: 90vh;
+  background: #292b2a;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+  padding: clamp(1rem, 2vw, 2rem); /* keeps controls off the edges */
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 0.5rem;
+}
+
+.gallery-frame img {
+  width: auto;
+  height: auto;
+  max-inline-size: 100%;
+  max-block-size: 100%;
+  object-fit: contain;
+  transform: none; /* reset any previous zoom */
+  cursor: zoom-in;
+  margin: 0 auto;
+}
+
+#gallery-image {
+  display: block;
+  margin: 0 auto;
+  max-inline-size: 100%; /* never overflow width */
+  max-block-size: min(82svh, 82vh); /* cap height (use safe vh on mobile) */
+  width: auto; /* preserve aspect */
+  height: auto;
+  object-fit: contain; /* letterbox if needed */
+}
+
+.gallery.is-zoomed img {
+  transform: scale(1.6);
+  cursor: zoom-out;
+}
+
+.gallery-caption {
+  color: #fff;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  text-align: left;
+}
+
+/* ---------- Gallery controls (centered under image) ---------- */
+.gallery-controls {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 10;
+}
+
+.gallery-nav,
+.gallery-close {
+  border: 2px solid #fff;
+  border-radius: 9px;
+  inline-size: 42px;
+  block-size: 42px;
+  background: var(--g-start);
+  color: #fff;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  transition: background 0.2s ease;
+}
+
+.gallery-nav:hover,
+.gallery-close:hover {
+  background: color-mix(in srgb, var(--g-start) 90%, #fff);
+}
+
+/* ---------- Accessibility & preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .rentals .image-frame,
+  .rentals .info-panel,
+  .rentals .thumbs-list {
+    transition: none !important;
+  }
+}
+
+/* Visible keyboard focus on thumbs */
+.rentals .thumb:focus-visible {
+  outline: 3px solid var(--g-start);
+  outline-offset: 2px;
+}
+
+/* Hide controls/caption while zoomed for unobstructed view */
+.gallery.is-zoomed .gallery-nav,
+.gallery.is-zoomed .gallery-close,
+.gallery.is-zoomed .gallery-caption {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Larger controls on small screens */
+@media (max-width: 700px) {
+  .gallery-nav,
+  .gallery-close {
+    inline-size: 48px;
+    block-size: 48px;
+    border-radius: 12px;
+    font-size: 1.25rem;
+  }
+}
+
+/* Forced colors / high contrast */
+@media (forced-colors: active) {
+  .rentals .thumb {
+    border: 1px solid ButtonText;
+  }
+  .rentals .thumb:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+  .gallery-frame {
+    border: 1px solid ButtonText;
+  }
+  .gallery-nav,
+  .gallery-close {
+    border-color: ButtonText;
+    color: ButtonText;
+    background: Canvas;
+  }
+  .gallery-caption {
+    color: ButtonText;
+  }
+}
+
+/* Clear keyboard focus for key controls */
+.rentals .info-toggle:focus-visible,
+.gallery-nav:focus-visible,
+.gallery-close:focus-visible {
+  outline: 3px solid var(--g-start);
+  outline-offset: 2px;
+}
+/* ---------- Layering fix (click-block issue) ---------- */
+.rentals .primary {
+  position: relative;
+  z-index: 0;
+}
+
+.rentals .image-frame {
+  z-index: 1;
+}
+
+.rentals .info-panel {
+  z-index: 2;
+}
+
+.rentals .info-toggle {
+  z-index: 3;
+}
+
+.rentals .info-panel[aria-hidden='true'] {
+  pointer-events: none;
+}
+
+.nav {
+  z-index: 100;
+}
+.gallery {
+  z-index: 1200;
 }
