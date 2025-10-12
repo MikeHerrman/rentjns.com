@@ -3,7 +3,7 @@
 const rentals = [
   {
     id: 'p1',
-    slug: 'rental-1',
+    slug: 'property-1',
     name: 'Coastal Cottage',
     img: '/assets/images/rentals/property-1.jpg',
     alt: 'Coastal Cottage exterior by the dunes',
