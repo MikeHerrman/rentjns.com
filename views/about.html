@@ -3,22 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://rentjnscom.netlify.app" />
+    <link rel="canonical" href="https://rentjnscom.netlify.app/views/about" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
       content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Adventure made easy - Comfortable homes, Clear pricing, Friendly local help."
     />
-    <meta property="og:title" content="Washington Coastal Getaways | JNS Vacation Rentals" />
+    <meta property="og:title" content="About JNS Rentals | JNS Vacation Rentals" />
     <meta
       property="og:description"
       content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
     />
     <meta property="og:image" content="https://rentjnscom.netlify.app/assets/images/card-rentals.jpg" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://rentjnscom.netlify.app" />
+    <meta property="og:url" content="https://rentjnscom.netlify.app/views/about" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JNS Vacation Rentals | Washington Coastal Getaways" />
+    <meta name="twitter:title" content="About JNS Rentals | JNS Vacation Rentals" />
     <meta
       name="twitter:description"
       content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
@@ -28,10 +28,9 @@
     <!-- PWA manifest + theme color -->
     <link rel="manifest" href="/assets/favicon/site.webmanifest" />
     <meta name="theme-color" content="#0c5a3a" />
-    <meta name="color-scheme" content="light dark" />
 
     <!-- Favicons -->
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/assets/favicon/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
@@ -39,8 +38,10 @@
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/query.css" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://yourdomain.com/views/local.html" />
 
-    <title>Washington Coastal Getaways | JNS Vacation Rentals</title>
+    <title>About Us | JNS Vacation Rentals</title>
   </head>
 
   <body>
@@ -70,7 +71,7 @@
         <!-- Overlay + Drawer -->
         <div class="nav-overlay"></div>
         <aside class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Navigation">
-          <a class="brand" href="/index.html" aria-current="page">JNS Vacation Rentals</a>
+          <a class="brand" href="/index.html">JNS Vacation Rentals</a>
           <nav aria-label="Mobile">
             <ul class="nav-items">
               <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
@@ -84,102 +85,103 @@
       </div>
     </header>
 
-    <main id="main">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-body hero-card">
-          <h1 id="hero-title" class="hero-headline">Adventure, made easy</h1>
-          <p class="hero-subheadline">Comfortable homes, clear pricing, friendly local help.</p>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="/views/rentals.html">Browse rentals</a>
-            <a class="btn btn-ghost" href="/views/contact.html">Contact us</a>
-          </div>
-        </div>
-      </section>
-      <!-- ===== Alternating Image/Text Splits ===== -->
+    <main id="main" class="fill-viewport">
+      <!-- Intro / Who we are -->
       <section class="section">
         <div class="container split">
-          <figure class="split__media round shadow" aria-label="Coastal scene">
-            <img src="/assets/images/split-1.jpg" alt="Dune grasses with ocean backdrop" />
+          <figure class="split__media round shadow" aria-label="Coastal cottage restoration">
+            <img src="/assets/images/about/about-hero.jpg" alt="Diamond in the rough 1st home project" loading="lazy" />
           </figure>
 
           <article class="split__content card">
-            <h2 class="h3">Drive to the beach in minutes</h2>
-            <p>Enjoy the sand and surf, with plenty of time to explore all around.</p>
+            <h1 class="h3">About JNS Vacation Rentals</h1>
+            <p>
+              We find forgotten coastal gems and give them a little TLC—then share them with travelers who love the comfort of home on their
+              adventures. Clear pricing, thoughtful amenities, and friendly local help are our north star.
+            </p>
+            <p>Based in Hoquiam, we’re hands-on hosts who care about easy check-ins, tidy spaces, and simple, memorable stays.</p>
+            <a class="btn btn-primary" href="/views/rentals.html">See our rentals</a>
           </article>
         </div>
       </section>
 
+      <!-- Our story -->
       <section class="section">
         <div class="container split split--reverse">
-          <figure class="split__media round shadow" aria-label="Boardwalk at sunset">
-            <img src="/assets/images/split-2.jpg" alt="Boardwalk with evening light" loading="lazy" />
+          <figure class="split__media round shadow" aria-label="Before and after renovation">
+            <img
+              src="/assets/images/about/about-reno.jpg"
+              alt="Before-and-after collage of a small kitchen refresh or cozy living room"
+              loading="lazy"
+            />
           </figure>
 
           <article class="split__content card">
-            <h2 class="h3">Close to entertainment</h2>
-            <p>Shops, Casino, and Family Fun all nearby.</p>
+            <h2 class="h3">Our Story</h2>
+            <p>
+              It started with one small fixer on a quiet street around the corner from Quinault Casino. We learned what guests really use (good beds,
+              a stocked kitchen, fast Wi-Fi) and what just gets in the way. Today, that same approach guides every place we open: practical comfort
+              with a coastal calm.
+            </p>
+            <p>
+              We keep renovations light-touch and respectful—refresh, don’t erase—so each home keeps its character and fits right into the
+              neighborhood.
+            </p>
           </article>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container split">
-          <figure class="split__media round shadow" aria-label="Family by the water">
-            <img src="/assets/images/split-3.jpg" alt="Family enjoying the water’s edge" loading="lazy" />
-          </figure>
-
-          <article class="split__content card">
-            <h2 class="h3">Coastal Dining and Events</h2>
-            <p>Discover local restaurants and seasonal happenings.</p>
-          </article>
-        </div>
-      </section>
-      <!-- ===== End Alternating Splits ===== -->
-
-      <!-- ===== CTA Cards ===== -->
-      <section class="section section-cta" aria-labelledby="cta-title">
-        <h2 id="cta-title" class="section-heading">Explore more</h2>
+      <!-- What we care about (values) -->
+      <section class="section section-cta" aria-labelledby="values-title">
+        <h2 id="values-title" class="section-heading">What we care about</h2>
 
         <div class="container cta-grid">
-          <!-- Card 1 -->
           <article class="cta-card">
-            <figure class="cta-media" aria-label="Coastal cottage">
-              <img src="/assets/images/card-rentals.jpg" alt="Coastal cottage near the dunes" loading="lazy" />
+            <figure class="cta-media" aria-label="Simple pricing">
+              <img src="/assets/images/about/about-pricing.jpg" alt="Notebook with clear line items and a cup of coffee" loading="lazy" />
             </figure>
             <div class="cta-body">
-              <h3 class="h4">Our Rentals</h3>
-              <p>Explore the Coastal Cottage today, with more homes coming soon.</p>
-              <a href="/views/rentals.html" class="btn btn-primary">Our Rentals</a>
+              <h3 class="h4">Straightforward Pricing</h3>
+              <p>No surprise fees. You see the total before you book—clean and simple.</p>
             </div>
           </article>
 
-          <!-- Card 2 -->
           <article class="cta-card">
-            <figure class="cta-media" aria-label="Local fair at sunset">
-              <img src="/assets/images/card-events.jpg" alt="Local events near the coast" loading="lazy" />
+            <figure class="cta-media" aria-label="Thoughtful amenities">
+              <img src="/assets/images/about/about-amenities.jpg" alt="Cozy living room with board games and soft throw blankets" loading="lazy" />
             </figure>
             <div class="cta-body">
-              <h3 class="h4">Local Events</h3>
-              <p>Plan your stay around festivals, markets, and community fun.</p>
-              <a href="/views/events.html" class="btn btn-primary">Local Events</a>
+              <h3 class="h4">Thoughtful Amenities</h3>
+              <p>Good beds, stocked kitchens, kid-friendly touches, and fast Wi-Fi as standard.</p>
             </div>
           </article>
 
-          <!-- Card 3 -->
           <article class="cta-card">
-            <figure class="cta-media" aria-label="Beach walk">
-              <img src="/assets/images/card-things.jpg" alt="Walking the beach at low tide" loading="lazy" />
+            <figure class="cta-media" aria-label="Local support">
+              <img src="/assets/images/about/about-local.jpg" alt="Sunset boardwalk near Ocean Shores" loading="lazy" />
             </figure>
             <div class="cta-body">
-              <h3 class="h4">Things to Do</h3>
-              <p>From beach walks to dining, see what makes Washington's coast special.</p>
-              <a href="/views/local.html" class="btn btn-primary">Things to Do</a>
+              <h3 class="h4">Friendly Local Help</h3>
+              <p>We’re nearby if you need us—quick answers and easy check-ins.</p>
             </div>
           </article>
         </div>
       </section>
-      <!-- ===== End CTA Cards ===== -->
+
+      <!-- Light CTA -->
+      <section class="section">
+        <div class="container split">
+          <figure class="split__media round shadow" aria-label="Hosts">
+            <img src="/assets/images/about/about-hosts.jpg" alt="Smiling hosts standing in front of a coastal home" loading="lazy" />
+          </figure>
+
+          <article class="split__content card">
+            <h2 class="h3">Say hello</h2>
+            <p>Curious about dates, renovations in progress, or what’s nearby? We’re happy to help you plan the perfect coastal stay.</p>
+            <a class="btn btn-primary" href="/views/contact.html">Contact us</a>
+          </article>
+        </div>
+      </section>
     </main>
 
     <footer class="footer" role="contentinfo">

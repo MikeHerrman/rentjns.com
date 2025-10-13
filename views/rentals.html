@@ -2,31 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://rentjnscom.netlify.app/views/rentals" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Browse Washington Coast vacation rentals—cozy cottages and family-ready homes with clear pricing and easy check-in."
+      content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Adventure made easy - Comfortable homes, Clear pricing, Friendly local help."
     />
-
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://yourdomain.com/views/rentals.html" />
-
-    <meta property="og:title" content="JNS Vacation Rentals | Washington Coast Rentals" />
+    <meta property="og:title" content="Washington Coast Vacation Rentals | JNS Vacation Rentals" />
     <meta
       property="og:description"
-      content="Browse Washington coast vacation rentals — cozy cottages, family homes, and beachside getaways with clear pricing and easy check-in."
+      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
     />
-    <meta property="og:image" content="/assets/images/rentals/property-1.jpg" />
+    <meta property="og:image" content="https://rentjnscom.netlify.app/assets/images/card-rentals.jpg" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yourdomain.com/views/rentals.html" />
-
+    <meta property="og:url" content="https://rentjnscom.netlify.app/views/rentals" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JNS Vacation Rentals | Washington Coast Rentals" />
+    <meta name="twitter:title" content="Washington Coast Vacation Rentals | JNS Vacation Rentals" />
     <meta
       name="twitter:description"
-      content="Browse Washington coast vacation rentals — cozy cottages, family homes, and beachside getaways with clear pricing and easy check-in."
+      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
     />
-    <meta name="twitter:image" content="/assets/images/rentals/property-1.jpg" />
+    <meta name="twitter:image" content="https://rentjnscom.netlify.app/assets/images/card-rentals.jpg" />
 
     <!-- PWA manifest + theme color -->
     <link rel="manifest" href="/assets/favicon/site.webmanifest" />
@@ -43,7 +40,7 @@
     <link rel="stylesheet" href="/css/rentals.css?v=3" />
     <link rel="stylesheet" href="/css/query.css?v=3" />
 
-    <title>Washington Coast Vacation Rentals | JNS Vacation Rentals</title>
+    <title>Vacation Rentals | JNS Vacation Rentals</title>
   </head>
 
   <body>
@@ -62,30 +59,18 @@
               </li>
               <li><a class="nav-item" href="/views/events.html">Events</a></li>
               <li><a class="nav-item" href="/views/local.html">Local</a></li>
+              <li><a class="nav-item" href="/views/about.html">About</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
           </nav>
           <!-- Hamburger controls -->
           <input type="checkbox" id="navcheck" class="navcheck" />
-          <label
-            for="navcheck"
-            class="nav-toggle"
-            aria-label="Open menu"
-            aria-controls="nav-drawer"
-            aria-expanded="false"
-          ></label>
+          <label for="navcheck" class="nav-toggle" aria-label="Open menu" aria-controls="nav-drawer" aria-expanded="false"></label>
         </div>
 
         <!-- Overlay + Drawer -->
         <div class="nav-overlay"></div>
-        <aside
-          class="nav-drawer"
-          id="nav-drawer"
-          role="dialog"
-          aria-modal="true"
-          aria-hidden="true"
-          aria-label="Navigation"
-        >
+        <aside class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Navigation">
           <a class="brand" href="/index.html">JNS Vacation Rentals</a>
           <nav aria-label="Mobile">
             <ul class="nav-items">
@@ -94,6 +79,7 @@
               </li>
               <li><a class="nav-item" href="/views/events.html">Events</a></li>
               <li><a class="nav-item" href="/views/local.html">Local</a></li>
+              <li><a class="nav-item" href="/views/about.html">About</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
           </nav>
@@ -107,12 +93,7 @@
       <section class="container rentals-shell" aria-label="Rental gallery">
         <!-- Top: main image + sliding info -->
         <div class="primary" data-open="false">
-          <button
-            class="info-toggle"
-            aria-controls="rental-info"
-            aria-expanded="false"
-            title="Open details"
-          >
+          <button class="info-toggle" aria-controls="rental-info" aria-expanded="false" title="Open details">
             <span class="icon" aria-hidden="true">＋</span><span class="sr-only">Details</span>
           </button>
 
@@ -136,14 +117,9 @@
               <li><strong>Sq Ft:</strong> <span id="stat-sqft">1,300</span></li>
               <li><strong>Pets:</strong> <span id="stat-pets">Not allowed</span></li>
             </ul>
-            <p id="rental-blurb">
-              Walkable to the beach, this bright, easygoing cottage is set up for simple beach days
-              and low-stress nights…
-            </p>
+            <p id="rental-blurb">Walkable to the beach, this bright, easygoing cottage is set up for simple beach days and low-stress nights…</p>
             <div class="panel-actions">
-              <button type="button" class="btn btn-primary btn-gallery" data-action="open-gallery">
-                View gallery
-              </button>
+              <button type="button" class="btn btn-primary btn-gallery" data-action="open-gallery">View gallery</button>
 
               <a href="/views/contact.html" class="btn btn-primary">Ask about dates</a>
             </div>
