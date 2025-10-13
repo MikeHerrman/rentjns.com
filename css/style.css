@@ -166,46 +166,6 @@
   flex-wrap: wrap;
 }
 
-/* ---------- Buttons ---------- */
-.btn {
-  display: inline-block;
-  padding: 0.7rem 1.05rem;
-  border-radius: 999px;
-  font-weight: 700;
-  line-height: 1;
-  text-decoration: none;
-  transition: transform 0.08s ease, opacity 0.2s ease;
-}
-.btn:active {
-  transform: translateY(1px);
-}
-
-.btn-primary {
-  background: var(--g-start, #0c5a3a);
-  color: #fff !important; /* force light text */
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-.btn-primary:visited {
-  color: #fff !important;
-}
-
-.btn-primary:hover,
-.btn-primary:focus-visible {
-  opacity: 0.9;
-  text-decoration: none;
-}
-
-.btn-ghost {
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  background: transparent;
-}
-.btn-ghost:hover,
-.btn-ghost:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
-  text-decoration: none;
-}
-
 /* ---------- Sections / Bands / Cards ---------- */
 .section {
   padding: 3rem 0;
@@ -253,12 +213,15 @@
 .split--reverse {
   flex-direction: row-reverse;
 }
+/* fixed */
 .split__media img {
   inline-size: 100%;
-  block-size: 100%;
+  height: auto;
   object-fit: cover;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 9; /* Desktop */
+  display: block;
 }
+
 .split .card {
   padding: 1.25rem 1.25rem 1.1rem;
 }

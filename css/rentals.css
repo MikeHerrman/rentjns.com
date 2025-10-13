@@ -125,7 +125,7 @@
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 9; /* Mobile */
   display: block;
 }
 .rentals .thumb .thumb-title {
@@ -197,7 +197,7 @@
   position: relative;
   margin: auto;
   max-inline-size: min(96vw, 1100px);
-  max-block-size: 90vh;
+  max-block-size: 90svh;
   background: #292b2a;
   border-radius: 14px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
@@ -222,7 +222,7 @@
   display: block;
   margin: 0 auto;
   max-inline-size: 100%; /* never overflow width */
-  max-block-size: min(82svh, 82vh); /* cap height (use safe vh on mobile) */
+  max-block-size: min(82svh, 82svh); /* cap height (use safe vh on mobile) */
   width: auto; /* preserve aspect */
   height: auto;
   object-fit: contain; /* letterbox if needed */
@@ -371,7 +371,6 @@
 } /* create a base context */
 .rentals .thumbs-track {
   position: relative;
-  z-index: 0;
 }
 
 .rentals .thumbs-list {
@@ -388,10 +387,6 @@
 }
 
 /* Let clicks pass through the thumbnail image itself */
-.rentals .thumb img {
-  pointer-events: none;
-}
-
 .rentals .thumb img {
   pointer-events: none;
 }

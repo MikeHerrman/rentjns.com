@@ -117,6 +117,46 @@ ol {
   margin-inline: auto;
 }
 
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.05rem;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 0.08s ease, opacity 0.2s ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--g-start, #0c5a3a);
+  color: #fff !important; /* force light text */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.btn-primary:visited {
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  opacity: 0.9;
+  text-decoration: none;
+}
+
+.btn-ghost {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: transparent;
+}
+.btn-ghost:hover,
+.btn-ghost:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  text-decoration: none;
+}
+
 /* Simple utilities */
 .hide {
   display: none !important;
