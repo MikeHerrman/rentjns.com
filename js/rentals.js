@@ -13,7 +13,7 @@ const rentals = [
     sqft: 1300,
     pets: false,
     blurb:
-      'Walkable to the beach, this bright, easygoing cottage is set up for simple beach days and low-stress nights. Sleeps six across a king bedroom, queen bedroom, and a comfy queen sleeper. Full kitchen, fast Wi-Fi, smart TV, and space to sit around to play some games. Park once and walk to coffee, games at Quinault Casino, and the shoreline for sunset. Great for families or two couples who want quiet mornings and sand-in-your-toes afternoons. No parties; local quiet hours after 10pm.',
+      'Walkable to the beach, this bright, easygoing cottage is set up for simple beach days and low-stress nights. Sleeps 4+ across a queen bed bedroom, and two twin bed bedrooms. Full kitchen, fast Wi-Fi, smart TV, and space to sit around to play some games. Park once and walk to coffee, games at Quinault Casino, and the shoreline for sunset. Great for families or two couples who want quiet mornings and sand-in-your-toes afternoons. No parties; local quiet hours after 10pm.',
     gallery: [
       'deck-1a.jpg',
       'living-1a.jpg',
@@ -140,8 +140,7 @@ function renderStrip(center) {
   listEl.innerHTML = idxs
     .map((ri, j) => {
       const r = rentals[ri];
-      const role =
-        j === 0 ? 'bufferL' : j === 1 ? 'prev' : j === 2 ? 'center' : j === 3 ? 'next' : 'bufferR';
+      const role = j === 0 ? 'bufferL' : j === 1 ? 'prev' : j === 2 ? 'center' : j === 3 ? 'next' : 'bufferR';
       const active = role === 'center' ? ' is-active' : '';
       const ariaCur = role === 'center' ? ' aria-current="true"' : '';
       return `
@@ -370,12 +369,8 @@ function buildGalleryOnce() {
   galleryNext = wrap.querySelector('.gallery-nav.next');
   galleryClose = wrap.querySelector('.gallery-close');
 
-  galleryPrev.addEventListener('click', () =>
-    showGallery(mod(galleryAt - 1, galleryImages.length))
-  );
-  galleryNext.addEventListener('click', () =>
-    showGallery(mod(galleryAt + 1, galleryImages.length))
-  );
+  galleryPrev.addEventListener('click', () => showGallery(mod(galleryAt - 1, galleryImages.length)));
+  galleryNext.addEventListener('click', () => showGallery(mod(galleryAt + 1, galleryImages.length)));
   galleryClose.addEventListener('click', closeGallery);
 
   wrap.querySelector('.gallery-backdrop')?.addEventListener('click', closeGallery);
