@@ -16,10 +16,10 @@ const rentals = [
       'Walkable to the beach, this bright, easygoing cottage is set up for simple beach days and low-stress nights. Sleeps six across a king bedroom, queen bedroom, and a comfy queen sleeper. Full kitchen, fast Wi-Fi, smart TV, and space to sit around to play some games. Park once and walk to coffee, games at Quinault Casino, and the shoreline for sunset. Great for families or two couples who want quiet mornings and sand-in-your-toes afternoons. No parties; local quiet hours after 10pm.',
     gallery: [
       'deck-1a.jpg',
-      'kitchen-1a.jpg',
       'living-1a.jpg',
       'living-1b.jpg',
       'living-1c.jpg',
+      'kitchen-1a.jpg',
       'kitchen-1b.jpg',
       'kitchen-1c.jpg',
       'kitchen-1d.jpg',
