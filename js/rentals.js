@@ -13,7 +13,7 @@ const rentals = [
     sqft: 1300,
     pets: false,
     blurb:
-      'Walkable to the beach, this bright, easygoing cottage is set up for simple beach days and low-stress nights. Sleeps 4+ across a queen bed bedroom, and two twin bed bedrooms. Full kitchen, fast Wi-Fi, smart TV, and space to sit around to play some games. Park once and walk to coffee, games at Quinault Casino, and the shoreline for sunset. Great for families or two couples who want quiet mornings and sand-in-your-toes afternoons. No parties; local quiet hours after 10pm.',
+      "Escape to the beach and relax at our Coastal Cottage. This home offers a spacious open living area, 3 cozy bedrooms, roomy full bathroom and large private yard.  Just 1 mile to the beach, 3 miles to Quinault Casino, 4 miles to Ocean Shores and a 20 min drive to Seabrook.  Whether you stay in or venture out, you'll find everything you need here for relaxation and fun!",
     gallery: [
       'deck-1a.jpg',
       'living-1a.jpg',
