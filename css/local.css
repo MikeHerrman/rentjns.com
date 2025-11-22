@@ -1,0 +1,224 @@
+/* =======================================================
+   local.css — Local Shops, Eats & Attractions
+   Base (non-responsive) styles only
+   ======================================================= */
+
+/* --------- Layout Wrappers --------- */
+.local .section {
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
+}
+
+.local-filter {
+  margin: 1.5rem 0 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+}
+
+.local-filter__label {
+  font-weight: 600;
+}
+
+.local-filter__select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
+  min-width: 170px;
+  font-size: 1rem;
+}
+
+/* =======================================================
+   Accordion Sections
+   ======================================================= */
+
+/* Full section wrapper */
+.local-section {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Header button */
+.local-section__header {
+  width: 100%;
+  background: color-mix(in srgb, var(--g-start) 10%, #ffffff);
+  color: var(--g-start);
+  padding: 0.9rem 1.25rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--step-1);
+  font-weight: 700;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.local-section__header:hover {
+  background: color-mix(in srgb, var(--g-start) 16%, #ffffff);
+}
+
+/* Icon + title */
+.local-section__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.local-section__icon {
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+/* Chevron */
+.local-section__chevron {
+  font-size: 1.25rem;
+  transition: transform 0.25s ease;
+}
+
+/* Rotated when open */
+.local-section.is-open .local-section__chevron {
+  transform: rotate(180deg);
+}
+
+/* Body */
+.local-section__body {
+  padding: 1.25rem 1.25rem 1.5rem;
+  animation: accordion-fade 0.2s ease;
+}
+
+@keyframes accordion-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =======================================================
+   Subheadings (Kid-Friendly / 21+)
+   ======================================================= */
+
+.local-subheading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 1rem 0 0.75rem;
+  color: var(--g-start);
+}
+
+/* =======================================================
+   Recommendation List
+   ======================================================= */
+
+.local-list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.local-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 0.75rem;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Thumb + content layout */
+.local-item__main {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.local-thumb {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: #e5e5e5;
+}
+
+/* Name + text */
+.local-item__name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--g-start);
+  text-decoration: none;
+}
+
+.local-item__name:hover {
+  text-decoration: underline;
+}
+
+.local-item__text {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+/* Town badge row */
+.local-item__meta {
+  margin-top: 0.25rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.78rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--g-start) 10%, #ffffff);
+  color: var(--g-start);
+  font-weight: 600;
+}
+
+/* Empty state */
+.local-empty-note {
+  font-style: italic;
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+/* Force dropdown text and its menu to be readable */
+.local-filter__select {
+  background-color: #ffffff; /* white dropdown box */
+  color: #222; /* dark readable text */
+}
+
+/* Hide reset button by default */
+#reset-town-filter {
+  display: none;
+}
+
+.local-filter__select option {
+  color: #222; /* readable option text */
+  background: #ffffff; /* menu background */
+}
+
+.local-filter__reset {
+  background: none;
+  border: none;
+  color: var(--g-start);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  text-decoration: underline;
+}
+
+.local-filter__reset:hover {
+  opacity: 0.75;
+}

@@ -4,57 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://rentjnscom.netlify.app/views/local" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Adventure made easy - Comfortable homes, Clear pricing, Friendly local help."
-    />
-    <meta property="og:title" content="Washington Coastal Getaways | JNS Vacation Rentals" />
-    <meta
-      property="og:description"
-      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
-    />
-    <meta property="og:image" content="https://rentjnscom.netlify.app/assets/images/card-rentals.jpg" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://rentjnscom.netlify.app/views/local" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Washington Coast Attractions & Eats | JNS Vacation Rentals" />
-    <meta
-      name="twitter:description"
-      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
-    />
-    <meta name="twitter:image" content="https://rentjnscom.netlify.app/assets/images/card-rentals.jpg" />
-    <!-- PWA manifest + theme color -->
-    <link rel="manifest" href="/assets/favicon/site.webmanifest" />
-    <meta name="theme-color" content="#0c5a3a" />
-
-    <!-- Favicons -->
-    <link rel="icon" href="/assets/favicon/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/css/global.css" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/query.css" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://yourdomain.com/views/local.html" />
-
     <meta
       name="description"
       content="Explore Washington's coast — local shops, restaurants, and must-see attractions near your JNS Vacation Rental."
     />
 
+    <!-- Open Graph -->
     <meta property="og:title" content="Washington Coast Attractions & Eats | JNS Vacation Rentals" />
     <meta property="og:description" content="Discover Washington's best coastal attractions, dining, and local favorites near your stay." />
-    <meta property="og:image" content="/assets/images/card-things.jpg" />
+    <meta property="og:image" content="https://rentjnscom.netlify.app/assets/images/card-things.jpg" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yourdomain.com/views/local.html" />
+    <meta property="og:url" content="https://rentjnscom.netlify.app/views/local" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JNS Vacation Rentals | Washington Coast Attractions" />
+    <meta name="twitter:title" content="Washington Coast Attractions & Eats | JNS Vacation Rentals" />
     <meta name="twitter:description" content="Discover Washington's best coastal attractions, dining, and local favorites near your stay." />
-    <meta name="twitter:image" content="/assets/images/card-things.jpg" />
+    <meta name="twitter:image" content="https://rentjnscom.netlify.app/assets/images/card-things.jpg" />
+
+    <!-- PWA manifest + theme color -->
+    <link rel="manifest" href="/assets/favicon/site.webmanifest" />
+    <meta name="theme-color" content="#0c5a3a" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/query.css" />
+    <link rel="stylesheet" href="/css/local.css" />
 
     <title>Attractions & Eats | JNS Vacation Rentals</title>
   </head>
@@ -72,7 +57,9 @@
             <ul class="nav-items">
               <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
               <li><a class="nav-item" href="/views/events.html">Events</a></li>
-              <li><a class="nav-item" href="/views/local.html">Local</a></li>
+              <li>
+                <a class="nav-item is-active" href="/views/local.html">Local</a>
+              </li>
               <li><a class="nav-item" href="/views/about.html">About</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
@@ -91,7 +78,9 @@
             <ul class="nav-items">
               <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
               <li><a class="nav-item" href="/views/events.html">Events</a></li>
-              <li><a class="nav-item" href="/views/local.html">Local</a></li>
+              <li>
+                <a class="nav-item is-active" href="/views/local.html">Local</a>
+              </li>
               <li><a class="nav-item" href="/views/about.html">About</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
@@ -100,15 +89,274 @@
       </div>
     </header>
 
-    <main id="main" class="fill-viewport">
-      <div class="container">
-        <h1>Local Shops, Eats & Attractions</h1>
-        <p>
-          Discover the best of Washington’s coast — from local dining and cozy coffee spots to scenic trails and family favorites near Ocean Shores.
-        </p>
+    <main id="main" class="fill-viewport local">
+      <section class="section">
+        <div class="container">
+          <h1>Local Shops, Eats &amp; Attractions</h1>
+          <p>Discover the best of Washington’s coast from casual bites and cozy coffee spots to local shops and scenic outings near your JNS stay.</p>
 
-        <!-- your content -->
-      </div>
+          <!-- Town filter -->
+          <section class="local-filter" aria-label="Filter recommendations by town">
+            <label class="local-filter__label" for="town-filter"> Show recommendations near: </label>
+            <select id="town-filter" class="local-filter__select">
+              <option value="all">All areas</option>
+              <option value="Hoquiam">Hoquiam</option>
+              <option value="Aberdeen">Aberdeen</option>
+              <option value="Ocean Shores">Ocean Shores</option>
+              <option value="Seabrook">Seabrook</option>
+              <option value="Pacific Beach/Moclips">Pacific Beach/Moclips</option>
+              <option value="Other">Other</option>
+            </select>
+            <button id="reset-town-filter" class="local-filter__reset" type="button">Reset</button>
+          </section>
+
+          <!-- Accordion sections -->
+          <div class="local-sections" data-accordion>
+            <!-- Food -->
+            <section class="local-section is-open" data-section="food" aria-label="Food & Drink">
+              <button
+                class="local-section__header"
+                type="button"
+                aria-expanded="true"
+                aria-controls="local-section-food"
+                id="local-section-food-header"
+              >
+                <div class="local-section__title">
+                  <span class="local-section__icon" aria-hidden="true">🍽️</span>
+                  <span>Food &amp; Drink</span>
+                </div>
+                <span class="local-section__chevron" aria-hidden="true">▾</span>
+              </button>
+
+              <div class="local-section__body" id="local-section-food" role="region" aria-labelledby="local-section-food-header">
+                <h2 class="local-subheading">All ages welcome</h2>
+                <ul class="local-list">
+                  <li class="local-item" data-town="Hoquiam">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Casual coastal café in Hoquiam" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Harbor House Café</a>
+                        <p class="local-item__text">Comfort-food café with all-day breakfast, kid-friendly portions, and relaxed small town vibes.</p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Hoquiam</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Ocean Shores">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Casual burger spot near the beach" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Driftwood Grill</a>
+                        <p class="local-item__text">
+                          Burgers, fries, and milkshakes a few minutes from the sand easy stop with kids after a long beach day.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Ocean Shores</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Seabrook">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Cozy café in Seabrook" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Seabrook Corner Café</a>
+                        <p class="local-item__text">Coffee, pastries, and simple breakfast plates in the heart of Seabrook’s walkable village.</p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Seabrook</span>
+                    </div>
+                  </li>
+                </ul>
+
+                <h2 class="local-subheading">21+ hangouts</h2>
+                <ul class="local-list">
+                  <li class="local-item" data-town="Ocean Shores">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Bar with taps and cozy seating" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Tide &amp; Tap</a>
+                        <p class="local-item__text">
+                          Craft beer, coastal cocktails, and bar snacks with a locals’ hangout feel — adults-only after 8pm.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Ocean Shores</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Hoquiam">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Neighborhood bar in Hoquiam" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Railside Tavern</a>
+                        <p class="local-item__text">
+                          Classic small-town tavern with pool, darts, and a cold pint after a day of driving or exploring.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Hoquiam</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Other">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Lounge with low lighting and cocktails" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Harbor Lounge</a>
+                        <p class="local-item__text">
+                          Low-key cocktail spot a short drive from town better for date night than bringing the whole crew.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Other</span>
+                    </div>
+                  </li>
+                </ul>
+
+                <p class="local-empty-note" hidden>No food &amp; drink listings in this area yet try another town or check back soon.</p>
+              </div>
+            </section>
+
+            <!-- Shops -->
+            <section class="local-section" data-section="shops" aria-label="Local Shops">
+              <button
+                class="local-section__header"
+                type="button"
+                aria-expanded="false"
+                aria-controls="local-section-shops"
+                id="local-section-shops-header"
+              >
+                <div class="local-section__title">
+                  <span class="local-section__icon" aria-hidden="true">🛍️</span>
+                  <span>Shops</span>
+                </div>
+                <span class="local-section__chevron" aria-hidden="true">▸</span>
+              </button>
+
+              <div class="local-section__body" id="local-section-shops" role="region" aria-labelledby="local-section-shops-header" hidden>
+                <ul class="local-list">
+                  <li class="local-item" data-town="Hoquiam">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Small gift shop storefront in Hoquiam" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Harbor Gift Co.</a>
+                        <p class="local-item__text">
+                          Local gifts, coastal-themed decor, and easy souvenirs to take a bit of the harbor home with you.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Hoquiam</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Ocean Shores">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Beach shop with kites and toys" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Shores Beach Shop</a>
+                        <p class="local-item__text">Kites, buckets, and last-minute beach gear the spot to grab what you forgot to pack.</p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Ocean Shores</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Seabrook">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Boutique storefront in Seabrook" />
+                      <div class="local-item__content">
+                        <a href="https://example.com" class="local-item__name" target="_blank" rel="noreferrer">Seabrook General &amp; Goods</a>
+                        <p class="local-item__text">Small boutique with essentials, snacks, and a few fun finds right in the village.</p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Seabrook</span>
+                    </div>
+                  </li>
+                </ul>
+
+                <p class="local-empty-note" hidden>No shop listings in this area yet try another town or check back soon.</p>
+              </div>
+            </section>
+
+            <!-- Activities -->
+            <section class="local-section" data-section="activities" aria-label="Activities & Attractions">
+              <button
+                class="local-section__header"
+                type="button"
+                aria-expanded="false"
+                aria-controls="local-section-activities"
+                id="local-section-activities-header"
+              >
+                <div class="local-section__title">
+                  <span class="local-section__icon" aria-hidden="true">🧭</span>
+                  <span>Activities &amp; Attractions</span>
+                </div>
+                <span class="local-section__chevron" aria-hidden="true">▸</span>
+              </button>
+
+              <div class="local-section__body" id="local-section-activities" role="region" aria-labelledby="local-section-activities-header" hidden>
+                <ul class="local-list">
+                  <li class="local-item" data-town="Ocean Shores">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="People walking along the beach at low tide" />
+                      <div class="local-item__content">
+                        <span class="local-item__name">Ocean Shores Beach Access</span>
+                        <p class="local-item__text">
+                          Wide, drive-on beach with plenty of space for walking, sandcastles, kite flying, and storm watching.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Ocean Shores</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Pacific Beach/Moclips">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Scenic overlook of Pacific Beach coastline" />
+                      <div class="local-item__content">
+                        <span class="local-item__name">Pacific Beach Overlook</span>
+                        <p class="local-item__text">Quick stop with big views of the coastline perfect for photos or a quiet moment between plans.</p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Pacific Beach/Moclips</span>
+                    </div>
+                  </li>
+
+                  <li class="local-item" data-town="Hoquiam">
+                    <div class="local-item__main">
+                      <img class="local-thumb" src="/assets/images/local/coming-soon.png" alt="Trail through a green coastal forest" />
+                      <div class="local-item__content">
+                        <span class="local-item__name">Local Forest Walks</span>
+                        <p class="local-item__text">
+                          Short drives from Hoquiam lead to easy forest trails, great for stretching your legs between beach days.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="local-item__meta">
+                      <span class="badge badge--town">Hoquiam</span>
+                    </div>
+                  </li>
+                </ul>
+
+                <p class="local-empty-note" hidden>No activities listed in this area yet try another town or check back soon.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="footer" role="contentinfo">
@@ -116,5 +364,6 @@
     </footer>
 
     <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/local.js"></script>
   </body>
 </html>

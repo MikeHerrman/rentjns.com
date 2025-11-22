@@ -1,13 +1,18 @@
 /* =======================================================
-   query.css — viewport responsiveness + hamburger/drawer
+   query.css — Responsive + Drawer
+   REFACTORED: ordered by breakpoint, grouped by feature
    ======================================================= */
 
-/* ---------- Breakpoint tokens (optional) ---------- */
+/* =======================================================
+   BREAKPOINT TOKENS
+   ======================================================= */
+
 @media (min-width: 801px) {
   :root {
     --bp: desktop;
   }
 }
+
 @media (max-width: 800px) {
   :root {
     --bp: mobile;
@@ -15,10 +20,10 @@
 }
 
 /* =======================================================
-   HAMBURGER / DRAWER SYSTEM (base)
+   HAMBURGER / DRAWER SYSTEM (base styles)
+   Always active — NOT breakpoint dependent
    ======================================================= */
 
-/* Accessible off-screen checkbox */
 .navcheck {
   position: absolute !important;
   inline-size: 1px;
@@ -31,7 +36,6 @@
   border: 0;
 }
 
-/* Toggle button (hamburger icon) */
 .nav-toggle {
   display: none;
   inline-size: 40px;
@@ -43,6 +47,7 @@
   -webkit-tap-highlight-color: transparent;
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
+
 .nav-toggle::before,
 .nav-toggle::after {
   content: '';
@@ -53,15 +58,16 @@
   background: var(--on-green, #fff);
   transition: transform 0.25s ease, top 0.25s ease, bottom 0.25s ease, opacity 0.25s ease;
 }
+
 .nav-toggle::before {
   top: 13px;
   box-shadow: 0 8px 0 0 var(--on-green, #fff);
 }
+
 .nav-toggle::after {
   bottom: 13px;
 }
 
-/* Drawer panel */
 .nav-drawer {
   position: fixed;
   inset: 0 auto 0 0;
@@ -77,34 +83,7 @@
   flex-direction: column;
   padding: 1rem;
 }
-.nav-drawer .brand {
-  margin-bottom: 0.5rem;
-}
-.nav-drawer .nav-items {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0;
-  display: grid;
-  gap: 0.25rem;
-}
-.nav-drawer .nav-item {
-  display: block;
-  padding: 0.75rem 0.5rem;
-  border-radius: 8px;
-}
-.nav-drawer .nav-item:hover,
-.nav-drawer .nav-item:focus-visible {
-  background: #f3f4f6;
-  color: #111;
-  text-decoration: none;
-}
-.nav-drawer .nav-item.is-active {
-  color: var(--g-end, #9dd8a6);
-  background: transparent;
-  font-weight: 600;
-}
 
-/* NAV OVERLAY (click-block fix) */
 .nav-overlay {
   position: fixed;
   inset: 0;
@@ -116,7 +95,6 @@
   z-index: 999;
 }
 
-/* When menu is open, enable overlay */
 .nav:has(#navcheck:checked) .nav-overlay,
 .nav.is-open .nav-overlay {
   display: block;
@@ -124,87 +102,102 @@
   pointer-events: auto;
 }
 
-/* Checkbox → icon animation */
 .navcheck:checked + .nav-toggle::before {
   top: 19px;
   transform: rotate(45deg);
   box-shadow: none;
 }
+
 .navcheck:checked + .nav-toggle::after {
   bottom: 19px;
   transform: rotate(-45deg);
 }
 
-/* :has() bridge to open drawer regardless of DOM nesting */
 .nav:has(#navcheck:checked) .nav-drawer,
 .nav.is-open .nav-drawer {
   transform: translateX(0);
 }
 
-/* JS fallback toggles (nav.js applies these) */
 .nav-inner.is-open .nav-toggle::before {
   top: 19px;
   transform: rotate(45deg);
   box-shadow: none;
 }
+
 .nav-inner.is-open .nav-toggle::after {
   bottom: 19px;
   transform: rotate(-45deg);
 }
 
 /* =======================================================
-   RESPONSIVE LAYOUTS — GROUPED BY BREAKPOINT (DESC)
+   RESPONSIVE BREAKPOINTS (TOP → DOWN)
    ======================================================= */
 
-/* ---------- ≤1000px ---------- */
+/* =======================================================
+   ≤1000px
+   ======================================================= */
+
+/* GLOBAL */
 @media (max-width: 1000px) {
-  /* Alternating splits: tighten gap */
   .split {
     gap: 1.25rem;
   }
 
-  /* CTA grid: 2 columns */
   .cta-grid {
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Rentals */
+  /* RENTALS */
   .rentals .rentals-shell {
     grid-template-rows: 5fr 2fr;
   }
+
   .rentals .thumbs-list {
     grid-auto-columns: calc((100% - 1rem) / 2);
   }
+
   .rentals .primary.is-open .image-frame {
     transform: translateX(-55%);
   }
+
   .rentals .info-panel {
     inline-size: min(65%, 420px);
   }
+
+  /* LOCAL */
+  .local-item__main {
+    flex-direction: row;
+  }
 }
 
-/* ---------- ≤800px ---------- */
+/* =======================================================
+   ≤800px — MOBILE
+   ======================================================= */
+
+/* GLOBAL */
 @media (max-width: 800px) {
-  /* Header/nav */
   .nav-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
+
   .site-header .nav .site-nav {
     display: none;
   }
+
   .nav-inner {
     padding: 0.75rem 0;
   }
+
   .nav-items {
     gap: 0.75rem;
   }
 
-  /* Hero */
   .hero {
     padding: 2rem 0;
   }
+
   .hero-body {
     margin-inline: 1rem;
     max-width: 100%;
@@ -212,70 +205,97 @@
     background-color: rgba(0, 46, 73, 0.5);
   }
 
-  /* Alternating splits: stack & fix media height */
   .split {
     flex-direction: column;
     align-items: stretch;
     gap: 1.25rem;
   }
-  /* Reset desktop flex sizing so height doesn’t collapse in column layout */
+
   .split__media,
   .split__content {
     flex: 0 0 auto;
     width: 100%;
   }
-  /* Give the figure a definite height */
+
   .split__media {
     aspect-ratio: 3 / 2;
     position: relative;
   }
-  /* Fill the figure’s box */
+
   .split__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
+
+  /* LOCAL */
+  .local-item__main {
+    flex-direction: column;
+  }
+
+  .local-thumb {
+    width: 100%;
+    height: 150px;
+  }
 }
 
-/* ---------- ≤700px ---------- */
+/* =======================================================
+   ≤700px
+   ======================================================= */
+
+/* SHARED */
 @media (max-width: 700px) {
   .band {
     min-block-size: 30svh;
   }
 }
 
-/* ---------- ≤650px ---------- */
+/* =======================================================
+   ≤650px
+   ======================================================= */
+
+/* GLOBAL */
 @media (max-width: 650px) {
   .cta-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* ---------- ≤600px ---------- */
+/* =======================================================
+   ≤600px — SMALL MOBILE
+   ======================================================= */
+
+/* GLOBAL */
 @media (max-width: 600px) {
   .nav-drawer {
     width: min(90%, 320px);
     padding: 0.75rem;
   }
+
   .nav-drawer .nav-item {
     padding: 0.65rem 0.5rem;
   }
 
-  /* Rentals: single card in track; full-width panel */
+  /* RENTALS */
   .rentals .thumbs-list {
     grid-auto-columns: 100%;
   }
+
   .rentals .info-panel {
     inline-size: 100%;
     box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.12);
   }
+
   .rentals .primary.is-open .image-frame {
     transform: none;
   }
 }
 
-/* ---------- ≥801px (desktop) ---------- */
+/* =======================================================
+   ≥801px — DESKTOP OVERRIDES
+   ======================================================= */
+
 @media (min-width: 801px) {
   .nav-toggle,
   .nav-overlay,
@@ -283,16 +303,16 @@
   .navcheck {
     display: none !important;
   }
+
   .site-header .nav .site-nav {
     display: block;
   }
 }
 
 /* =======================================================
-   ENVIRONMENTAL PREFERENCES / SUPPORTS
+   ENVIRONMENTAL PREFERENCES
    ======================================================= */
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .nav-drawer,
   .nav-overlay,
@@ -302,20 +322,22 @@
   }
 }
 
-/* Dark mode */
 @media (prefers-color-scheme: dark) {
   .nav-drawer {
     background: #0f172a;
     color: #f8fafc;
   }
+
   .nav-drawer .nav-item:hover,
   .nav-drawer .nav-item:focus-visible {
     background: rgba(255, 255, 255, 0.08);
     color: #f8fafc;
   }
+
   .nav-overlay {
     background: rgba(0, 0, 0, 0.5);
   }
+
   .nav-toggle::before,
   .nav-toggle::after {
     background: #f8fafc;
@@ -323,15 +345,16 @@
   }
 }
 
-/* High contrast / forced colors */
 @media (forced-colors: active) {
   .nav-overlay {
     background: CanvasText;
     opacity: 0.3;
   }
+
   .nav-drawer {
     border: 1px solid CanvasText;
   }
+
   .nav-toggle::before,
   .nav-toggle::after {
     background: CanvasText;
@@ -339,7 +362,10 @@
   }
 }
 
-/* Stabilize hero on mobile to avoid address bar jitter */
+/* =======================================================
+   SUPPORTS: SVH Stabilization
+   ======================================================= */
+
 @supports (height: 100svh) {
   @media (max-width: 800px) {
     .hero {
@@ -348,7 +374,6 @@
   }
 }
 
-/* Fallback for svh support (rentals shell height) */
 @supports not (height: 100svh) {
   .rentals .rentals-shell {
     block-size: 100svh;
