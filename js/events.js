@@ -212,7 +212,7 @@ function buildFilters(events) {
   placeholder.disabled = true;
   placeholder.selected = true;
   placeholder.value = '';
-  placeholder.textContent = 'Filter by tags…  (Ctrl/Cmd+click)';
+  placeholder.textContent = 'Single or Multi select';
   tagsSelect.appendChild(placeholder);
 
   for (const tag of allTags) {

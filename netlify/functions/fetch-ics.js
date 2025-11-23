@@ -2,7 +2,7 @@
 
 export const handler = async () => {
   const ICS_URL =
-    'https://calendar.google.com/calendar/ical/0841982bf57ed3d9d6c39aacece5b0f25bc7bc5894b1c6750218d64a047c96f4%40group.calendar.google.com/public/basic.ics';
+    'https://calendar.google.com/calendar/ical/e2cb3bffa47e974e82bfa40a1c33312f9dd0ed5f02ebdf1f3fe8ac3e13eb618a%40group.calendar.google.com/public/basic.ics';
 
   try {
     const res = await fetch(ICS_URL);
