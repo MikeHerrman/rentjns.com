@@ -2,7 +2,7 @@
    events.js — Fetch Google Calendar ICS + dynamic filters
    ===================================================== */
 
-const ICS_URL = '/.netlify/functions/fetch-ics';
+const ICS_URL = 'https://rentjnscom.netlify.app/.netlify/functions/fetch-ics';
 
 const listEl = document.getElementById('events-list');
 const tagsSelect = document.getElementById('filter-tags');
@@ -15,35 +15,46 @@ if (!listEl || !tagsSelect || !townSelect) {
 /* ---------- 1. Helpers ---------- */
 
 function normalizeFoldedLines(icsText) {
-  // ICS spec: lines that continue start with a space; join them back
   return icsText.replace(/\r?\n[ \t]/g, '');
 }
 
 function getProp(block, name) {
-  // Matches things like "SUMMARY:Title" or "DTSTART;TZID=...:value"
   const regex = new RegExp(`${name}(?:;[^:]*)?:(.*)`, 'i');
   const match = block.match(regex);
-  return match ? match[1].trim() : '';
+  if (!match) return '';
+
+  return match[1]
+    .trim()
+    .replace(/\\n/gi, '\n') // remove literal "\n"
+    .replace(/\\,/g, ',') // remove ICS comma escapes
+    .replace(/\\/g, ''); // remove all stray backslashes
 }
 
 function parseICSDate(value) {
   if (!value) return null;
-  // Expect format like 20251124T200000Z or 20251124T200000
   const m = value.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z?/);
   if (!m) return null;
-  const iso = `${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`;
-  return new Date(iso);
+  return new Date(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`);
 }
 
+/* ---------- TAG PARSER (correct version) ---------- */
+
 function parseTags(text) {
-  if (!text) return { clean: '', tags: [] };
-  const tags = [];
+  if (!text) return { clean: text, tags: [] };
+
   const tagRegex = /\[([^\]]+)\]/g;
+  const tags = [];
   let match;
 
   while ((match = tagRegex.exec(text)) !== null) {
-    const tag = match[1].trim();
-    if (tag) tags.push(tag);
+    const raw = match[1];
+
+    // split tags by comma, remove escapes, trim
+    raw
+      .split(',')
+      .map((t) => t.replace(/\\/g, '').trim())
+      .filter(Boolean)
+      .forEach((t) => tags.push(t));
   }
 
   const clean = text.replace(/\[[^\]]+\]/g, '').trim();
@@ -52,8 +63,8 @@ function parseTags(text) {
 
 function deriveTown(location) {
   if (!location) return 'Other';
-  const first = location.split(',')[0].trim();
-  return first || 'Other';
+  const cleaned = location.replace(/\\/g, '');
+  return cleaned.split(',')[0].trim() || 'Other';
 }
 
 function formatDateRange(start, end) {
@@ -63,20 +74,14 @@ function formatDateRange(start, end) {
   const optsTime = { hour: 'numeric', minute: '2-digit' };
 
   const dateStr = start.toLocaleDateString(undefined, optsDate);
-
-  if (!end) {
-    const timeStr = start.toLocaleTimeString(undefined, optsTime);
-    return `${dateStr} • ${timeStr}`;
-  }
-
-  const sameDay = start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth() && start.getDate() === end.getDate();
-
   const startTime = start.toLocaleTimeString(undefined, optsTime);
-  const endTime = end.toLocaleTimeString(undefined, optsTime);
 
-  if (sameDay) {
-    return `${dateStr} • ${startTime}–${endTime}`;
-  }
+  if (!end) return `${dateStr} • ${startTime}`;
+
+  const same = start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth() && start.getDate() === end.getDate();
+
+  const endTime = end.toLocaleTimeString(undefined, optsTime);
+  if (same) return `${dateStr} • ${startTime}–${endTime}`;
 
   const endDateStr = end.toLocaleDateString(undefined, optsDate);
   return `${dateStr} ${startTime} → ${endDateStr} ${endTime}`;
@@ -86,8 +91,8 @@ function formatDateRange(start, end) {
 
 function parseEventsFromICS(icsRaw) {
   const ics = normalizeFoldedLines(icsRaw);
+  const blocks = ics.split('BEGIN:VEVENT').slice(1);
 
-  const blocks = ics.split('BEGIN:VEVENT').slice(1); // first chunk is preamble
   const events = [];
 
   for (const blockRaw of blocks) {
@@ -96,38 +101,30 @@ function parseEventsFromICS(icsRaw) {
     const summaryRaw = getProp(block, 'SUMMARY');
     const descriptionRaw = getProp(block, 'DESCRIPTION');
     const locationRaw = getProp(block, 'LOCATION');
+
     const startRaw = getProp(block, 'DTSTART');
     const endRaw = getProp(block, 'DTEND');
+
     const uid = getProp(block, 'UID') || crypto.randomUUID?.() || String(events.length + 1);
 
     const { clean: cleanSummary, tags: tagsFromSummary } = parseTags(summaryRaw);
     const { clean: cleanDescription, tags: tagsFromDesc } = parseTags(descriptionRaw);
 
-    const allTags = Array.from(new Set([...tagsFromSummary, ...tagsFromDesc]));
-
-    const start = parseICSDate(startRaw);
-    const end = parseICSDate(endRaw);
-    const town = deriveTown(locationRaw);
+    const allTags = Array.from(new Set([...tagsFromSummary, ...tagsFromDesc])).sort();
 
     events.push({
       id: uid,
-      title: cleanSummary || '(Untitled event)',
-      description: cleanDescription,
-      location: locationRaw,
-      town,
+      title: cleanSummary.replace(/\\n/g, '').trim(),
+      description: cleanDescription.replace(/\\n/g, '\n').trim(),
+      location: locationRaw.replace(/\\/g, ''),
+      town: deriveTown(locationRaw),
       tags: allTags,
-      start,
-      end,
+      start: parseICSDate(startRaw),
+      end: parseICSDate(endRaw),
     });
   }
 
-  // Sort by start date ascending
-  events.sort((a, b) => {
-    if (!a.start || !b.start) return 0;
-    return a.start - b.start;
-  });
-
-  return events;
+  return events.sort((a, b) => (a.start && b.start ? a.start - b.start : 0));
 }
 
 /* ---------- 3. Render + Filters ---------- */
@@ -136,9 +133,7 @@ function renderEvents(events) {
   listEl.innerHTML = '';
 
   if (!events.length) {
-    const p = document.createElement('p');
-    p.textContent = 'No upcoming events found. Check back soon!';
-    listEl.appendChild(p);
+    listEl.innerHTML = '<p>No upcoming events found. Check back soon!</p>';
     return;
   }
 
@@ -157,9 +152,7 @@ function renderEvents(events) {
 
     const date = document.createElement('p');
     date.className = 'event-card__date';
-    if (ev.start) {
-      date.textContent = formatDateRange(ev.start, ev.end);
-    }
+    date.textContent = formatDateRange(ev.start, ev.end);
 
     header.appendChild(title);
     header.appendChild(date);
@@ -187,13 +180,11 @@ function renderEvents(events) {
     townBadge.textContent = ev.town;
     meta.appendChild(townBadge);
 
-    if (ev.tags && ev.tags.length) {
-      for (const tag of ev.tags) {
-        const t = document.createElement('span');
-        t.className = 'event-badge event-badge--tag';
-        t.textContent = tag;
-        meta.appendChild(t);
-      }
+    for (const tag of ev.tags) {
+      const t = document.createElement('span');
+      t.className = 'event-badge event-badge--tag';
+      t.textContent = tag;
+      meta.appendChild(t);
     }
 
     card.appendChild(meta);
@@ -202,11 +193,11 @@ function renderEvents(events) {
 }
 
 function buildFilters(events) {
-  // Tags
-  const allTags = Array.from(new Set(events.flatMap((ev) => ev.tags || []))).sort((a, b) => a.localeCompare(b));
+  const allTags = Array.from(new Set(events.flatMap((ev) => ev.tags))).sort();
+  const allTowns = Array.from(new Set(events.map((ev) => ev.town))).sort();
 
+  // Tags
   tagsSelect.innerHTML = '';
-  // Optional placeholder (non-selectable)
   const placeholder = document.createElement('option');
   placeholder.value = '';
   placeholder.disabled = true;
@@ -222,10 +213,7 @@ function buildFilters(events) {
   }
 
   // Towns
-  const allTowns = Array.from(new Set(events.map((ev) => ev.town || 'Other'))).sort((a, b) => a.localeCompare(b));
-
   townSelect.innerHTML = '';
-
   const allOpt = document.createElement('option');
   allOpt.value = 'all';
   allOpt.textContent = 'All Areas';
@@ -240,7 +228,6 @@ function buildFilters(events) {
 }
 
 function getSelectedTags() {
-  // ignore placeholder
   return Array.from(tagsSelect.options)
     .filter((opt) => opt.selected && opt.value)
     .map((opt) => opt.value);
@@ -251,42 +238,34 @@ function applyFilters() {
   const selectedTags = getSelectedTags();
 
   const cards = listEl.querySelectorAll('.event-card');
+
   cards.forEach((card) => {
-    const cardTown = card.dataset.town || 'Other';
-    const cardTags = (card.dataset.tags || '')
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean);
+    const cardTown = card.dataset.town;
+    const cardTags = card.dataset.tags.split(',').map((t) => t.trim());
 
-    const matchesTown = selectedTown === 'all' || cardTown === selectedTown;
+    const townMatch = selectedTown === 'all' || selectedTown === cardTown;
+    const tagMatch = selectedTags.length === 0 || selectedTags.every((t) => cardTags.includes(t));
 
-    const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => cardTags.includes(tag));
-
-    card.style.display = matchesTown && matchesTags ? '' : 'none';
+    card.style.display = townMatch && tagMatch ? '' : 'none';
   });
 }
 
-/* ---------- 4. Wire up + Init ---------- */
+/* ---------- 4. Init ---------- */
 
 async function init() {
-  if (!listEl || !tagsSelect || !townSelect) return;
-
   try {
     const res = await fetch(ICS_URL);
-    if (!res.ok) {
-      throw new Error(`ICS fetch failed: ${res.status}`);
-    }
     const icsText = await res.text();
     const events = parseEventsFromICS(icsText);
 
     renderEvents(events);
     buildFilters(events);
-    applyFilters(); // initial
+    applyFilters();
 
     tagsSelect.addEventListener('change', applyFilters);
     townSelect.addEventListener('change', applyFilters);
   } catch (err) {
-    console.error('[events.js] Error loading events:', err);
+    console.error('[events.js] Error:', err);
     listEl.innerHTML = '<p>We’re having trouble loading events right now. Please try again later.</p>';
   }
 }
