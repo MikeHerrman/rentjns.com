@@ -1,0 +1,107 @@
+/* =======================================================
+   events.css — Events Page (non-responsive styles only)
+   ======================================================= */
+
+/* ---------- Page Layout ---------- */
+.events-layout {
+  margin-top: 1rem;
+}
+
+.events-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* ---------- Sidebar Filter ---------- */
+.events-filter {
+  flex: 0 0 240px;
+  padding: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+}
+
+.events-filter h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--g-start);
+}
+
+.events-filter label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.events-filter select {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
+  font-size: 1rem;
+  color: #222;
+}
+
+/* ---------- Events List ---------- */
+.events-list {
+  flex: 1 1 auto;
+  display: grid;
+  gap: 1.25rem;
+}
+
+/* ---------- Event Card ---------- */
+.event-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+}
+
+.event-card__title {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--g-start);
+  margin: 0 0 0.5rem;
+  text-decoration: none;
+}
+
+.event-card__title:hover {
+  text-decoration: underline;
+}
+
+.event-card__meta {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+.event-card__desc {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #333;
+  margin-top: 0.25rem;
+}
+
+/* ---------- Badge for Category/Town ---------- */
+.event-badge {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  margin-right: 0.35rem;
+  margin-top: 0.25rem;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 6px;
+
+  background: color-mix(in srgb, var(--g-start) 10%, #ffffff);
+  color: var(--g-start);
+}

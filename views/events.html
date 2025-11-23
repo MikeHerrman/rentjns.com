@@ -4,27 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://rentjnscom.netlify.app/views/events" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Coastal vacation rentals near Ocean Shores & Quinault Casino. Adventure made easy - Comfortable homes, Clear pricing, Friendly local help."
-    />
-    <meta property="og:title" content="Washington Coast Events Schedule | JNS Vacation Rentalss" />
-    <meta
-      property="og:description"
-      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
-    />
+    <meta name="description" content="Coastal events near Ocean Shores, Hoquiam, Seabrook & Pacific Beach — festivals, markets, music, and more." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Washington Coast Events Schedule | JNS Vacation Rentals" />
+    <meta property="og:description" content="Find local events happening along the Washington coast — festivals, markets, live music, and more." />
     <meta property="og:image" content="https://rentjnscom.netlify.app/assets/images/card-rentals.jpg" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://rentjnscom.netlify.app/views/events" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Washington Coast Events Schedule | JNS Vacation Rentals" />
-    <meta
-      name="twitter:description"
-      content="Adventure made easy — Comfortable homes, clear pricing, and friendly local help along Washington's coast."
-    />
+    <meta name="twitter:description" content="Find local events happening along the Washington coast — festivals, markets, live music, and more." />
     <meta name="twitter:image" content="https://rentjnscom.netlify.app/assets/images/card-rentals.jpg" />
-    <!-- PWA manifest + theme color -->
+
+    <!-- Manifest + Theme -->
     <link rel="manifest" href="/assets/favicon/site.webmanifest" />
     <meta name="theme-color" content="#0c5a3a" />
 
@@ -33,45 +30,47 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/query.css" />
+    <link rel="stylesheet" href="/css/events.css" />
+
     <title>Events Schedule | JNS Vacation Rentals</title>
   </head>
 
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="site-header" role="banner">
+    <header class="site-header">
       <div class="nav">
         <div class="nav-inner container">
           <a class="brand" href="/index.html">JNS Vacation Rentals</a>
 
-          <!-- Desktop inline nav -->
           <nav class="site-nav" aria-label="Primary">
             <ul class="nav-items">
               <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
-              <li><a class="nav-item" href="/views/events.html">Events</a></li>
+              <li><a class="nav-item is-active" href="/views/events.html">Events</a></li>
               <li><a class="nav-item" href="/views/local.html">Local</a></li>
               <li><a class="nav-item" href="/views/about.html">About</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
             </ul>
           </nav>
 
-          <!-- Hamburger controls -->
           <input type="checkbox" id="navcheck" class="navcheck" />
-          <label for="navcheck" class="nav-toggle" aria-label="Open menu" aria-controls="nav-drawer" aria-expanded="false"></label>
+          <label for="navcheck" class="nav-toggle" aria-label="Open menu"></label>
         </div>
 
-        <!-- Overlay + Drawer -->
         <div class="nav-overlay"></div>
-        <aside class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Navigation">
+
+        <aside class="nav-drawer" id="nav-drawer">
           <a class="brand" href="/index.html">JNS Vacation Rentals</a>
+
           <nav aria-label="Mobile">
             <ul class="nav-items">
               <li><a class="nav-item" href="/views/rentals.html">Rentals</a></li>
-              <li><a class="nav-item" href="/views/events.html">Events</a></li>
+              <li><a class="nav-item is-active" href="/views/events.html">Events</a></li>
               <li><a class="nav-item" href="/views/local.html">Local</a></li>
               <li><a class="nav-item" href="/views/about.html">About</a></li>
               <li><a class="nav-item" href="/views/contact.html">Contact</a></li>
@@ -82,18 +81,43 @@
     </header>
 
     <main id="main" class="fill-viewport">
-      <div class="container">
+      <div class="container events-layout">
         <h1>Upcoming Events Along Washington’s Coast</h1>
-        <p>From beach festivals to live music and markets, discover what’s happening near your stay.</p>
+        <p>Explore festivals, markets, live music, and seasonal activities during your stay.</p>
 
-        <!-- your content -->
+        <div class="events-wrapper">
+          <!-- Sidebar Filters -->
+          <aside class="events-filter" aria-label="Filter events">
+            <h2>Filter Events</h2>
+
+            <!-- Dynamic Tag Filter -->
+            <label>
+              Tags
+              <select id="filter-tags" multiple></select>
+            </label>
+
+            <!-- Town Filter (optional later dynamic) -->
+            <label>
+              Town
+              <select id="filter-town">
+                <option value="all">All Areas</option>
+              </select>
+            </label>
+          </aside>
+
+          <!-- Event Cards List -->
+          <section class="events-list" id="events-list" aria-live="polite">
+            <!-- JS will inject cards -->
+          </section>
+        </div>
       </div>
     </main>
 
-    <footer class="footer" role="contentinfo">
+    <footer class="footer">
       <small>&copy; <span id="year"></span> JNS Vacation Rentals</small>
     </footer>
 
     <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/events.js"></script>
   </body>
 </html>
