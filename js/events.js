@@ -2,8 +2,7 @@
    events.js — Fetch Google Calendar ICS + dynamic filters
    ===================================================== */
 
-const ICS_URL =
-  'https://calendar.google.com/calendar/ical/0841982bf57ed3d9d6c39aacece5b0f25bc7bc5894b1c6750218d64a047c96f4%40group.calendar.google.com/public/basic.ics';
+const ICS_URL = '/.netlify/functions/fetch-ics';
 
 const listEl = document.getElementById('events-list');
 const tagsSelect = document.getElementById('filter-tags');
