@@ -13,7 +13,9 @@ if (!listEl || !tagsSelect || !townSelect) {
   console.warn('[events.js] Required DOM nodes missing — aborting.');
 }
 
-/* ---------- 1. Helpers ---------- */
+/* -----------------------------------------------------
+   1. HELPERS
+----------------------------------------------------- */
 
 function normalizeFoldedLines(icsText) {
   return icsText.replace(/\r?\n[ \t]/g, '');
@@ -24,11 +26,7 @@ function getProp(block, name) {
   const match = block.match(regex);
   if (!match) return '';
 
-  return match[1]
-    .trim()
-    .replace(/\\n/gi, '\n') // remove literal "\n"
-    .replace(/\\,/g, ',') // remove ICS comma escapes
-    .replace(/\\/g, ''); // remove all stray backslashes
+  return match[1].trim().replace(/\\n/gi, '\n').replace(/\\,/g, ',').replace(/\\/g, '');
 }
 
 function parseICSDate(value) {
@@ -38,8 +36,7 @@ function parseICSDate(value) {
   return new Date(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`);
 }
 
-/* ---------- TAG PARSER (correct version) ---------- */
-
+/* ---------- Improved Tag Parser ---------- */
 function parseTags(text) {
   if (!text) return { clean: text, tags: [] };
 
@@ -49,8 +46,6 @@ function parseTags(text) {
 
   while ((match = tagRegex.exec(text)) !== null) {
     const raw = match[1];
-
-    // split tags by comma, remove escapes, trim
     raw
       .split(',')
       .map((t) => t.replace(/\\/g, '').trim())
@@ -62,15 +57,25 @@ function parseTags(text) {
   return { clean, tags };
 }
 
+/* ---------- SMART TOWN DETECTION ---------- */
 function deriveTown(location) {
   if (!location) return 'Other';
+
+  const knownTowns = ['Ocean Shores', 'Hoquiam', 'Seabrook', 'Pacific Beach', 'Moclips', 'Aberdeen'];
+
+  const lower = location.toLowerCase();
+
+  for (const town of knownTowns) {
+    if (lower.includes(town.toLowerCase())) return town;
+  }
+
+  // fallback
   const cleaned = location.replace(/\\/g, '');
   return cleaned.split(',')[0].trim() || 'Other';
 }
 
 function formatDateRange(start, end) {
   if (!start) return '';
-
   const optsDate = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
   const optsTime = { hour: 'numeric', minute: '2-digit' };
 
@@ -82,13 +87,16 @@ function formatDateRange(start, end) {
   const same = start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth() && start.getDate() === end.getDate();
 
   const endTime = end.toLocaleTimeString(undefined, optsTime);
+
   if (same) return `${dateStr} • ${startTime}–${endTime}`;
 
   const endDateStr = end.toLocaleDateString(undefined, optsDate);
   return `${dateStr} ${startTime} → ${endDateStr} ${endTime}`;
 }
 
-/* ---------- 2. ICS → Event Objects ---------- */
+/* -----------------------------------------------------
+   2. ICS PARSER
+----------------------------------------------------- */
 
 function parseEventsFromICS(icsRaw) {
   const ics = normalizeFoldedLines(icsRaw);
@@ -96,17 +104,15 @@ function parseEventsFromICS(icsRaw) {
 
   const events = [];
 
-  for (const blockRaw of blocks) {
-    const block = blockRaw.split('END:VEVENT')[0];
+  for (const raw of blocks) {
+    const block = raw.split('END:VEVENT')[0];
 
     const summaryRaw = getProp(block, 'SUMMARY');
     const descriptionRaw = getProp(block, 'DESCRIPTION');
     const locationRaw = getProp(block, 'LOCATION');
-
     const startRaw = getProp(block, 'DTSTART');
     const endRaw = getProp(block, 'DTEND');
-
-    const uid = getProp(block, 'UID') || crypto.randomUUID?.() || String(events.length + 1);
+    const uid = getProp(block, 'UID') || crypto.randomUUID?.() || String(events.length);
 
     const { clean: cleanSummary, tags: tagsFromSummary } = parseTags(summaryRaw);
     const { clean: cleanDescription, tags: tagsFromDesc } = parseTags(descriptionRaw);
@@ -115,9 +121,9 @@ function parseEventsFromICS(icsRaw) {
 
     events.push({
       id: uid,
-      title: cleanSummary.replace(/\\n/g, '').trim(),
-      description: cleanDescription.replace(/\\n/g, '\n').trim(),
-      location: locationRaw.replace(/\\/g, ''),
+      title: cleanSummary,
+      description: cleanDescription.replace(/\\n/g, '\n'),
+      location: locationRaw,
       town: deriveTown(locationRaw),
       tags: allTags,
       start: parseICSDate(startRaw),
@@ -128,7 +134,9 @@ function parseEventsFromICS(icsRaw) {
   return events.sort((a, b) => (a.start && b.start ? a.start - b.start : 0));
 }
 
-/* ---------- 3. Render + Filters ---------- */
+/* -----------------------------------------------------
+   3. RENDER + FILTERS
+----------------------------------------------------- */
 
 function renderEvents(events) {
   listEl.innerHTML = '';
@@ -197,8 +205,15 @@ function buildFilters(events) {
   const allTags = Array.from(new Set(events.flatMap((ev) => ev.tags))).sort();
   const allTowns = Array.from(new Set(events.map((ev) => ev.town))).sort();
 
-  // Tags
-  //////
+  /* ----- TAGS (with 2-line placeholder) ------ */
+  tagsSelect.innerHTML = '';
+
+  const placeholder = document.createElement('option');
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  placeholder.value = '';
+  placeholder.textContent = 'Filter by tags…  (Ctrl/Cmd+click)';
+  tagsSelect.appendChild(placeholder);
 
   for (const tag of allTags) {
     const opt = document.createElement('option');
@@ -207,8 +222,9 @@ function buildFilters(events) {
     tagsSelect.appendChild(opt);
   }
 
-  // Towns
+  /* ----- TOWNS ------ */
   townSelect.innerHTML = '';
+
   const allOpt = document.createElement('option');
   allOpt.value = 'all';
   allOpt.textContent = 'All Areas';
@@ -236,16 +252,18 @@ function applyFilters() {
 
   cards.forEach((card) => {
     const cardTown = card.dataset.town;
-    const cardTags = card.dataset.tags.split(',').map((t) => t.trim());
+    const cardTags = card.dataset.tags.split(',').filter(Boolean);
 
-    const townMatch = selectedTown === 'all' || selectedTown === cardTown;
+    const townMatch = selectedTown === 'all' || cardTown === selectedTown;
     const tagMatch = selectedTags.length === 0 || selectedTags.every((t) => cardTags.includes(t));
 
     card.style.display = townMatch && tagMatch ? '' : 'none';
   });
 }
 
-/* ---------- 4. Init ---------- */
+/* -----------------------------------------------------
+   4. INIT
+----------------------------------------------------- */
 
 async function init() {
   try {
@@ -259,14 +277,14 @@ async function init() {
 
     tagsSelect.addEventListener('change', applyFilters);
     townSelect.addEventListener('change', applyFilters);
+
     clearTagsBtn.addEventListener('click', () => {
-      // Clear all selected options
       Array.from(tagsSelect.options).forEach((opt) => (opt.selected = false));
       applyFilters();
     });
   } catch (err) {
     console.error('[events.js] Error:', err);
-    listEl.innerHTML = '<p>We’re having trouble loading events right now. Please try again later.</p>';
+    listEl.innerHTML = `<p>We’re having trouble loading events right now. Please try again later.</p>`;
   }
 }
 
