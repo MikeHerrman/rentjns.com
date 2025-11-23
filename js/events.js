@@ -197,13 +197,7 @@ function buildFilters(events) {
   const allTowns = Array.from(new Set(events.map((ev) => ev.town))).sort();
 
   // Tags
-  tagsSelect.innerHTML = '';
-  const placeholder = document.createElement('option');
-  placeholder.value = '';
-  placeholder.disabled = true;
-  placeholder.selected = true;
-  placeholder.textContent = 'Filter by tags… (Ctrl/Cmd+click)';
-  tagsSelect.appendChild(placeholder);
+  //////
 
   for (const tag of allTags) {
     const opt = document.createElement('option');

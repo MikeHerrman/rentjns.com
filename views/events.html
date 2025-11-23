@@ -91,10 +91,12 @@
             <h2>Filter Events</h2>
 
             <!-- Dynamic Tag Filter -->
-            <label>
+            <label class="filter-label">
               Tags
-              <select id="filter-tags" multiple></select>
+              <small class="filter-hint">(Ctrl/Cmd+click to select multiple)</small>
             </label>
+
+            <select id="filter-tags" multiple size="6"></select>
 
             <!-- Town Filter (optional later dynamic) -->
             <label>
