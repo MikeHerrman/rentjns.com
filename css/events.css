@@ -112,3 +112,16 @@
   margin-bottom: 0.35rem;
   font-size: 0.85rem;
 }
+.clear-btn {
+  margin-top: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  background: #eee;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background: #ddd;
+}

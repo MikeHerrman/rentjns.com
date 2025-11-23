@@ -7,6 +7,7 @@ const ICS_URL = 'https://rentjnscom.netlify.app/.netlify/functions/fetch-ics';
 const listEl = document.getElementById('events-list');
 const tagsSelect = document.getElementById('filter-tags');
 const townSelect = document.getElementById('filter-town');
+const clearTagsBtn = document.getElementById('clear-tags');
 
 if (!listEl || !tagsSelect || !townSelect) {
   console.warn('[events.js] Required DOM nodes missing — aborting.');
@@ -258,6 +259,11 @@ async function init() {
 
     tagsSelect.addEventListener('change', applyFilters);
     townSelect.addEventListener('change', applyFilters);
+    clearTagsBtn.addEventListener('click', () => {
+      // Clear all selected options
+      Array.from(tagsSelect.options).forEach((opt) => (opt.selected = false));
+      applyFilters();
+    });
   } catch (err) {
     console.error('[events.js] Error:', err);
     listEl.innerHTML = '<p>We’re having trouble loading events right now. Please try again later.</p>';
