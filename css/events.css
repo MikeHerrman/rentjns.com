@@ -125,3 +125,15 @@
 .clear-btn:hover {
   background: #ddd;
 }
+
+/* Event description links */
+.event-card__description a {
+  color: var(--clr-primary-dark, #0c5a3a); /* fallback included */
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.event-card__description a:hover {
+  color: var(--clr-primary, #1a7f55);
+}

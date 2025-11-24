@@ -135,7 +135,17 @@ function parseEventsFromICS(icsRaw) {
 }
 
 /* -----------------------------------------------------
-   3. RENDER + FILTERS
+   3. ADD LINKS
+----------------------------------------------------- */
+
+function convertLinks(text) {
+  if (!text) return text;
+
+  return text.replace(/\{Link:\s*([^|]+?)\s*\|\s*(https?:\/\/[^\s}]+)\s*\}/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+
+/* -----------------------------------------------------
+   4. RENDER + FILTERS
 ----------------------------------------------------- */
 
 function renderEvents(events) {
@@ -177,7 +187,7 @@ function renderEvents(events) {
     if (ev.description) {
       const desc = document.createElement('p');
       desc.className = 'event-card__description';
-      desc.textContent = ev.description;
+      desc.innerHTML = convertLinks(ev.description);
       card.appendChild(desc);
     }
 
@@ -262,7 +272,7 @@ function applyFilters() {
 }
 
 /* -----------------------------------------------------
-   4. INIT
+   5. INIT
 ----------------------------------------------------- */
 
 async function init() {
