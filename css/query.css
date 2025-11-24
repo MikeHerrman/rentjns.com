@@ -84,6 +84,18 @@
   padding: 1rem;
 }
 
+/* Active page highlight inside the drawer */
+.nav-drawer .nav-item.is-active {
+  color: var(--g-end); /* your deep forest green */
+  font-weight: 700;
+}
+
+.nav-drawer .nav-item.is-active:hover,
+.nav-drawer .nav-item.is-active:focus-visible {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--g-end);
+}
+
 .nav-overlay {
   position: fixed;
   inset: 0;
@@ -390,7 +402,7 @@
 
 @media (prefers-color-scheme: dark) {
   .nav-drawer {
-    background: #0f172a;
+    background: #151915;
     color: #f8fafc;
   }
 
