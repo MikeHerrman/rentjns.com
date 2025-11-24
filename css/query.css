@@ -260,10 +260,30 @@
   .events-wrapper {
     flex-direction: column;
   }
-
+  /* Hide sidebar by default on mobile */
   .events-filter {
+    display: none;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  /* Toggle button (mobile only) */
+  .filters-toggle {
+    display: block;
     width: 100%;
-    max-width: 420px;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--g-start);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: left;
+  }
+  /* Hidden on desktop */
+  .hidden-desktop {
+    display: block;
   }
   .container {
     padding-inline: 1rem;
@@ -348,6 +368,10 @@
 
   .site-header .nav .site-nav {
     display: block;
+  }
+
+  .filters-toggle {
+    display: none !important;
   }
 }
 

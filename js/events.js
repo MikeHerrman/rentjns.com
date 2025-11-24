@@ -292,6 +292,21 @@ async function init() {
       Array.from(tagsSelect.options).forEach((opt) => (opt.selected = false));
       applyFilters();
     });
+
+    /* --------------------------------------------
+       MOBILE FILTER PANEL TOGGLE
+       -------------------------------------------- */
+    const filterPanel = document.querySelector('.events-filter');
+    const filterToggle = document.getElementById('filters-toggle');
+
+    if (filterToggle && filterPanel) {
+      filterToggle.addEventListener('click', () => {
+        const isOpen = filterPanel.style.display === 'block';
+
+        filterPanel.style.display = isOpen ? 'none' : 'block';
+        filterToggle.textContent = isOpen ? 'Show Filters' : 'Hide Filters';
+      });
+    }
   } catch (err) {
     console.error('[events.js] Error:', err);
     listEl.innerHTML = `<p>We’re having trouble loading events right now. Please try again later.</p>`;
