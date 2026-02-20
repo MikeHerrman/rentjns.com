@@ -1,0 +1,81 @@
+{
+  "food": {
+    "allAges": [
+      {
+        "name": "Harbor House Café",
+        "town": "Hoquiam",
+        "desc": "Comfort-food café with all-day breakfast, kid-friendly portions, and relaxed small town vibes.",
+        "url": "https://example.com"
+      },
+      {
+        "name": "Driftwood Grill",
+        "town": "Ocean Shores",
+        "desc": "Burgers, fries, and milkshakes a few minutes from the sand easy stop with kids after a long beach day.",
+        "url": "https://example.com"
+      },
+      {
+        "name": "Seabrook Corner Café",
+        "town": "Seabrook",
+        "desc": "Coffee, pastries, and simple breakfast plates in the heart of Seabrook’s walkable village.",
+        "url": "https://example.com"
+      }
+    ],
+    "adults21": [
+      {
+        "name": "Tide & Tap",
+        "town": "Ocean Shores",
+        "desc": "Craft beer, coastal cocktails, and bar snacks with a locals’ hangout feel — adults-only after 8pm.",
+        "url": "https://example.com"
+      },
+      {
+        "name": "Railside Tavern",
+        "town": "Hoquiam",
+        "desc": "Classic small-town tavern with pool, darts, and a cold pint after a day of driving or exploring.",
+        "url": "https://example.com"
+      },
+      {
+        "name": "Harbor Lounge",
+        "town": "Other",
+        "desc": "Low-key cocktail spot a short drive from town better for date night than bringing the whole crew.",
+        "url": "https://example.com"
+      }
+    ]
+  },
+  "shops": [
+    {
+      "name": "Harbor Gift Co.",
+      "town": "Hoquiam",
+      "desc": "Local gifts, coastal-themed decor, and easy souvenirs to take a bit of the harbor home with you.",
+      "url": "https://example.com"
+    },
+    {
+      "name": "Shores Beach Shop",
+      "town": "Ocean Shores",
+      "desc": "Kites, buckets, and last-minute beach gear the spot to grab what you forgot to pack.",
+      "url": "https://example.com"
+    },
+    {
+      "name": "Seabrook General & Goods",
+      "town": "Seabrook",
+      "desc": "Small boutique with essentials, snacks, and a few fun finds right in the village.",
+      "url": "https://example.com"
+    }
+  ],
+  "activities": [
+    {
+      "name": "Ocean Shores Beach Access",
+      "town": "Ocean Shores",
+      "desc": "Wide, drive-on beach with plenty of space for walking, sandcastles, kite flying, and storm watching."
+    },
+    {
+      "name": "Pacific Beach Overlook",
+      "town": "Pacific Beach/Moclips",
+      "desc": "Quick stop with big views of the coastline perfect for photos or a quiet moment between plans."
+    },
+    {
+      "name": "Local Forest Walks",
+      "town": "Hoquiam",
+      "desc": "Short drives from Hoquiam lead to easy forest trails, great for stretching your legs between beach days."
+    }
+  ]
+}
