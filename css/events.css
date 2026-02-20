@@ -178,3 +178,40 @@
   background: #fff;
   font-size: 0.95rem;
 }
+
+/* Prevent mobile horizontal overflow */
+.events-layout,
+.events-wrapper,
+.events-range {
+  max-width: 100%;
+}
+
+.events-range__controls {
+  width: 100%;
+}
+
+.events-range__field {
+  min-width: 0; /* allows flex children to shrink */
+}
+
+.events-range__field input,
+.events-range__controls button {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* =======================================================
+   Overflow protection (mobile horizontal scroll fix)
+   ======================================================= */
+
+.events-list,
+.event-card {
+  max-width: 100%;
+}
+
+.event-card__title,
+.event-card__location,
+.event-card__description {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
