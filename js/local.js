@@ -33,11 +33,14 @@ sections.forEach((section) => {
     sections.forEach((s) => {
       const h = s.querySelector('.local-section__header');
       const b = s.querySelector('.local-section__body');
+      const c = s.querySelector('.local-section__chevron');
+
       if (!h || !b) return;
 
       s.classList.remove('is-open');
       h.setAttribute('aria-expanded', 'false');
       b.hidden = true;
+      if (c) c.textContent = '▸';
     });
 
     // Re-open if it was previously closed
@@ -45,6 +48,9 @@ sections.forEach((section) => {
       section.classList.add('is-open');
       header.setAttribute('aria-expanded', 'true');
       body.hidden = false;
+
+      const c = section.querySelector('.local-section__chevron');
+      if (c) c.textContent = '▾';
     }
   });
 });
@@ -138,14 +144,17 @@ resetBtn.addEventListener('click', () => {
 sections.forEach((section) => {
   const body = section.querySelector('.local-section__body');
   const header = section.querySelector('.local-section__header');
+  const chevron = section.querySelector('.local-section__chevron');
   if (!body || !header) return;
 
   if (section.classList.contains('is-open')) {
     header.setAttribute('aria-expanded', 'true');
     body.hidden = false;
+    if (chevron) chevron.textContent = '▾';
   } else {
     header.setAttribute('aria-expanded', 'false');
     body.hidden = true;
+    if (chevron) chevron.textContent = '▸';
   }
 });
 

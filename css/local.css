@@ -80,12 +80,12 @@
 /* Chevron */
 .local-section__chevron {
   font-size: 1.25rem;
-  transition: transform 0.25s ease;
+  transition: none;
+  transform: none;
 }
 
-/* Rotated when open */
 .local-section.is-open .local-section__chevron {
-  transform: rotate(180deg);
+  transform: rotate(0deg); /* open = down */
 }
 
 /* Body */
@@ -137,19 +137,14 @@
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
 }
 
-/* Thumb + content layout */
+/*content layout */
 .local-item__main {
-  display: flex;
-  gap: 0.75rem;
+  display: block;
 }
 
-.local-thumb {
-  width: 120px;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 10px;
-  flex-shrink: 0;
-  background: #e5e5e5;
+.local-item__content {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Name + text */

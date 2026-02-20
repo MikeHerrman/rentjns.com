@@ -443,7 +443,7 @@ async function init() {
         const isOpen = filterPanel.style.display === 'block';
 
         filterPanel.style.display = isOpen ? 'none' : 'block';
-        filterToggle.textContent = isOpen ? 'Show Filters' : 'Hide Filters';
+        filterToggle.textContent = isOpen ? 'Show Filters' : 'Hide More Filters';
       });
     }
   } catch (err) {
