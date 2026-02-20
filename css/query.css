@@ -56,7 +56,11 @@
   right: 9px;
   height: 2px;
   background: var(--on-green, #fff);
-  transition: transform 0.25s ease, top 0.25s ease, bottom 0.25s ease, opacity 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    top 0.25s ease,
+    bottom 0.25s ease,
+    opacity 0.25s ease;
 }
 
 .nav-toggle::before {
@@ -272,12 +276,24 @@
   .events-wrapper {
     flex-direction: column;
   }
+
   /* Hide sidebar by default on mobile */
   .events-filter {
     display: none;
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     padding: 1rem;
+  }
+
+  /* Date range filter — mobile stacking */
+  .events-range__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .events-range__controls input,
+  .events-range__controls button {
+    width: 100%;
   }
 
   /* Toggle button (mobile only) */
@@ -293,10 +309,12 @@
     font-weight: 600;
     text-align: left;
   }
+
   /* Hidden on desktop */
   .hidden-desktop {
     display: block;
   }
+
   .container {
     padding-inline: 1rem;
   }
@@ -352,6 +370,7 @@
   .rentals .primary.is-open .image-frame {
     transform: none;
   }
+
   /* EVENTS */
   .events-filter {
     padding: 1rem;

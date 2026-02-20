@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -84,7 +84,23 @@
       <div class="container events-layout">
         <h1>Upcoming Events Along Washington’s Coast</h1>
         <p>Explore festivals, markets, live music, and seasonal activities during your stay.</p>
+        <section class="events-range" aria-label="Filter events by date range">
+          <h2 class="events-range__title">Filter by Dates</h2>
 
+          <div class="events-range__controls">
+            <label class="events-range__field">
+              Start date
+              <input type="date" id="filter-start" />
+            </label>
+
+            <label class="events-range__field">
+              End date
+              <input type="date" id="filter-end" />
+            </label>
+
+            <button id="clear-dates" class="clear-btn" type="button">Clear Dates</button>
+          </div>
+        </section>
         <div class="events-wrapper">
           <!-- Sidebar Filters -->
           <button id="filters-toggle" class="filters-toggle hidden-desktop">Show Filters</button>

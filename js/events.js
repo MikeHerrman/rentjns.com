@@ -8,9 +8,13 @@ const listEl = document.getElementById('events-list');
 const tagsSelect = document.getElementById('filter-tags');
 const townSelect = document.getElementById('filter-town');
 const clearTagsBtn = document.getElementById('clear-tags');
+const startInput = document.getElementById('filter-start');
+const endInput = document.getElementById('filter-end');
+const clearDatesBtn = document.getElementById('clear-dates');
 
 if (!listEl || !tagsSelect || !townSelect) {
   console.warn('[events.js] Required DOM nodes missing — aborting.');
+  throw new Error('Missing required DOM nodes for events page');
 }
 
 /* -----------------------------------------------------
@@ -31,9 +35,24 @@ function getProp(block, name) {
 
 function parseICSDate(value) {
   if (!value) return null;
-  const m = value.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z?/);
-  if (!m) return null;
-  return new Date(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`);
+
+  // date-time: 20260501T183000Z (Z optional)
+  let m = value.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z?/);
+  if (m) {
+    // If original had Z, treat as UTC; otherwise treat as local (don’t force Z).
+    const hasZ = /Z$/.test(value);
+    const iso = `${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}${hasZ ? 'Z' : ''}`;
+    return new Date(iso);
+  }
+
+  // date-only (all-day): 20260501
+  m = value.match(/(\d{4})(\d{2})(\d{2})$/);
+  if (m) {
+    // Create as local date at midnight to avoid timezone shifting the calendar day
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  }
+
+  return null;
 }
 
 /* ---------- Improved Tag Parser ---------- */
@@ -61,7 +80,38 @@ function parseTags(text) {
 function deriveTown(location) {
   if (!location) return 'Other';
 
-  const knownTowns = ['Ocean Shores', 'Hoquiam', 'Seabrook', 'Pacific Beach', 'Moclips', 'Aberdeen'];
+  // const knownTowns = ['Ocean Shores', 'Hoquiam', 'Seabrook', 'Pacific Beach', 'Moclips', 'Aberdeen', 'Grays Harbor'];
+  const knownTowns = [
+    // Core
+    'Ocean Shores',
+    'Aberdeen',
+    'Hoquiam',
+    'Cosmopolis',
+
+    // Inland-but-still-in-range event hubs
+    'Montesano',
+    'Elma',
+    'McCleary',
+
+    // North Beach corridor (your existing perimeter)
+    'Seabrook',
+    'Pacific Beach',
+    'Moclips',
+
+    // Beach-area labels that appear in addresses
+    'Ocean City',
+    'Oyehut',
+    'Cohassett Beach',
+    'Copalis Beach',
+
+    // South beach / harbor events (often within the same “guest radius”)
+    'Westport',
+    'Grayland',
+
+    // Region tags
+    'Grays Harbor',
+    'Grays Harbor County',
+  ];
 
   const lower = location.toLowerCase();
 
@@ -76,19 +126,33 @@ function deriveTown(location) {
 
 function formatDateRange(start, end) {
   if (!start) return '';
+
   const optsDate = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
   const optsTime = { hour: 'numeric', minute: '2-digit' };
 
+  const isMidnight = (d) => d && d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() === 0;
+  const sameDay = (a, b) => a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
   const dateStr = start.toLocaleDateString(undefined, optsDate);
+
+  // all-day (date-only) handling — DTEND is commonly exclusive in ICS
+  if (end && isMidnight(start) && isMidnight(end)) {
+    const endInclusive = new Date(end);
+    endInclusive.setDate(endInclusive.getDate() - 1);
+
+    if (sameDay(start, endInclusive)) return dateStr;
+
+    const endDateStr = endInclusive.toLocaleDateString(undefined, optsDate);
+    return `${dateStr} → ${endDateStr}`;
+  }
+
   const startTime = start.toLocaleTimeString(undefined, optsTime);
 
   if (!end) return `${dateStr} • ${startTime}`;
 
-  const same = start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth() && start.getDate() === end.getDate();
-
   const endTime = end.toLocaleTimeString(undefined, optsTime);
 
-  if (same) return `${dateStr} • ${startTime}–${endTime}`;
+  if (sameDay(start, end)) return `${dateStr} • ${startTime}–${endTime}`;
 
   const endDateStr = end.toLocaleDateString(undefined, optsDate);
   return `${dateStr} ${startTime} → ${endDateStr} ${endTime}`;
@@ -161,6 +225,8 @@ function renderEvents(events) {
     card.className = 'event-card';
     card.dataset.town = ev.town;
     card.dataset.tags = ev.tags.join(',');
+    card.dataset.start = ev.start ? ev.start.toISOString() : '';
+    card.dataset.end = ev.end ? ev.end.toISOString() : '';
 
     const header = document.createElement('header');
     header.className = 'event-card__header';
@@ -220,7 +286,7 @@ function buildFilters(events) {
 
   const placeholder = document.createElement('option');
   placeholder.disabled = true;
-  placeholder.selected = true;
+  placeholder.selected = false;
   placeholder.value = '';
   placeholder.textContent = 'Single or Multi select';
   tagsSelect.appendChild(placeholder);
@@ -258,6 +324,9 @@ function applyFilters() {
   const selectedTown = townSelect.value;
   const selectedTags = getSelectedTags();
 
+  const rangeStart = startInput ? parseDateInput(startInput.value) : null;
+  const rangeEnd = endInput ? parseDateInput(endInput.value) : null;
+
   const cards = listEl.querySelectorAll('.event-card');
 
   cards.forEach((card) => {
@@ -267,8 +336,46 @@ function applyFilters() {
     const townMatch = selectedTown === 'all' || cardTown === selectedTown;
     const tagMatch = selectedTags.length === 0 || selectedTags.every((t) => cardTags.includes(t));
 
-    card.style.display = townMatch && tagMatch ? '' : 'none';
+    const evStartISO = card.dataset.start;
+    const evEndISO = card.dataset.end;
+
+    const evStart = evStartISO ? new Date(evStartISO) : null;
+    const evEnd = evEndISO ? new Date(evEndISO) : null;
+
+    const dateMatch = eventInRange(evStart, evEnd, rangeStart, rangeEnd);
+
+    card.style.display = townMatch && tagMatch && dateMatch ? '' : 'none';
   });
+}
+
+function startOfDay(d) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+function endOfDay(d) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+}
+
+function parseDateInput(value) {
+  if (!value) return null;
+  const [y, m, d] = value.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function eventInRange(evStart, evEnd, rangeStart, rangeEnd) {
+  if (!rangeStart && !rangeEnd) return true;
+  if (!evStart) return false;
+
+  const s = evStart;
+  const e = evEnd || evStart;
+
+  const rs = rangeStart ? startOfDay(rangeStart) : null;
+  const re = rangeEnd ? endOfDay(rangeEnd) : null;
+
+  if (rs && e < rs) return false;
+  if (re && s > re) return false;
+
+  return true;
 }
 
 /* -----------------------------------------------------
@@ -279,7 +386,31 @@ async function init() {
   try {
     const res = await fetch(ICS_URL);
     const icsText = await res.text();
-    const events = parseEventsFromICS(icsText);
+    let events = parseEventsFromICS(icsText);
+
+    /* -----------------------------------------
+   AUTO HIDE EXPIRED EVENTS (3-day buffer)
+------------------------------------------ */
+    const now = new Date();
+    const cutoff = new Date();
+    cutoff.setDate(now.getDate() - 3);
+
+    const isMidnight = (d) => d && d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() === 0;
+
+    events = events.filter((ev) => {
+      if (!ev.start) return false;
+
+      let end = ev.end || ev.start;
+
+      // If it's an all-day style event (both at midnight), treat DTEND as exclusive
+      if (ev.end && isMidnight(ev.start) && isMidnight(ev.end)) {
+        end = new Date(ev.end);
+        end.setDate(end.getDate() - 1);
+        end = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999);
+      }
+
+      return end >= cutoff;
+    });
 
     renderEvents(events);
     buildFilters(events);
@@ -287,6 +418,14 @@ async function init() {
 
     tagsSelect.addEventListener('change', applyFilters);
     townSelect.addEventListener('change', applyFilters);
+    startInput?.addEventListener('change', applyFilters);
+    endInput?.addEventListener('change', applyFilters);
+
+    clearDatesBtn?.addEventListener('click', () => {
+      if (startInput) startInput.value = '';
+      if (endInput) endInput.value = '';
+      applyFilters();
+    });
 
     clearTagsBtn.addEventListener('click', () => {
       Array.from(tagsSelect.options).forEach((opt) => (opt.selected = false));

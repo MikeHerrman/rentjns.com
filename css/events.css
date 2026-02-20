@@ -137,3 +137,44 @@
 .event-card__description a:hover {
   color: var(--clr-primary, #1a7f55);
 }
+/* Date Range Filter (top-of-page)*/
+
+.events-range {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+}
+
+.events-range__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--g-start);
+  margin-bottom: 0.75rem;
+}
+
+.events-range__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+}
+
+.events-range__field {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.events-range__field input {
+  margin-top: 0.35rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
+  font-size: 0.95rem;
+}
