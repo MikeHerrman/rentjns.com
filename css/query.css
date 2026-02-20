@@ -1,18 +1,15 @@
 /* =======================================================
    query.css — Responsive + Drawer
-   REFACTORED: ordered by breakpoint, grouped by feature
    ======================================================= */
 
 /* =======================================================
-   BREAKPOINT TOKENS
+   BREAKPOINT TOKENS (debug/useful for dev tools)
    ======================================================= */
-
 @media (min-width: 801px) {
   :root {
     --bp: desktop;
   }
 }
-
 @media (max-width: 800px) {
   :root {
     --bp: mobile;
@@ -21,9 +18,8 @@
 
 /* =======================================================
    HAMBURGER / DRAWER SYSTEM (base styles)
-   Always active — NOT breakpoint dependent
+   Always present; desktop disables via ≥801px block.
    ======================================================= */
-
 .navcheck {
   position: absolute !important;
   inline-size: 1px;
@@ -90,10 +86,9 @@
 
 /* Active page highlight inside the drawer */
 .nav-drawer .nav-item.is-active {
-  color: var(--g-end); /* your deep forest green */
+  color: var(--g-end);
   font-weight: 700;
 }
-
 .nav-drawer .nav-item.is-active:hover,
 .nav-drawer .nav-item.is-active:focus-visible {
   background: rgba(0, 0, 0, 0.05);
@@ -111,6 +106,7 @@
   z-index: 999;
 }
 
+/* Open states (checkbox-driven OR JS .is-open) */
 .nav:has(#navcheck:checked) .nav-overlay,
 .nav.is-open .nav-overlay {
   display: block;
@@ -123,7 +119,6 @@
   transform: rotate(45deg);
   box-shadow: none;
 }
-
 .navcheck:checked + .nav-toggle::after {
   bottom: 19px;
   transform: rotate(-45deg);
@@ -134,12 +129,12 @@
   transform: translateX(0);
 }
 
+/* JS-driven class variant (if you use it) */
 .nav-inner.is-open .nav-toggle::before {
   top: 19px;
   transform: rotate(45deg);
   box-shadow: none;
 }
-
 .nav-inner.is-open .nav-toggle::after {
   bottom: 19px;
   transform: rotate(-45deg);
@@ -152,9 +147,8 @@
 /* =======================================================
    ≤1000px
    ======================================================= */
-
-/* GLOBAL */
 @media (max-width: 1000px) {
+  /* GLOBAL */
   .split {
     gap: 1.25rem;
   }
@@ -164,10 +158,6 @@
   }
 
   /* RENTALS */
-  .rentals .rentals-shell {
-    grid-template-rows: 5fr 2fr;
-  }
-
   .rentals .thumbs-list {
     grid-auto-columns: calc((100% - 1rem) / 2);
   }
@@ -194,9 +184,8 @@
 /* =======================================================
    ≤800px — MOBILE
    ======================================================= */
-
-/* GLOBAL */
 @media (max-width: 800px) {
+  /* NAV */
   .nav-toggle {
     display: inline-flex;
     align-items: center;
@@ -353,8 +342,6 @@
 /* =======================================================
    ≤700px
    ======================================================= */
-
-/* SHARED */
 @media (max-width: 700px) {
   .band {
     min-block-size: 30svh;
@@ -364,8 +351,6 @@
 /* =======================================================
    ≤650px
    ======================================================= */
-
-/* GLOBAL */
 @media (max-width: 650px) {
   .cta-grid {
     grid-template-columns: 1fr;
@@ -375,9 +360,8 @@
 /* =======================================================
    ≤600px — SMALL MOBILE
    ======================================================= */
-
-/* GLOBAL */
 @media (max-width: 600px) {
+  /* NAV */
   .nav-drawer {
     width: min(90%, 320px);
     padding: 0.75rem;
@@ -418,7 +402,6 @@
 /* =======================================================
    ≥801px — DESKTOP OVERRIDES
    ======================================================= */
-
 @media (min-width: 801px) {
   .nav-toggle,
   .nav-overlay,
@@ -439,7 +422,6 @@
 /* =======================================================
    ENVIRONMENTAL PREFERENCES
    ======================================================= */
-
 @media (prefers-reduced-motion: reduce) {
   .nav-drawer,
   .nav-overlay,
@@ -492,7 +474,6 @@
 /* =======================================================
    SUPPORTS: SVH Stabilization
    ======================================================= */
-
 @supports (height: 100svh) {
   @media (max-width: 800px) {
     .hero {
@@ -501,8 +482,9 @@
   }
 }
 
+/* If svh is unsupported, fall back to vh (NOT svh) */
 @supports not (height: 100svh) {
-  .rentals .rentals-shell {
-    block-size: 100svh;
+  .hero {
+    min-block-size: 100vh;
   }
 }

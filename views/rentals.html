@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -93,10 +93,6 @@
       <section class="container rentals-shell" aria-label="Rental gallery">
         <!-- Top: main image + sliding info -->
         <div class="primary" data-open="false">
-          <button class="info-toggle" aria-controls="rental-info" aria-expanded="false" title="Open details">
-            <span class="icon" aria-hidden="true">＋</span><span class="sr-only">Details</span>
-          </button>
-
           <figure class="image-frame round shadow">
             <img
               id="rental-image"
@@ -125,9 +121,16 @@
             <div class="panel-actions">
               <button type="button" class="btn btn-primary btn-gallery" data-action="open-gallery">View gallery</button>
 
-              <a href="/views/contact.html" class="btn btn-primary">Ask about dates</a>
+              <a href="/views/contact.html" class="btn btn-primary">Check dates</a>
             </div>
           </aside>
+        </div>
+        <!-- Middle: Details button -->
+        <div class="rentals-actions">
+          <button class="info-toggle" aria-controls="rental-info" aria-expanded="false" title="Open details">
+            <span class="icon" aria-hidden="true">+ Details</span>
+            <span class="sr-only">Toggle details</span>
+          </button>
         </div>
 
         <!-- Bottom: thumbnail carousel -->

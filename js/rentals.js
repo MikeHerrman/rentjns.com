@@ -242,7 +242,7 @@ function setPanelOpen(open) {
   infoBtn.setAttribute('aria-expanded', String(open));
   infoPanel.setAttribute('aria-hidden', String(!open));
   const icon = infoBtn.querySelector('.icon');
-  if (icon) icon.textContent = open ? '−' : '＋';
+  if (icon) icon.textContent = open ? 'X Close' : '+ Details';
 
   if (open) {
     const onEnd = (e) => {

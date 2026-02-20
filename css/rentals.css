@@ -1,31 +1,44 @@
 /* =======================================================
-   rentals.css — Rentals page styles (organized & cleaned)
+   rentals.css — Rentals page styles
+   CLEANED: keep only rentals-specific rules + gallery.
+   Notes:
+   - Kept your grid + button sizing behavior.
+   - Removed redundant z-index/nav rules (nav belongs in header/global).
+   - Removed duplicate .gallery z-index rule (kept once).
+   - Moved “hit-testing / stacking” rules next to the carousel section.
+   - Kept main.rentals.fill-viewport because you’re actually using it.
    ======================================================= */
 
-/* ---------- Shell layout ---------- */
+/* =======================================================
+   SHELL LAYOUT
+   ======================================================= */
 .rentals .rentals-shell {
-  block-size: 100svh; /* definite height so 3fr/1fr works */
   display: grid;
-  grid-template-rows: 3fr 1fr; /* 3/4 + 1/4 split */
-  gap: 1rem;
+  grid-template-rows: auto auto auto; /* content-driven */
+  row-gap: 0.5rem;
+  margin-bottom: 10px;
 }
 
-/* ---------- Primary area (image + sliding info) ---------- */
+/* =======================================================
+   PRIMARY AREA (image + sliding info)
+   ======================================================= */
 .rentals .primary {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  background: #000; /* neutral fallback */
+  background: #000;
+  min-height: 60svh;
+  margin-top: 12px;
 }
 
 /* Main image */
 .rentals .image-frame {
   position: absolute;
   inset: 0;
-  transition: transform 280ms ease; /* keep in sync with JS DURATION */
   margin: 0;
   box-shadow: none;
   will-change: transform;
+  transition: transform 280ms ease; /* keep in sync with JS DURATION */
 }
 .rentals .image-frame img {
   display: block;
@@ -33,13 +46,13 @@
   block-size: 100%;
   object-fit: cover;
   object-position: center;
-  transform: translateZ(0) scale(1.01); /* slight overscan to kill edge gaps */
+  transform: translateZ(0) scale(1.01);
 }
 
 /* Sliding info panel */
 .rentals .info-panel {
   position: absolute;
-  inset: 0 0 0 auto; /* right side */
+  inset: 0 0 0 auto;
   inline-size: clamp(320px, 38%, 520px);
   background: #fff;
   color: #111;
@@ -48,8 +61,14 @@
   transition: transform 280ms ease;
   box-shadow: -12px 0 24px rgba(0, 0, 0, 0.12);
   overflow: auto;
-  scrollbar-gutter: stable; /* avoid layout shift when scrollbar appears */
+  scrollbar-gutter: stable;
 }
+
+/* If the panel is hidden, it should not capture clicks */
+.rentals .info-panel[aria-hidden='true'] {
+  pointer-events: none;
+}
+
 .rentals .panel-actions {
   margin-top: 0.75rem;
 }
@@ -64,32 +83,6 @@
   gap: 0.5rem 1rem;
 }
 
-/* Toggle button */
-.rentals .info-toggle {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 2;
-  border: none;
-  border-radius: 999px;
-  padding: 0.6rem;
-  background: var(--g-start);
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-}
-.rentals .image-frame .info-toggle:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-.rentals .image-frame .info-toggle .icon {
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
 /* Open state */
 .rentals .primary.is-open .image-frame {
   transform: translateX(-38%);
@@ -98,18 +91,66 @@
   transform: translateX(0);
 }
 
-/* ---------- Bottom carousel ---------- */
+/* =======================================================
+   DETAILS BUTTON ROW
+   ======================================================= */
+.rentals .rentals-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: start; /* prevents grid row stretch */
+  height: fit-content; /* shrink-wrap */
+  margin: 0;
+  padding: 0;
+}
+
+.rentals .rentals-actions .info-toggle {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  background: var(--g-start);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  line-height: 1;
+}
+
+.rentals .rentals-actions .info-toggle .icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.rentals .rentals-actions .info-toggle:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* =======================================================
+   THUMBNAIL CAROUSEL
+   ======================================================= */
 .rentals .thumbs {
   position: relative;
+  align-self: start;
 }
+
 .rentals .thumbs-track {
+  position: relative; /* stacking context anchor for nav buttons */
   overflow: hidden;
 }
+
 .rentals .thumbs-list {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 2rem) / 3); /* 3 visible by default (query.css overrides) */
+  grid-auto-columns: calc((100% - 2rem) / 3); /* overridden in query.css */
   gap: 1rem;
+
+  /* JS applies transform => becomes its own stacking context */
+  position: relative;
+  z-index: 1;
 }
 
 .rentals .thumb {
@@ -121,23 +162,29 @@
   cursor: pointer;
   user-select: none;
 }
+
 .rentals .thumb img {
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
-  aspect-ratio: 16 / 9; /* Mobile */
+  aspect-ratio: 16 / 9;
   display: block;
+
+  /* clicks should register on the button, not the img */
+  pointer-events: none;
 }
+
 .rentals .thumb .thumb-title {
   position: absolute;
   left: 0.5rem;
   bottom: 0.5rem;
-  background: rgba(0, 0, 0, 0.6); /* boosted legibility */
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   padding: 0.2rem 0.5rem;
   border-radius: 6px;
   font-size: 0.9rem;
 }
+
 .rentals .thumb.is-active {
   outline: 3px solid var(--g-start);
   outline-offset: 2px;
@@ -157,17 +204,21 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   z-index: 10;
+  pointer-events: auto;
 }
+
 .rentals .thumbs-nav.prev {
   left: -8px;
 }
 .rentals .thumbs-nav.next {
   right: -8px;
 }
+
 .rentals .thumbs-nav:hover,
 .rentals .thumbs-nav:focus-visible {
   background: color-mix(in srgb, var(--g-start) 92%, #fff);
 }
+
 .rentals .thumbs-nav[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
@@ -175,13 +226,15 @@
   box-shadow: none;
 }
 
-/* ---------- Gallery overlay ---------- */
+/* =======================================================
+   GALLERY OVERLAY
+   ======================================================= */
 .gallery {
   position: fixed;
   inset: 0;
   display: none;
   z-index: 1200;
-  touch-action: pan-y; /* allow vertical scroll gestures */
+  touch-action: pan-y;
 }
 .gallery.is-open {
   display: grid;
@@ -201,7 +254,7 @@
   background: #292b2a;
   border-radius: 14px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
-  padding: clamp(1rem, 2vw, 2rem); /* keeps controls off the edges */
+  padding: clamp(1rem, 2vw, 2rem);
   display: grid;
   grid-template-rows: 1fr auto;
   gap: 0.5rem;
@@ -213,7 +266,7 @@
   max-inline-size: 100%;
   max-block-size: 100%;
   object-fit: contain;
-  transform: none; /* reset any previous zoom */
+  transform: none;
   cursor: zoom-in;
   margin: 0 auto;
 }
@@ -221,11 +274,11 @@
 #gallery-image {
   display: block;
   margin: 0 auto;
-  max-inline-size: 100%; /* never overflow width */
-  max-block-size: min(82svh, 82svh); /* cap height (use safe vh on mobile) */
-  width: auto; /* preserve aspect */
+  max-inline-size: 100%;
+  max-block-size: 82svh;
+  width: auto;
   height: auto;
-  object-fit: contain; /* letterbox if needed */
+  object-fit: contain;
 }
 
 .gallery.is-zoomed img {
@@ -240,7 +293,7 @@
   text-align: left;
 }
 
-/* ---------- Gallery controls (centered under image) ---------- */
+/* Gallery controls */
 .gallery-controls {
   position: absolute;
   bottom: 0.75rem;
@@ -272,7 +325,9 @@
   background: color-mix(in srgb, var(--g-start) 90%, #fff);
 }
 
-/* ---------- Accessibility & preferences ---------- */
+/* =======================================================
+   ACCESSIBILITY / PREFERENCES
+   ======================================================= */
 @media (prefers-reduced-motion: reduce) {
   .rentals .image-frame,
   .rentals .info-panel,
@@ -281,13 +336,26 @@
   }
 }
 
-/* Visible keyboard focus on thumbs */
+/* Page-level hook you're actually using */
+main.rentals.fill-viewport {
+  min-block-size: auto;
+  padding: 0;
+}
+
+/* Focus styles */
 .rentals .thumb:focus-visible {
   outline: 3px solid var(--g-start);
   outline-offset: 2px;
 }
 
-/* Hide controls/caption while zoomed for unobstructed view */
+.rentals .info-toggle:focus-visible,
+.gallery-nav:focus-visible,
+.gallery-close:focus-visible {
+  outline: 3px solid var(--g-start);
+  outline-offset: 2px;
+}
+
+/* Hide controls/caption while zoomed */
 .gallery.is-zoomed .gallery-nav,
 .gallery.is-zoomed .gallery-close,
 .gallery.is-zoomed .gallery-caption {
@@ -327,66 +395,4 @@
   .gallery-caption {
     color: ButtonText;
   }
-}
-
-/* Clear keyboard focus for key controls */
-.rentals .info-toggle:focus-visible,
-.gallery-nav:focus-visible,
-.gallery-close:focus-visible {
-  outline: 3px solid var(--g-start);
-  outline-offset: 2px;
-}
-/* ---------- Layering fix (click-block issue) ---------- */
-.rentals .primary {
-  position: relative;
-  z-index: 0;
-}
-
-.rentals .image-frame {
-  z-index: 1;
-}
-
-.rentals .info-panel {
-  z-index: 2;
-}
-
-.rentals .info-toggle {
-  z-index: 3;
-}
-
-.rentals .info-panel[aria-hidden='true'] {
-  pointer-events: none;
-}
-
-.nav {
-  z-index: 100;
-}
-.gallery {
-  z-index: 1200;
-}
-/* ---- Carousel hit-testing fix (mobile) ---- */
-.rentals .thumbs {
-  position: relative;
-  z-index: 0;
-} /* create a base context */
-.rentals .thumbs-track {
-  position: relative;
-}
-
-.rentals .thumbs-list {
-  /* JS applies transform -> new stacking context */
-  position: relative;
-  z-index: 1; /* below the arrows */
-}
-
-.rentals .thumbs-nav {
-  /* the left/right buttons */
-  position: absolute;
-  z-index: 10; /* above the list/images */
-  pointer-events: auto;
-}
-
-/* Let clicks pass through the thumbnail image itself */
-.rentals .thumb img {
-  pointer-events: none;
 }
