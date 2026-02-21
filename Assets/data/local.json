@@ -2,24 +2,6 @@
   "food": {
     "allAges": [
       {
-        "name": "Harbor House Café",
-        "town": "Hoquiam",
-        "desc": "Comfort-food café with all-day breakfast, kid-friendly portions, and relaxed small town vibes.",
-        "url": "https://example.com"
-      },
-      {
-        "name": "Driftwood Grill",
-        "town": "Ocean Shores",
-        "desc": "Burgers, fries, and milkshakes a few minutes from the sand easy stop with kids after a long beach day.",
-        "url": "https://example.com"
-      },
-      {
-        "name": "Seabrook Corner Café",
-        "town": "Seabrook",
-        "desc": "Coffee, pastries, and simple breakfast plates in the heart of Seabrook’s walkable village.",
-        "url": "https://example.com"
-      },
-      {
         "name": "Oyhut Bay Grill",
         "town": "Ocean Shores",
         "desc": "located in Oyhut Village, fine dining, great cocktails, indoor and outdoor seating, occasional live music.",
@@ -94,24 +76,6 @@
     ],
     "adults21": [
       {
-        "name": "Tide & Tap",
-        "town": "Ocean Shores",
-        "desc": "Craft beer, coastal cocktails, and bar snacks with a locals’ hangout feel — adults-only after 8pm.",
-        "url": "https://example.com"
-      },
-      {
-        "name": "Railside Tavern",
-        "town": "Hoquiam",
-        "desc": "Classic small-town tavern with pool, darts, and a cold pint after a day of driving or exploring.",
-        "url": "https://example.com"
-      },
-      {
-        "name": "Harbor Lounge",
-        "town": "Other",
-        "desc": "Low-key cocktail spot a short drive from town better for date night than bringing the whole crew.",
-        "url": "https://example.com"
-      },
-      {
         "name": "The Garage",
         "town": "Ocean Shores",
         "desc": "The Garage - Gastropub and local hangout, large tv's, great food, cocktails, beer, amazing staff and vibes, dog friendly outdoor area, open late.",
@@ -170,39 +134,204 @@
   },
   "shops": [
     {
-      "name": "Harbor Gift Co.",
-      "town": "Hoquiam",
-      "desc": "Local gifts, coastal-themed decor, and easy souvenirs to take a bit of the harbor home with you.",
-      "url": "https://example.com"
-    },
-    {
-      "name": "Shores Beach Shop",
+      "name": "Sharky’s Gift Shop",
       "town": "Ocean Shores",
-      "desc": "Kites, buckets, and last-minute beach gear the spot to grab what you forgot to pack.",
-      "url": "https://example.com"
+      "desc": "Fun beach souvenir shop packed with shells, toys, coastal decor, and quirky gifts — an easy stop for families and kids.",
+      "url": "https://sharkysos.net/"
     },
     {
-      "name": "Seabrook General & Goods",
-      "town": "Seabrook",
-      "desc": "Small boutique with essentials, snacks, and a few fun finds right in the village.",
-      "url": "https://example.com"
+      "name": "North Coast Surf Inc",
+      "town": "Ocean Shores",
+      "desc": "Local surf shop offering boards, rentals, beach gear, and apparel — a go-to spot for surfing, kites, and ocean-ready equipment.",
+      "url": "https://www.surf-oceanshores.com/"
+    },
+    {
+      "name": "Breezy Beach Clothing",
+      "town": "Ocean Shores",
+      "desc": "Relaxed coastal boutique featuring casual beachwear, hoodies, and comfortable pieces perfect for cool ocean mornings.",
+      "url": "https://www.breezybeachco.com/"
+    },
+    {
+      "name": "Too Cool Sportswear",
+      "town": "Ocean Shores",
+      "desc": "Colorful beach apparel and souvenir shop known for fun designs, sweatshirts, and Ocean Shores themed clothing.",
+      "url": "https://www.toocoolsw.com/"
+    },
+    {
+      "name": "Ocean Shores Soapworks",
+      "town": "Ocean Shores",
+      "desc": "Handcrafted soaps, bath products, and locally made gifts with coastal scents — great for unique souvenirs or self-care treats.",
+      "url": "https://oceanshoressoapworks.com/"
+    },
+    {
+      "name": "The Boardwalk Shops",
+      "town": "Ocean Shores",
+      "desc": "Cluster of small boardwalk-style shops offering souvenirs, treats, beach toys, and casual browsing close to main beach access.",
+      "url": "https://www.facebook.com/pages/Boardwalk%20Shops%20Of%20Ocean%20Shores/248681221918232/"
+    },
+    {
+      "name": "Cloud Nine Ocean Shores",
+      "town": "Ocean Shores",
+      "desc": "Playful boutique featuring gifts, beach-themed items, and fun novelty finds — a relaxed stop while exploring the main strip.",
+      "url": "https://www.facebook.com/CloudNineOceanShores/"
+    },
+    {
+      "name": "Burlap and Lace Vintage Market",
+      "town": "Ocean Shores",
+      "desc": "Vintage and farmhouse-style market with antiques, handmade decor, and rotating vendor finds — great for treasure hunting.",
+      "url": "https://www.facebook.com/p/Burlap-and-Lace-Vintage-Market-100083251746518/"
+    },
+    {
+      "name": "Anchor Ave Thrift Store",
+      "town": "Ocean Shores",
+      "desc": "Community thrift shop with affordable clothing, home goods, and unexpected gems — ideal for rainy-day browsing.",
+      "url": "https://www.anchorthrift.com/"
+    },
+    {
+      "name": "The Acorn Tree Thrift Store",
+      "town": "Ocean Shores",
+      "desc": "Small nonprofit thrift store supporting local causes with clothing, books, and household finds at budget-friendly prices.",
+      "url": "https://www.theacorntree.com/"
+    },
+    {
+      "name": "Ocean City Marketplace",
+      "town": "Ocean City",
+      "desc": "Local marketplace featuring collectibles, antiques, crafts, and rotating vendor booths — a fun off-the-beaten-path stop.",
+      "url": "https://www.facebook.com/oceancitymarketplace/"
+    },
+    {
+      "name": "North Beach PAWS",
+      "town": "Hoquiam",
+      "desc": "Animal shelter and adoption center with a small thrift-style shop — a meaningful stop for pet lovers and community support.",
+      "url": "https://www.northbeachpaws.org/"
     }
   ],
   "activities": [
     {
       "name": "Ocean Shores Beach Access",
       "town": "Ocean Shores",
-      "desc": "Wide, drive-on beach with plenty of space for walking, sandcastles, kite flying, and storm watching."
+      "desc": "Wide, drive-on beach with plenty of space for walking, sandcastles, kite flying, and storm watching.",
+      "url": "https://www.google.com/maps/search/Ocean+Shores+Beach+Access"
+    },
+    {
+      "name": "Local Forest Walks group 1",
+      "town": "Hoquiam",
+      "desc": "Short drives from Hoquiam lead to easy forest trails, great for stretching your legs between beach days.",
+      "url": "https://www.google.com/maps/search/Hoquiam+Washington+trailheads"
+    },
+    {
+      "name": "Local Forest Walks group 2",
+      "town": "Hoquiam",
+      "desc": "Short drives from Hoquiam lead to easy forest trails, great for stretching your legs between beach days.",
+      "url": "https://maps.google.com/?q=Hoquiam+Washington+forest+trails"
     },
     {
       "name": "Pacific Beach Overlook",
       "town": "Pacific Beach/Moclips",
-      "desc": "Quick stop with big views of the coastline perfect for photos or a quiet moment between plans."
+      "desc": "Quick stop with big views of the coastline perfect for photos or a quiet moment between plans.",
+      "url": "https://maps.google.com/?q=Pacific+Beach+Overlook+Washington"
     },
     {
-      "name": "Local Forest Walks",
+      "name": "Damon Point State Park",
+      "town": "Ocean Shores",
+      "desc": "Quiet jetty walk with dunes, driftwood, wildlife viewing, and wide open ocean views. Great for sunset walks and birdwatching year-round.",
+      "url": "https://parks.wa.gov/find-parks/state-parks/damon-point-state-park"
+    },
+    {
+      "name": "Ocean Shores North Jetty",
+      "town": "Ocean Shores",
+      "desc": "Rocky jetty popular for storm watching, fishing, and big surf views. Best during dramatic weather but peaceful on calm days too.",
+      "url": "https://maps.google.com/?q=Ocean+Shores+North+Jetty"
+    },
+    {
+      "name": "Coastal Interpretive Center",
+      "town": "Ocean Shores",
+      "desc": "Small local museum with maritime history, shipwreck stories, and rotating exhibits. Easy rainy-day stop for families.",
+      "url": "https://interpretivecenter.org"
+    },
+    {
+      "name": "Oyhut Wildlife Recreation Area",
+      "town": "Ocean Shores",
+      "desc": "Protected shoreline and wetlands with walking paths, wildlife sightings, and fewer crowds than main beach access.",
+      "url": "https://www.oyhutbay.com/437/oyhut-wildlife-recreation-area/"
+    },
+    {
+      "name": "Duck Lake Park",
+      "town": "Ocean Shores",
+      "desc": "Kayaking, fishing docks, playground, and picnic space. Nice break from the wind when the ocean feels rough.",
+      "url": "https://maps.google.com/?q=Duck+Lake+Park+Ocean+Shores"
+    },
+    {
+      "name": "Seabrook Beach Walk",
+      "town": "Seabrook",
+      "desc": "Bluff access leading to long walkable beach stretches. Great for morning coffee walks and evening sunsets.",
+      "url": "https://maps.google.com/?q=Seabrook+Beach+Access+Washington"
+    },
+    {
+      "name": "Seabrook Forest Trails",
+      "town": "Seabrook",
+      "desc": "Easy wooded trails connecting neighborhoods, playgrounds, and viewpoints. Calm alternative to windy beach days.",
+      "url": "https://maps.google.com/?q=Seabrook+Forest+Trails"
+    },
+    {
+      "name": "Pacific Beach State Park",
+      "town": "Pacific Beach/Moclips",
+      "desc": "Classic coastal park with beach access, camping views, and plenty of space for picnics and tidepool exploring.",
+      "url": "https://parks.wa.gov/find-parks/state-parks/pacific-beach-state-park"
+    },
+    {
+      "name": "Mocrocks Beach",
+      "town": "Pacific Beach/Moclips",
+      "desc": "Seasonal clamming and tidepool exploration with starfish, anemones, and shells. Best during low tide windows.",
+      "url": "https://www.mountaineers.org/activities/routes-places/mocrocks-beach"
+    },
+    {
+      "name": "Grays Harbor Historical Seaport",
+      "town": "Aberdeen",
+      "desc": "Tall ship dock, maritime exhibits, and occasional ship tours. Fun stop for kids and history lovers.",
+      "url": "https://historicalseaport.org"
+    },
+    {
+      "name": "Kurt Cobain Memorial Park",
+      "town": "Aberdeen",
+      "desc": "Small riverside memorial and photo stop honoring Aberdeen’s most famous musician. Quick and meaningful visit.",
+      "url": "https://en.wikipedia.org/wiki/Kurt_Cobain_Memorial_Park"
+    },
+    {
+      "name": "Wishkah River Walk",
+      "town": "Aberdeen",
+      "desc": "Peaceful waterfront walkway through downtown Aberdeen. Good for stretching your legs between drives.",
+      "url": "https://maps.google.com/?q=Wishkah+Riverwalk+Aberdeen"
+    },
+    {
+      "name": "Hoquiam Castle",
       "town": "Hoquiam",
-      "desc": "Short drives from Hoquiam lead to easy forest trails, great for stretching your legs between beach days."
+      "desc": "Historic mansion offering tours and seasonal events. Even from outside, it's a unique coastal landmark.",
+      "url": "https://en.wikipedia.org/wiki/Hoquiam%27s_Castle"
+    },
+    {
+      "name": "Friends Landing Park",
+      "town": "Hoquiam",
+      "desc": "Riverside park with walking trails, wildlife viewing, and boat launch access. Quiet and relaxing year-round.",
+      "url": "https://www.friendslanding.org/"
+    },
+    {
+      "name": "Lake Quinault Rainforest Loop",
+      "town": "Other",
+      "desc": "Scenic rainforest drive with waterfalls, giant trees, and lakeside stops. Beautiful in every season, especially fall.",
+      "url": "https://www.quinaultrainforest.com/Lake-Quinault/Rain-Forest-Loop-Drive.html"
+    },
+    {
+      "name": "Westport Marina & Observation Tower",
+      "town": "Other",
+      "desc": "Fishing boats, seafood stops, and a viewing tower with panoramic harbor views. Great afternoon outing.",
+      "url": "https://www.experiencewestport.com/storm-watching"
+    },
+    {
+      "name": "Grays Harbor Lighthouse",
+      "town": "Other",
+      "desc": "Historic lighthouse with occasional climb access and strong coastal photo opportunities.",
+      "url": "https://www.wsbhs.org/lighthouse"
     }
   ]
 }
