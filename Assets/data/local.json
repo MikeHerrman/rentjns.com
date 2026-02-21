@@ -18,6 +18,78 @@
         "town": "Seabrook",
         "desc": "Coffee, pastries, and simple breakfast plates in the heart of Seabrook’s walkable village.",
         "url": "https://example.com"
+      },
+      {
+        "name": "Oyhut Bay Grill",
+        "town": "Ocean Shores",
+        "desc": "located in Oyhut Village, fine dining, great cocktails, indoor and outdoor seating, occasional live music.",
+        "url": "https://www.oyhutbay.com/oyhut-bay-grill-loft/"
+      },
+      {
+        "name": "Bennetts Fish Shack",
+        "town": "Ocean Shores",
+        "desc": "Best fish & chips, walk up ordering, fast service, full service bar/lounge with tv’s for watching sports.",
+        "url": "https://www.bennettsfishshacks.com/"
+      },
+      {
+        "name": "Thian’s Thai Fusion",
+        "town": "Ocean Shores",
+        "desc": "Casual dining, open kitchen, fast service, friendly staff.",
+        "url": "https://thiansthaifusion.com/"
+      },
+      {
+        "name": "La Spiaggia Ristorante",
+        "town": "Ocean Shores",
+        "desc": "Traditional Italian cuisine made from scratch, intimate dining, full service bar.",
+        "url": "https://www.laspiaggiaristorante.com/"
+      },
+      {
+        "name": "OBR (ocean beach roasters)",
+        "town": "Ocean Shores",
+        "desc": "Café offering espresso, coffee and tea, beer and wine, pastries and good breakfast and lunch food options.",
+        "url": "https://theoceanbeachroasters.store/"
+      },
+      {
+        "name": "Galway Bay Irish Pub",
+        "town": "Ocean Shores",
+        "desc": "Restaurant and bar, fun atmosphere, irish and american food, irish whiskey and beer, live music and events, shuffleboard, darts, sports covered outdoor area, gift shop, cigar shop.",
+        "url": "https://www.galwaybayirishpub.com/"
+      },
+      {
+        "name": "Dugan’s Pizza",
+        "town": "Ocean Shores",
+        "desc": "Has been in Ocean shores since 1982, good spot for families.",
+        "url": "https://www.duganspizza.com/"
+      },
+      {
+        "name": "Brunch 101",
+        "town": "Hoquiam",
+        "desc": "Discover the perfect brunch escape at Brunch 101! Carefully crafted dishes and freshly baked treats, including delicious vegan and gluten-free options.",
+        "url": "https://thebrunch101.com/"
+      },
+      {
+        "name": "Samurai Sushi Bar & Grill",
+        "town": "Aberdeen",
+        "desc": "",
+        "url": "https://samuraisushigrill.com/"
+      },
+      {
+        "name": "Lighthouse Drive-In",
+        "town": "Aberdeen",
+        "desc": "",
+        "url": "https://lighthousedrivein.com/"
+      },
+      {
+        "name": "Westside Pizza",
+        "town": "Aberdeen",
+        "desc": "",
+        "url": "https://westsidepizza.com/location/aberdeen/"
+      },
+      {
+        "name": "Koko's Restaurant and Tequila Bar",
+        "town": "Seabrook",
+        "desc": "inspiration comes from both Mexican and Salvadoran cuisine",
+        "url": "https://www.kokos-restaurant.com/"
       }
     ],
     "adults21": [
@@ -38,6 +110,61 @@
         "town": "Other",
         "desc": "Low-key cocktail spot a short drive from town better for date night than bringing the whole crew.",
         "url": "https://example.com"
+      },
+      {
+        "name": "The Garage",
+        "town": "Ocean Shores",
+        "desc": "The Garage - Gastropub and local hangout, large tv's, great food, cocktails, beer, amazing staff and vibes, dog friendly outdoor area, open late.",
+        "url": "https://www.facebook.com/TheGarage98569/"
+      },
+      {
+        "name": "Corks & Taps",
+        "town": "Ocean Shores",
+        "desc": "Great small plate options and fun beer and wine selections.",
+        "url": "https://www.oyhutbay.com/corks-taps/"
+      },
+      {
+        "name": "Ocean Pours Taproom",
+        "town": "Ocean Shores",
+        "desc": "Cozy small indoor area with a lot of beer, wine and cider options, and large outdoor dog friendly sitting area.",
+        "url": "https://oceanpourstaproom.com/"
+      },
+      {
+        "name": "Porthole Pub",
+        "town": "Ocean Shores",
+        "desc": "Fun for nightlife, Karaoke and live music, local hangout, good drink and food options, good for sports, great staff, open late.",
+        "url": "https://www.facebook.com/theportholepub"
+      },
+
+      {
+        "name": "8th Street Ale House",
+        "town": "Hoquiam",
+        "desc": "Good food and drinks, Good for watching sports.",
+        "url": "https://8thstreetalehouse.com/"
+      },
+      {
+        "name": "The Cave Bar",
+        "town": "Aberdeen",
+        "desc": "Great prices on drinks and snacks, good for watching sports, lots of daily events, neighborhood bar, great staff.",
+        "url": "https://thecavebarwa.com/"
+      },
+      {
+        "name": "The Tap Room",
+        "town": "Aberdeen",
+        "desc": "local intimate bar, good for watching sports, some food options, open late.",
+        "url": "https://www.facebook.com/people/The-Tap-Room/100063700984355/"
+      },
+      {
+        "name": "Steam Donkey Brewing",
+        "town": "Aberdeen",
+        "desc": "Local brewery, food truck outside, lots of beer, and cider options.",
+        "url": "https://www.steamdonkeybrewing.com/"
+      },
+      {
+        "name": "Rising Tide Tavern",
+        "town": "Seabrook",
+        "desc": "Rising Tide Tavern - Good cocktails with a variety of good food options.",
+        "url": "https://www.risingtidetavern.com/"
       }
     ]
   },
