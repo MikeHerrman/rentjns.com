@@ -12,7 +12,7 @@ const rentals = [
     baths: 1,
     sqft: 1300,
     pets: false,
-    blurb: `Escape to the beach and relax at our Coastal Cottage. This home offers a spacious open living area with fully stocked kitches. Enjoy 3
+    blurb: `Escape to the beach and relax at our Coastal Cottage. This home offers a spacious open living area with fully stocked kitchen. Enjoy 3
               cozy bedrooms, roomy full bathroom and large private yard. Just 1 mile to the beach, 3 miles to Quinault Casino, 4 miles to Ocean Shores
               and a 20 min drive to Seabrook. Whether you stay in or venture out, you'll find everything you need here for relaxation and fun!`,
     gallery: [
