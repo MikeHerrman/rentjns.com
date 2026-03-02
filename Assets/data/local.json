@@ -232,12 +232,6 @@
       "url": "https://maps.google.com/?q=Pacific+Beach+Overlook+Washington"
     },
     {
-      "name": "Damon Point State Park",
-      "town": "Ocean Shores",
-      "desc": "Quiet jetty walk with dunes, driftwood, wildlife viewing, and wide open ocean views. Great for sunset walks and birdwatching year-round.",
-      "url": "https://parks.wa.gov/find-parks/state-parks/damon-point-state-park"
-    },
-    {
       "name": "Ocean Shores North Jetty",
       "town": "Ocean Shores",
       "desc": "Rocky jetty popular for storm watching, fishing, and big surf views. Best during dramatic weather but peaceful on calm days too.",
@@ -323,15 +317,69 @@
     },
     {
       "name": "Westport Marina & Observation Tower",
-      "town": "Other",
+      "town": "Westport",
       "desc": "Fishing boats, seafood stops, and a viewing tower with panoramic harbor views. Great afternoon outing.",
       "url": "https://www.experiencewestport.com/storm-watching"
     },
     {
       "name": "Grays Harbor Lighthouse",
-      "town": "Other",
+      "town": "Westport",
       "desc": "Historic lighthouse with occasional climb access and strong coastal photo opportunities.",
       "url": "https://www.wsbhs.org/lighthouse"
+    },
+    {
+      "name": "Pacific Paradise Family Fun Center",
+      "town": "Ocean Shores",
+      "desc": "Year-round fun for adventurers of all ages. Aliens, monsters, and locals alike would love to help you party in paradise.",
+      "url": "https://www.pacificparadisepark.com/"
+    },
+    {
+      "name": "Playtime Family Fun,",
+      "town": "Ocean Shores",
+      "desc": "Go-Karts, Bumper Cars, Game Room, VR, and more..",
+      "url": "https://www.playtimefamilyfun.com/"
+    },
+    {
+      "name": "Shores Bowl",
+      "town": "Ocean Shores",
+      "desc": "Shores Bowl is a fun and friendly place to spend the afternoon or evening with family and friends. Food, drinks, games and parties all under one roof! ",
+      "url": "https://www.facebook.com/shoresbowlwa/"
+    },
+    {
+      "name": "Grays Harbor National Wildlife Refuge",
+      "town": "Hoquiam",
+      "desc": "one of six major estuary systems on the Pacific Coast and one of the largest concentrations of shorebirds on the west coast, south of Alaska.",
+      "url": "https://www.fws.gov/refuge/grays-harbor"
+    },
+    {
+      "name": "Ocean Shores Cinema,",
+      "town": "Ocean Shores",
+      "desc": "Catch the latest blockbusters or enjoy a laid-back movie night at Ocean Shores Cinema, a cozy local theater just minutes from the beach.",
+      "url": "https://www.oscinema.com/coming-soon"
+    },
+    {
+      "name": "International Mermaid Museum",
+      "town": "Ocean Shores",
+      "desc": "The International Mermaid Museum is dedicated to teaching ocean ecology from seashore to sea floor immersed in mermaid mythology unifying oceanic cultures.",
+      "url": "https://www.mermaidmuseum.org/"
+    },
+    {
+      "name": "Westport Winery and Ocean Daughter Distillery",
+      "town": "Aberdeen",
+      "desc": "Great Northwest Wine Magazine named Westport Winery the 2022 Washington Winery of the Year. Westport is the number seven top platinum winning winery in the Pacific Northwest.",
+      "url": "https://westportwinery.com/"
+    },
+    {
+      "name": "Unplugged",
+      "town": "Aberdeen",
+      "desc": "Unplugged at The Music Project is a community-driven music museum in Aberdeen celebrating the region’s grunge roots and the cultural legacy that shaped a generation of artists.",
+      "url": "https://www.themusicproject.org"
+    },
+    {
+      "name": "Quinault Beach Casino",
+      "town": "Ocean Shores",
+      "desc": "The Best Casino on the Coast. Come see the Pacific Ocean and discover why Winners Happen Here!",
+      "url": "https://quinaultbeach.com/"
     }
   ]
 }
