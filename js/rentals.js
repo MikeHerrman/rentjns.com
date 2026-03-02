@@ -3,17 +3,18 @@
 const rentals = [
   {
     id: 'p1',
-    slug: 'property-1',
+    slug: 'coastal_cottage',
     name: 'Coastal Cottage',
-    img: '/assets/images/rentals/property-1.jpg',
+    img: '/assets/images/rentals/coastal_cottage.jpg',
     alt: 'Coastal Cottage interior dining and living room space',
     sleeps: 4,
     beds: 3,
     baths: 1,
     sqft: 1300,
     pets: false,
-    blurb:
-      "Escape to the beach and relax at our Coastal Cottage. This home offers a spacious open living area, 3 cozy bedrooms, roomy full bathroom and large private yard.  Just 1 mile to the beach, 3 miles to Quinault Casino, 4 miles to Ocean Shores and a 20 min drive to Seabrook.  Whether you stay in or venture out, you'll find everything you need here for relaxation and fun!",
+    blurb: `Escape to the beach and relax at our Coastal Cottage. This home offers a spacious open living area with fully stocked kitches. Enjoy 3
+              cozy bedrooms, roomy full bathroom and large private yard. Just 1 mile to the beach, 3 miles to Quinault Casino, 4 miles to Ocean Shores
+              and a 20 min drive to Seabrook. Whether you stay in or venture out, you'll find everything you need here for relaxation and fun!`,
     gallery: [
       'deck-1a.jpg',
       'living-1a.jpg',
@@ -48,7 +49,7 @@ const rentals = [
   },
   {
     id: 'p2',
-    slug: 'property-2',
+    slug: 'shore_bird_chalet',
     name: 'Shore Bird Chalet',
     img: '/assets/images/rentals/property-2.jpg',
     alt: 'Property 2 exterior near the coast',
@@ -62,12 +63,17 @@ const rentals = [
     gallery: [
       'home-1.jpg',
       'home-2.jpg',
+      'from-entry.jpg',
       'living-1.jpg',
-      'livingroom_2.jpg',
-      'livingroom_3.jpg',
-      'kitchen.jpg',
+      'livingroom-2.jpg',
+      'bar-1.jpg',
+      'kitchen-1.jpg',
+      'kitchen-4.jpg',
+      'kitchen-3.jpg',
+      'bathroom-3.jpg',
+      'stairs.jpg',
       'twin-bedroom.jpg',
-      'twin-bedroom_1.jpg',
+      'twin-bedroom-1.jpg',
       'bed-1.jpg',
       'bed-1a.jpg',
       'bed-2.jpg',
