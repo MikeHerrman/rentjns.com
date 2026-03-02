@@ -7,6 +7,18 @@
 
 Marketing site for JNS (rentals/events/contact). Built as a static site now; can evolve to a build pipeline later.
 
+## Current Architecture vs Future Plan
+
+The current live site is a static HTML/CSS/JS site deployed on Netlify, with a small Netlify Function for the events feed.
+
+Some top-level folders in this repo such as `controllers/`, `models/`, `routes/`, `public/`, and `util/` are being kept intentionally for a later phase of the project. The plan is to eventually build a custom CMS/admin backend using Node.js, Express, MongoDB, and an MVC-style structure.
+
+Until that backend work starts, treat the current site as static-first:
+
+- `index.html`, `views/`, `css/`, `js/`, and `assets/` drive the live site
+- `netlify/functions/` contains the current server-side function usage
+- The MVC-style folders are reserved for future backend/CMS development and are not part of the current deployed app flow
+
 ---
 
 ## Local Development
@@ -66,6 +78,7 @@ git checkout -b copy/<short-description>
 
 ```bash
 git status
+pwsh -File .\scripts\validate-static.ps1
 git add <file(s)>
 git commit -m "Describe your change"
 ```
@@ -103,6 +116,29 @@ git branch -d copy/<short-description>
 - **Publish directory:** `.` (repo root)
 - **Functions directory:** `netlify/functions`
 - Prefer calling functions with relative paths (example): `/.netlify/functions/fetch-ics`
+
+---
+
+## Lightweight Validation
+
+Before committing HTML, asset, metadata, or link changes, run:
+
+```powershell
+pwsh -File .\scripts\validate-static.ps1
+```
+
+This validator is intentionally lightweight. It checks for:
+
+- missing local `src` and `href` file references in `index.html` and `views/*.html`
+- missing or duplicate canonical tags
+- placeholder canonical domains such as `yourdomain.com`
+
+Quick pre-push checklist:
+
+- Run `pwsh -File .\scripts\validate-static.ps1`
+- Preview locally with `python -m http.server 8000` or `npx netlify dev` if functions are involved
+- Click through the page you changed and confirm images, nav, and key links still work
+- If metadata changed, verify the page still has one correct canonical URL
 
 ---
 

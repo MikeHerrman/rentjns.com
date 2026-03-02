@@ -25,6 +25,11 @@ function normalizeFoldedLines(icsText) {
   return icsText.replace(/\r?\n[ \t]/g, '');
 }
 
+function isLikelyICS(text) {
+  if (!text) return false;
+  return text.includes('BEGIN:VCALENDAR') && text.includes('BEGIN:VEVENT');
+}
+
 function getProp(block, name) {
   const regex = new RegExp(`${name}(?:;[^:]*)?:(.*)`, 'i');
   const match = block.match(regex);
@@ -182,6 +187,11 @@ function parseEventsFromICS(icsRaw) {
     const { clean: cleanDescription, tags: tagsFromDesc } = parseTags(descriptionRaw);
 
     const allTags = Array.from(new Set([...tagsFromSummary, ...tagsFromDesc])).sort();
+    const start = parseICSDate(startRaw);
+    const end = parseICSDate(endRaw);
+
+    // Skip malformed events rather than letting bad feed entries break the page.
+    if (!cleanSummary || !start) continue;
 
     events.push({
       id: uid,
@@ -190,8 +200,8 @@ function parseEventsFromICS(icsRaw) {
       location: locationRaw,
       town: deriveTown(locationRaw),
       tags: allTags,
-      start: parseICSDate(startRaw),
-      end: parseICSDate(endRaw),
+      start,
+      end,
     });
   }
 
@@ -385,7 +395,15 @@ function eventInRange(evStart, evEnd, rangeStart, rangeEnd) {
 async function init() {
   try {
     const res = await fetch(ICS_URL);
+    if (!res.ok) {
+      throw new Error(`Events request failed (${res.status})`);
+    }
+
     const icsText = await res.text();
+    if (!isLikelyICS(icsText)) {
+      throw new Error('Events feed did not return valid ICS data');
+    }
+
     let events = parseEventsFromICS(icsText);
 
     /* -----------------------------------------
